@@ -24,7 +24,6 @@ final class AuthController extends AbstractController
     private UserPasswordHasherInterface $passwordHasher;
     private ValidatorInterface $validator;
     private JWTTokenManagerInterface $jwtManager;
-    private Uuid $Uuid;
     private MailerInterface $mailer;
 
     public function __construct (EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher, ValidatorInterface $validator, JWTTokenManagerInterface $jwtManager, MailerInterface $mailer) { 
@@ -88,11 +87,10 @@ final class AuthController extends AbstractController
 
     }
 
-    #[Route('/api/verifyEmail', name: 'api_verifyEmail', methods: 'POST')]
+    #[Route('/api/verifyEmail', name: 'api_verifyEmail', methods: 'GET')]
     public function VerifyEmail(Request $request): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-        $token = $data->query->get('token');
+        $token = $request->query->get('token');
 
         // On vérifie que le token est présent
         if (!$token) {
@@ -100,7 +98,7 @@ final class AuthController extends AbstractController
         }
 
         // On cherche l'utilisateur avec le token corrrespondant
-        $user = $this->em->getRepository(User::class)->findOneBy(['verificationToken' => $token]);
+        $user = $this->em->getRepository(User::class)->findOneBy(['VerificationToken' => $token]);
 
         if (!$user) {
             return $this->json(['error' => 'Token invalide'], 400);
