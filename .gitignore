@@ -1,22 +1,81 @@
+# -------------------------
+# OS / Editor files
+# -------------------------
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon
 
-###> symfony/framework-bundle ###
-/.env.dev
-/.env
-/.env.local
-/.env.local.php
-/.env.*.local
-/config/secrets/prod/prod.decrypt.private.php
-/public/bundles/
+# IDEs
+/.idea/
+/.vscode/
+*.sublime-workspace
+*.sublime-project
+*.iml
+*.swp
+
+# -------------------------
+# Symfony / PHP
+# -------------------------
+# Environment files (do NOT commit secrets)
+# Ignore all env variants that may contain secrets but keep example/dist files
+/.env*
+!/.env.dist
+!/.env.example
+/.env.local.php 
+*.env.test
+**/.env.test
+
+
+# Symfony secrets and local caches/logs
+/config/secrets/
 /var/
-/vendor/
-###< symfony/framework-bundle ###
+/**/var/
 
-###> phpunit/phpunit ###
+# Composer dependencies (don't commit vendors)
+/vendor/
+/**/vendor/
+
+# PHPUnit / test artifacts
 /phpunit.xml
 /.phpunit.cache/
-###< phpunit/phpunit ###
 
-###> symfony/asset-mapper ###
+# -------------------------
+# Frontend / Node
+# -------------------------
+# Node modules and package manager logs
+/node_modules/
+/front/node_modules/
+npm-debug.log
+pnpm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Webpack / Encore / build output
+/public/build/
+/back/public/build/
+/front/dist/
 /public/assets/
 /assets/vendor/
-###< symfony/asset-mapper ###
+
+# Misc build artifacts
+/build/
+/dist/
+
+# -------------------------
+# Logs, caches, coverage
+# -------------------------
+*.log
+/coverage/
+/.cache/
+/.sass-cache/
+
+# -------------------------
+# Project root extras that are safe to ignore
+# -------------------------
+composer-setup.php
+composer.sig
+/.DS_Store
+
+# Keep any local/backups or OS-specific files out
+*~
