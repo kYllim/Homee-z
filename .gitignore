@@ -23,8 +23,7 @@ Icon
 !/.env.dist
 !/.env.example
 /.env.local.php 
-*.env.test
-**/.env.test
+
 
 
 # Symfony secrets and local caches/logs

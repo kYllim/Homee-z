@@ -20,5 +20,13 @@
   "bugs": {
     "url": "https://github.com/kYllim/Homee-z/issues"
   },
-  "homepage": "https://github.com/kYllim/Homee-z#readme"
+  "homepage": "https://github.com/kYllim/Homee-z#readme",
+  "dependencies": {
+    "vue": "^3.5.22",
+    "vue-loader": "^17.4.2",
+    "vue-template-compiler": "^2.7.16"
+  },
+  "devDependencies": {
+    "@symfony/webpack-encore": "^5.2.0"
+  }
 }
