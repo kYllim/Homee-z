@@ -1,8 +1,2 @@
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* Minimal project CSS — no FullCalendar-specific overrides per request */
-
-
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import "tailwindcss";
