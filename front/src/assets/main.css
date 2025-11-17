@@ -1,2 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
-@import "tailwindcss";
+@import 'primeicons/primeicons.css';
+@import "tailwindcss" important;
+
+@theme {
+  --color-green_pastel: #6B8E6B;
+  --color-blue_pastel: #6E8B94;
+  --color-beige_pastel: #D3C4A6;
+}

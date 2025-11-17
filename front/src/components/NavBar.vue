@@ -9,18 +9,27 @@ const IsOpen: Ref<boolean> = ref(false);
   <nav
     class="flex flex-row justify-center content-center py-2 px-4 relative lg:justify-between lg:px-[58px] lg:py-6"
   >
-    <button @click="IsOpen = !IsOpen" class="absolute top-4 left-4 lg:hidden">
-      Menu
-    </button>
+    <!-- Bouton menu burger -->
+    <i
+      v-show="!IsOpen"
+      @click="IsOpen = !IsOpen"
+      class="pi pi-bars absolute top-4 left-4 text-xl lg:hidden important"
+    ></i>
+    <i
+      v-show="IsOpen"
+      @click="IsOpen = !IsOpen"
+      class="pi pi-times absolute top-4 left-4 text-xl lg:hidden impotant"
+    ></i>
+
     <h1 class="font-bold text-[22px] lg:text-[50px]">homee'z</h1>
     <!-- Naviation Desktop -->
     <div
       class="hidden lg:flex flex-row gap-[22px] justify-center content-center items-center"
     >
-      <a href="#" class="text-[22px]">se connecter</a>
+      <a href="#" class="text-[22px] font-semibold">se connecter</a>
       <a
         href="#"
-        class="text-[22px] bg-emerald-300 rounded-[20px] px-[20px] py-[15px]"
+        class="text-[22px] bg-green_pastel rounded-[20px] px-10 py-5 text-white font-semibold"
         >créer un compte</a
       >
     </div>
