@@ -1,4 +1,4 @@
-import type { FormErrors, FormData } from "../model";
+import type { ErrorRegister,ErrorsConexion,FormConnexion,FormRegister } from "../model";
 import { ref, type Ref } from "vue";
 
 export function isEmailValid(email: string): boolean {
@@ -18,13 +18,27 @@ export function PasswordMatching(
   return password === confirmation;
 }
 
-export function resetForm(refForm: FormData, errorForm: FormErrors) {
-  for (let key in refForm) {
-    const k = key as keyof FormData;
-    (refForm[k] as Ref<string>).value = "";
+export function resetError<T extends Record<string, Ref<string>>>(
+  errorForm: T
+) {
+  Object.values(errorForm).forEach(e => (e.value = ""));
+}
+
+export function isBlank<
+  T extends Record<string, Ref<string>>,
+  E extends Record<keyof T, Ref<string>>
+>(form: T, errors: E): boolean {
+  let valid = true;
+
+  for (const key in form) {
+    const field = form[key];  
+    const err = errors[key];   
+    if (!field || !err) continue;
+    if (field.value.trim() === "") {
+      err.value = "This field is empty !";
+      valid = false;
+    }
   }
-  for (let key in errorForm) {
-    const k = key as keyof FormErrors;
-    (refForm[k] as Ref<string>).value = "";
-  }
+
+  return valid;
 }

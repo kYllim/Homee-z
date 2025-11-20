@@ -8,7 +8,7 @@
         placeholder? : string,
         errorMessage? : string,
         title : string,
-        icon : "pi-lock" | "pi-at" | "pi-user" | "pi-phone" | "pi-globe" | "pi-calendar"
+        icon? : "pi-lock" | "pi-at" | "pi-user" | "pi-phone" | "pi-globe" | "pi-calendar"
     }
 
     const props = defineProps<Iprops>()
@@ -41,7 +41,7 @@
         <div class="flex items-center gap-3 bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl w-full"
             :class="props.errorMessage ? 'border-red-500' : 'border-gray-200'"
         >
-            <i :class="['pi',props.icon, 'text-gray-700']"></i>
+            <i v-if="props.icon" :class="['pi',props.icon, 'text-gray-700']"></i>
         <input :type="CurrentType" :name="props.name" :placeholder="props.placeholder" :value="props.modelValue"
                 class="bg-transparent outline-none flex-1 text-gray-700 placeholder-gray-400 text-sm"
                 @input="handleInput"

@@ -1,14 +1,17 @@
 import type { Ref } from "vue";
 
 export interface FormConnexion {
+  [key: string]: Ref<string>;
   emailConnexion: Ref<string>;
   passwordConnexion: Ref<string>;
 }
 export interface ErrorsConexion {
+  [key: string]: Ref<string>;
   emailConnexion: Ref<string>;
   passwordConnexion: Ref<string>;
 }
 export interface FormRegister {
+  [key: string]: Ref<string>
   emailRegister: Ref<string>;
   passwordRegister: Ref<string>;
   passwordComfirmation: Ref<string>;
@@ -16,6 +19,7 @@ export interface FormRegister {
   name: Ref<string>;
 }
 export interface ErrorRegister {
+  [key: string]: Ref<string>;
   emailRegister: Ref<string>;
   passwordRegister: Ref<string>;
   passwordComfirmation: Ref<string>;
