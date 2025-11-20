@@ -33,8 +33,18 @@ export function useApi<T = any>() {
       const response = await fetch(url, fetchOptions);
 
       if (!response.ok) {
-        const text = await response.text();
-        throw new Error(text || `HTTP error ${response.status}`);
+        let message = `HTTP error ${response.status}`;
+
+        try {
+          const json = await response.json();
+          if (json.message) message = json.message;
+          else if (json.errors && Array.isArray(json.errors)) message = json.errors[0];
+        } catch {
+          const text = await response.text();
+          if (text) message = text;
+        }
+
+        throw new Error(message);
       }
 
       data.value = await response.json();

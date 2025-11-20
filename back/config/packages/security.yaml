@@ -6,7 +6,7 @@ security:
     providers:
         users:
             entity:
-                class: App\entity\User
+                class: App\Entity\User
                 property: email
     firewalls:
         dev:
@@ -16,15 +16,14 @@ security:
             pattern: ^/api/
             stateless: true
             provider: users
-            jwt: ~
-        main:
+
             json_login:
-                check_path: api/login # The name in routes.yaml is enough for mapping
+                check_path: /api/login
                 username_path: email
                 password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
-
+            jwt: ~
     access_control:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/register, roles: PUBLIC_ACCESS }

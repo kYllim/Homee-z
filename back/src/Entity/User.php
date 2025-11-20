@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
+#[ORM\Table(name: '`users`')]
 class User implements UserInterface,PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -121,7 +121,7 @@ class User implements UserInterface,PasswordAuthenticatedUserInterface
 
         return array_unique($roles);
     }
-  
+
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -131,7 +131,7 @@ class User implements UserInterface,PasswordAuthenticatedUserInterface
 
     public function eraseCredentials(): void
     {
-        
+
     }
 
     public function getId(): ?int
@@ -460,5 +460,5 @@ class User implements UserInterface,PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    
+
 }

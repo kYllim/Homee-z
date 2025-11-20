@@ -26,7 +26,7 @@ final class AuthController extends AbstractController
     private JWTTokenManagerInterface $jwtManager;
     private MailerInterface $mailer;
 
-    public function __construct (EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher, ValidatorInterface $validator, JWTTokenManagerInterface $jwtManager, MailerInterface $mailer) { 
+    public function __construct (EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher, ValidatorInterface $validator, JWTTokenManagerInterface $jwtManager, MailerInterface $mailer) {
         $this->em = $em;
         $this->passwordHasher = $passwordHasher;
         $this->validator = $validator;
@@ -36,14 +36,14 @@ final class AuthController extends AbstractController
 
     #[Route('/api/register', name: 'api_register', methods: 'POST')]
     public function Register(Request $request): JsonResponse
-    {   
-        // On récupére ici le corp de la requête 
+    {
+        // On récupére ici le corp de la requête
         $data = json_decode($request->getContent(),true);
-        
+
         // Ensuite ici on recupérer les éléments pour les vérifier
         $email = $data['email'];
-        $firstName = $data['firstname'];
-        $lastName = $data['lastname'];
+        $firstName = $data['name'];
+        $lastName = $data['firstname'];
         $password = $data['password'];
 
         // On vérifie dans un premier temps que l'email est unique
@@ -66,12 +66,12 @@ final class AuthController extends AbstractController
         if (count($errors) > 0) {
             $errorsString = (string) $errors;
             return new JsonResponse(['message' => $errorsString], Response::HTTP_BAD_REQUEST);
-        }        
+        }
 
         // On insére l'utilisateur en base de données et lui retourne le token JWT
         $this->em->persist($user);
-        $this->em->flush();   
-        
+        $this->em->flush();
+
         $email = (new Email())
             ->from('no-reply@homeez.fr')
             ->to($email)
@@ -80,10 +80,22 @@ final class AuthController extends AbstractController
                 <p>Clique sur le lien ci-dessous pour confirmer ton e-mail :</p>
                 <a href='{$verifyUrl}'>Confirmer mon compte</a>"
             );
-        
+
         $this->mailer->send($email);
 
-        return new JsonResponse(['status' => "succes"], Response::HTTP_CREATED);
+        // On génère le token JWT pour l'utilisateur
+        $jwtToken = $this->jwtManager->create($user);
+
+        // On renvoie la réponse de succès
+        $response = new JsonResponse(
+            [
+                'token' => $jwtToken,
+                'status' => "succes"
+            ], Response::HTTP_CREATED
+        );
+
+        // On sécurise le token avec les options de cookie
+        return $response;
 
     }
 

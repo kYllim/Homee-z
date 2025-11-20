@@ -46,7 +46,7 @@
 <template>
   <div>
     <NavBarLanding/>  
-    <ConnexionForm v-if="FormType === 'connexion'" :data="ConnexionFormRef" :error="ConnexionFormError" :toggleDisplay="toggleDisplay"/>
-    <InscriptionForm :data="RegisterFormRef" :error="RegisterFormError" :toggleDisplay="toggleDisplay" v-else/>
+    <ConnexionForm v-if="FormType === 'connexion'" :dataConnexion="ConnexionFormRef" :errorConnexion="ConnexionFormError" :toggleDisplay="toggleDisplay"/>
+    <InscriptionForm :dataRegister="RegisterFormRef" :errorRegister="RegisterFormError" :toggleDisplay="toggleDisplay" v-else/>
   </div>
 </template>
