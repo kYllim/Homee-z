@@ -1,0 +1,19 @@
+api_platform:
+    title: 'Homeez API'
+    version: '1.0.0'
+    defaults:
+        stateless: true
+        cache_headers:
+            vary: ['Content-Type', 'Authorization', 'Origin']
+
+    mapping:
+        paths: ['%kernel.project_dir%/src/Entity']  # assure que les entités sont scannées
+
+    swagger:
+        versions: [3]                        
+        api_keys: []                          
+        persist_authorization: false
+        swagger_ui_extra_configuration: {}    
+
+    enable_swagger: true    
+    enable_re_doc: true     
