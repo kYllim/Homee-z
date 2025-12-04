@@ -39,13 +39,14 @@ export const useEventStore = defineStore('eventStore', () => {
    * Ajouter un nouvel événement
    */
   const addEvent = async (eventData: Partial<Event>) => {
-    try {
-      const newEvent = await createEvent(eventData)
-      events.value.push(newEvent)
-    } catch (error) {
-      console.error('Erreur lors de la création', error)
-    }
+  try {
+    await createEvent(eventData)
+    await fetchEvents() // <-- récupère toute la liste à jour
+  } catch (error) {
+    console.error('Erreur lors de la création', error)
   }
+  }
+
 
   /**
    * Modifier un événement existant

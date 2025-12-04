@@ -16,6 +16,18 @@ class UserHouseholdRepository extends ServiceEntityRepository
         parent::__construct($registry, UserHousehold::class);
     }
 
+    public function findOneByUser(int $userId): ?UserHousehold
+    {
+        return $this->createQueryBuilder('uh')
+            ->innerJoin('uh.member', 'u')
+            ->andWhere('u.id = :userId')
+            ->setParameter('userId', $userId)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+
     //    /**
     //     * @return UserHousehold[] Returns an array of UserHousehold objects
     //     */

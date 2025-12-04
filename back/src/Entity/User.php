@@ -5,13 +5,16 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
-class User
+#[ORM\Table(name: '`users`')]
+class User implements UserInterface,PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -19,16 +22,24 @@ class User
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le prénom est obligatoire")]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom de famille est obligatoire")]
     private ?string $lastName = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true, unique: true)]
+    #[Assert\NotBlank(message: "L'email est obligatoire")]
+    #[Assert\Email(message: "L'email n'est pas valide")]
     private ?string $email = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank(message: "Le mot de passe est obligatoire")]
     private ?string $password = null;
+
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -81,6 +92,12 @@ class User
     #[ORM\OneToMany(targetEntity: Viewer::class, mappedBy: 'member')]
     private Collection $viewers;
 
+    #[ORM\Column]
+    private ?bool $Isverified = false;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $VerificationToken = null;
+
     public function __construct()
     {
         $this->userHouseholds = new ArrayCollection();
@@ -91,6 +108,32 @@ class User
         $this->budgetGoals = new ArrayCollection();
         $this->alerts = new ArrayCollection();
         $this->viewers = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function eraseCredentials(): void
+    {
+
     }
 
     public function getId(): ?int
@@ -394,4 +437,30 @@ class User
 
         return $this;
     }
+
+    public function isverified(): ?bool
+    {
+        return $this->Isverified;
+    }
+
+    public function setIsverified(bool $Isverified): static
+    {
+        $this->Isverified = $Isverified;
+
+        return $this;
+    }
+
+    public function getVerificationToken(): ?string
+    {
+        return $this->VerificationToken;
+    }
+
+    public function setVerificationToken(?string $VerificationToken): static
+    {
+        $this->VerificationToken = $VerificationToken;
+
+        return $this;
+    }
+
+
 }

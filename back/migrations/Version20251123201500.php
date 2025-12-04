@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20251116121940 extends AbstractMigration
+final class Version20251123201500 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -56,12 +56,13 @@ final class Version20251116121940 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_3DC1A45961220EA6 ON shopping_list (creator_id)');
         $this->addSql('COMMENT ON COLUMN shopping_list.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE tag (id SERIAL NOT NULL, label VARCHAR(255) NOT NULL, category VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE "user" (id SERIAL NOT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, email VARCHAR(255) DEFAULT NULL, password VARCHAR(255) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('COMMENT ON COLUMN "user".created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE user_household (id SERIAL NOT NULL, role VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE user_household_user (user_household_id INT NOT NULL, user_id INT NOT NULL, PRIMARY KEY(user_household_id, user_id))');
         $this->addSql('CREATE INDEX IDX_E7499EF167538441 ON user_household_user (user_household_id)');
         $this->addSql('CREATE INDEX IDX_E7499EF1A76ED395 ON user_household_user (user_id)');
+        $this->addSql('CREATE TABLE "users" (id SERIAL NOT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, email VARCHAR(255) DEFAULT NULL, password VARCHAR(255) DEFAULT NULL, roles JSON NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, isverified BOOLEAN NOT NULL, verification_token VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_1483A5E9E7927C74 ON "users" (email)');
+        $this->addSql('COMMENT ON COLUMN "users".created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE viewer (id SERIAL NOT NULL, member_id INT DEFAULT NULL, target_type VARCHAR(255) NOT NULL, target INT NOT NULL, permission VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_35CAC557597D3FE ON viewer (member_id)');
         $this->addSql('COMMENT ON COLUMN viewer.created_at IS \'(DC2Type:datetime_immutable)\'');
@@ -80,27 +81,27 @@ final class Version20251116121940 extends AbstractMigration
         $$ LANGUAGE plpgsql;');
         $this->addSql('DROP TRIGGER IF EXISTS notify_trigger ON messenger_messages;');
         $this->addSql('CREATE TRIGGER notify_trigger AFTER INSERT OR UPDATE ON messenger_messages FOR EACH ROW EXECUTE PROCEDURE notify_messenger_messages();');
-        $this->addSql('ALTER TABLE alert ADD CONSTRAINT FK_17FD46C17597D3FE FOREIGN KEY (member_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE alert ADD CONSTRAINT FK_17FD46C17597D3FE FOREIGN KEY (member_id) REFERENCES "users" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE alert ADD CONSTRAINT FK_17FD46C171F7E88B FOREIGN KEY (event_id) REFERENCES event (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE alert ADD CONSTRAINT FK_17FD46C16C576F80 FOREIGN KEY (chore_id) REFERENCES chore (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE alert ADD CONSTRAINT FK_17FD46C123245BF9 FOREIGN KEY (shopping_list_id) REFERENCES shopping_list (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE budget_goal ADD CONSTRAINT FK_8618E97EE79FF843 FOREIGN KEY (household_id) REFERENCES household (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE budget_goal ADD CONSTRAINT FK_8618E97E61220EA6 FOREIGN KEY (creator_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE budget_goal ADD CONSTRAINT FK_8618E97E61220EA6 FOREIGN KEY (creator_id) REFERENCES "users" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE chore ADD CONSTRAINT FK_857827D2E79FF843 FOREIGN KEY (household_id) REFERENCES household (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE chore ADD CONSTRAINT FK_857827D261220EA6 FOREIGN KEY (creator_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE chore ADD CONSTRAINT FK_857827D261220EA6 FOREIGN KEY (creator_id) REFERENCES "users" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE event ADD CONSTRAINT FK_3BAE0AA7E79FF843 FOREIGN KEY (household_id) REFERENCES household (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE event ADD CONSTRAINT FK_3BAE0AA761220EA6 FOREIGN KEY (creator_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE event ADD CONSTRAINT FK_3BAE0AA761220EA6 FOREIGN KEY (creator_id) REFERENCES "users" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE ingredient ADD CONSTRAINT FK_6BAF787059D8A214 FOREIGN KEY (recipe_id) REFERENCES recipe (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE recipe ADD CONSTRAINT FK_DA88B137E79FF843 FOREIGN KEY (household_id) REFERENCES household (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE recipe ADD CONSTRAINT FK_DA88B13761220EA6 FOREIGN KEY (creator_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE recipe ADD CONSTRAINT FK_DA88B13761220EA6 FOREIGN KEY (creator_id) REFERENCES "users" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE recipe_tag ADD CONSTRAINT FK_72DED3CF59D8A214 FOREIGN KEY (recipe_id) REFERENCES recipe (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE recipe_tag ADD CONSTRAINT FK_72DED3CFBAD26311 FOREIGN KEY (tag_id) REFERENCES tag (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE shopping_item ADD CONSTRAINT FK_6612795F23245BF9 FOREIGN KEY (shopping_list_id) REFERENCES shopping_list (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE shopping_list ADD CONSTRAINT FK_3DC1A459E79FF843 FOREIGN KEY (household_id) REFERENCES household (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE shopping_list ADD CONSTRAINT FK_3DC1A45961220EA6 FOREIGN KEY (creator_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE shopping_list ADD CONSTRAINT FK_3DC1A45961220EA6 FOREIGN KEY (creator_id) REFERENCES "users" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE user_household_user ADD CONSTRAINT FK_E7499EF167538441 FOREIGN KEY (user_household_id) REFERENCES user_household (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE user_household_user ADD CONSTRAINT FK_E7499EF1A76ED395 FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE viewer ADD CONSTRAINT FK_35CAC557597D3FE FOREIGN KEY (member_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE user_household_user ADD CONSTRAINT FK_E7499EF1A76ED395 FOREIGN KEY (user_id) REFERENCES "users" (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE viewer ADD CONSTRAINT FK_35CAC557597D3FE FOREIGN KEY (member_id) REFERENCES "users" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
     public function down(Schema $schema): void
@@ -139,9 +140,9 @@ final class Version20251116121940 extends AbstractMigration
         $this->addSql('DROP TABLE shopping_item');
         $this->addSql('DROP TABLE shopping_list');
         $this->addSql('DROP TABLE tag');
-        $this->addSql('DROP TABLE "user"');
         $this->addSql('DROP TABLE user_household');
         $this->addSql('DROP TABLE user_household_user');
+        $this->addSql('DROP TABLE "users"');
         $this->addSql('DROP TABLE viewer');
         $this->addSql('DROP TABLE messenger_messages');
     }

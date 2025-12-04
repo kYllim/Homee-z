@@ -4,62 +4,74 @@ namespace App\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use App\Entity\Event;
-use App\Repository\UserRepository;
-use App\Repository\HouseholdRepository;
+use App\Repository\UserHouseholdRepository;
 
 class EventProcessor implements ProcessorInterface
 {
     public function __construct(
         private ProcessorInterface $persistProcessor,
-        private UserRepository $userRepository,
-        private HouseholdRepository $householdRepository
+        private Security $security,
+        private UserHouseholdRepository $userHouseholdRepository
     ) {}
 
     public function process($data, Operation $operation, array $uriVariables = [], array $context = [])
     {
+        // Si ce n’est pas un Event, on délègue
         if (!$data instanceof Event) {
-            // Si ce n'est pas un Event, on laisse passer
             return $this->persistProcessor->process($data, $operation, $uriVariables, $context);
         }
 
-        // ----- Simuler creator et household pour le dev -----
+        $user = $this->security->getUser();
+        if (!$user) {
+            throw new \Exception("Utilisateur non connecté.");
+        }
+
+        // Attribution automatique du creator si absent
         if (!$data->getCreator()) {
-            $user = $this->userRepository->find(9); // ID fictif
-            if ($user) {
-                $data->setCreator($user);
-            }
+            $data->setCreator($user);
         }
 
+        // Attribution automatique du household si absent
         if (!$data->getHousehold()) {
-            $household = $this->householdRepository->find(3); // ID fictif
-            if ($household) {
-                $data->setHousehold($household);
+            $userHouseholds = $user->getUserHouseholds();
+            if (!$userHouseholds->isEmpty()) {
+                // On prend le premier foyer de l'utilisateur
+                $data->setHousehold($userHouseholds->first()->getHousehold());
+            } else {
+                // L'utilisateur n'a aucun foyer → on bloque la création
+                throw new \Exception("Impossible de créer un événement : l'utilisateur n'a pas de foyer.");
             }
         }
 
-        // Si createdAt n'est pas défini
+        // Création automatique de la date de création si nécessaire
         if (!$data->getCreatedAt()) {
             $data->setCreatedAt(new \DateTimeImmutable());
         }
 
-        // ----- Optionnel : traiter différemment selon l’opération -----
-        switch ($operation->getName()) {
-            case 'post':
-                // Déjà géré par la simulation ci-dessus
-                break;
-
-            case 'patch':
-            case 'put':
-                // On peut éventuellement mettre à jour updatedAt si tu veux
-                break;
-
-            case 'delete':
-                // Pas besoin de changer creator/household
-                break;
+        // ⚡ Automatisation du status
+        $now = new \DateTimeImmutable();
+        if (!$data->getStatus() && $data->getStartAt() && $data->getEndAt()) {
+            if ($data->getStartAt() > $now) {
+                $data->setStatus('à faire');
+            } elseif ($data->getEndAt() < $now) {
+                $data->setStatus('terminé');
+            } else {
+                $data->setStatus('en cours');
+            }
         }
 
-        // Persister l'entité
+        // Vérification des droits pour PATCH / DELETE
+        if (in_array($operation->getName(), ['patch', 'delete', 'put'])) {
+            if ($data->getCreator() !== $user) {
+                throw new \Symfony\Component\Security\Core\Exception\AccessDeniedException(
+                    "Vous n'avez pas le droit de modifier ou supprimer cet événement."
+                );
+            }
+        }
+
+        // Tout est OK → on persiste
         return $this->persistProcessor->process($data, $operation, $uriVariables, $context);
     }
 }
