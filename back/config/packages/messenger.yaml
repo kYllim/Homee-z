@@ -19,6 +19,10 @@ framework:
 
         buses:
             messenger.bus.default: []
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/main
         routing:
             Symfony\Component\Mailer\Messenger\SendEmailMessage: async
             Symfony\Component\Notifier\Message\ChatMessage: async

@@ -1,4 +1,7 @@
 framework:
     mailer:
         dsn: '%env(MAILER_DSN)%'
+<<<<<<< HEAD
+=======
         message_bus: messenger.bus.default
+>>>>>>> origin/main
