@@ -1,14 +1,4 @@
 framework:
     mailer:
         dsn: '%env(MAILER_DSN)%'
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
         message_bus: messenger.bus.default
->>>>>>> origin/main
->>>>>>> cf469ec1cfdb3649d3088aeaca06f9abfcc6606d
-=======
-        message_bus: messenger.bus.default
->>>>>>> karen

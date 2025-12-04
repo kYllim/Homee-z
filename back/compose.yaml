@@ -1,60 +1,43 @@
-version: "3.8"
-
 services:
-  php:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: symfony_php
-    working_dir: /var/www/html/back
-    volumes:
-      - .:/var/www/html/back
-
-    depends_on:
-      - database
-    ports:
-      - "8000:8000"
-    command: php -S 0.0.0.0:8000 -t public
+  ###> doctrine/doctrine-bundle ###
+  database:
+    image: postgres:${POSTGRES_VERSION:-16}-alpine
     environment:
-      DATABASE_URL: "pgsql://root:latchim@database:5432/homeez?serverVersion=16&charset=utf8"
-    tty: true
-    stdin_open: true
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+      # You should definitely change the password in production
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-elias}
+      POSTGRES_USER: ${POSTGRES_USER:-elias}
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [
+          "CMD",
+          "pg_isready",
+          "-d",
+          "${POSTGRES_DB:-app}",
+          docker exec -it <container-id> bash
+          "-U",
+          "${POSTGRES_USER:-app}",
+        ]
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    volumes:
+      - database_data:/var/lib/postgresql/data:rw
+      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
+      # - ./docker/db/data:/var/lib/postgresql/data:rw
+###< doctrine/doctrine-bundle ###
 
+###> mailhog ###
   mailhog:
     image: mailhog/mailhog
     container_name: mailhog
     ports:
       - "1025:1025" # Port SMTP
       - "8025:8025" # Interface web (http://localhost:8025)
-
-  database:
-    image: postgres:${POSTGRES_VERSION:-16}-alpine
-    container_name: database
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB:-homeez}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-latchim}
-      POSTGRES_USER: ${POSTGRES_USER:-root}
-    healthcheck:
-      test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-homeez}", "-U", "${POSTGRES_USER:-root}"]
-      timeout: 5s
-      retries: 5
-      start_period: 60s
-    volumes:
-      - database_data:/var/lib/postgresql/data:rw
-    ports:
-      - "5432:5432"
-
-  adminer:
-    image: adminer
-    container_name: symfony_adminer
-    restart: always
-    ports:
-      - "8081:8080" # on change le port pour éviter conflit avec PHP
-    depends_on:
-      - database
-
-
+###< mailhog ###
 
 volumes:
+  ###> doctrine/doctrine-bundle ###
   database_data:
-
+###< doctrine/doctrine-bundle ###

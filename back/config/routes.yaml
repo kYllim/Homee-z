@@ -1,26 +1,8 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-#controllers:
-#   resource:
-#        path: ../src/Controller/
-#        namespace: App\Controller
-#    type: attribute
-=======
-=======
->>>>>>> karen
+
 controllers:
     resource:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 json_login:
     path: /api/login
->>>>>>> origin/main
->>>>>>> cf469ec1cfdb3649d3088aeaca06f9abfcc6606d
-=======
-json_login:
-    path: /api/login
->>>>>>> karen

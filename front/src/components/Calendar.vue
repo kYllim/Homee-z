@@ -1,5 +1,5 @@
-<script setup>
-import { ref } from 'vue'
+<script setup lang="ts">
+import { ref,watch } from 'vue'
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
@@ -7,13 +7,13 @@ import listPlugin from '@fullcalendar/list'
 import type { EventInput } from '@fullcalendar/core'
 import frLocale from '@fullcalendar/core/locales/fr'
 
-// Props : événements et callback dateClick
+
 const props = defineProps<{
   events: EventInput[],
   onDateClick?: (arg: any) => void
 }>()
 
-// Popup modal state
+
 const showModal = ref(false)
 const selectedEvent = ref<EventInput | null>(null)
 
@@ -55,12 +55,8 @@ watch(
   () => props.events,
   (newEvents) => {
     calendarOptions.value.events = newEvents
-  },
-  events: [
-    { title: 'event 1', date: '2019-04-01' },
-    { title: 'event 2', date: '2019-04-02' }
-  ]
-})
+  }
+)
 </script>
 
 <template>

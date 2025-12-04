@@ -13,7 +13,6 @@ Encore
     .setPublicPath('/build')
     // only needed for CDN's or subdirectory deploy
     //.setManifestKeyPrefix('build/')
-    .addEntry('ats', './assets/app.js')
 
     /*
      * ENTRY CONFIG
@@ -72,7 +71,6 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
-    .enableVueLoader()
 ;
 
 module.exports = Encore.getWebpackConfig();
