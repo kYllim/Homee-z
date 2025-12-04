@@ -63,6 +63,7 @@ class Household
         $this->shoppingLists = new ArrayCollection();
         $this->recipes = new ArrayCollection();
         $this->budgetGoals = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int

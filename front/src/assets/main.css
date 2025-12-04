@@ -3,13 +3,6 @@
 @import 'primeicons/primeicons.css';
 @import "tailwindcss" important;
 
-<<<<<<< HEAD
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-<<<<<<< HEAD
-=======
 /* Petite base globale : applique la font et les couleurs via Tailwind */
 @layer base {
 	html, body, #app {
@@ -20,15 +13,12 @@
 	}
 }
 
->>>>>>> cf469ec1cfdb3649d3088aeaca06f9abfcc6606d
-/* Minimal project CSS — no FullCalendar-specific overrides per request */
-
-
-=======
 @theme {
   --color-green_pastel: #9CBFA2;
   --color-blue_pastel: #6E8B94;
   --color-beige_pastel: #D3C4A6;
   --color-brown_pastel: #F5EEDC;
+  --color-beige-pastel : #F5EEDC;
+  --color-lighBlue : #90A4AE;
 }
->>>>>>> karen
+
