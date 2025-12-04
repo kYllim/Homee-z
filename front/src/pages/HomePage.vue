@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-<template>
-  <div>
-    <h1>Home</h1>
-    <p>Bienvenue — page d'accueil temporaire.</p>
-  </div>
-</template>
-
-<script setup>
-// Minimal home view
-</script>
-=======
 <script setup>
 import { ref, reactive } from 'vue'
 
@@ -421,4 +409,3 @@ const submitContactForm = () => {
   display: none;
 }
 </style>
->>>>>>> cf469ec1cfdb3649d3088aeaca06f9abfcc6606d

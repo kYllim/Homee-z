@@ -1,4 +1,9 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import 'primeicons/primeicons.css';
+@import "tailwindcss" important;
 
+<<<<<<< HEAD
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -19,3 +24,11 @@
 /* Minimal project CSS — no FullCalendar-specific overrides per request */
 
 
+=======
+@theme {
+  --color-green_pastel: #9CBFA2;
+  --color-blue_pastel: #6E8B94;
+  --color-beige_pastel: #D3C4A6;
+  --color-brown_pastel: #F5EEDC;
+}
+>>>>>>> karen

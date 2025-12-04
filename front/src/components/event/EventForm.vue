@@ -24,7 +24,6 @@ const description = ref('')
 const startAt = ref('')
 const endAt = ref('')
 const type = ref('')
-const status = ref('')
 
 // Pré-remplir le formulaire si selectedEvent change
 watch(
@@ -36,14 +35,12 @@ watch(
       startAt.value = event.startAt
       endAt.value = event.endAt || ''
       type.value = event.type || ''
-      status.value = event.status || ''
     } else {
       title.value = ''
       description.value = ''
       startAt.value = ''
       endAt.value = ''
       type.value = ''
-      status.value = ''
     }
   },
   { immediate: true }
@@ -59,7 +56,6 @@ const submit = () => {
     startAt: startAt.value,
     endAt: endAt.value,
     type: type.value,
-    status: status.value
   })
 
   // Réinitialiser si on ajoute un nouvel événement
@@ -69,7 +65,6 @@ const submit = () => {
     startAt.value = ''
     endAt.value = ''
     type.value = ''
-    status.value = ''
   }
 }
 </script>
@@ -81,7 +76,6 @@ const submit = () => {
     <input v-model="startAt" type="datetime-local" />
     <input v-model="endAt" type="datetime-local" />
     <input v-model="type" placeholder="Type" />
-    <input v-model="status" placeholder="Statut" />
 
     <button @click="submit">{{ props.selectedEvent ? 'Modifier' : 'Ajouter' }}</button>
     <button v-if="props.selectedEvent" @click="props.onCancel">Annuler</button>

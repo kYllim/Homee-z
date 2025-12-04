@@ -127,8 +127,11 @@ final class AuthController extends AbstractController
         // On renvoie la réponse de succès
         $response = new JsonResponse(['token' => $jwtToken], Response::HTTP_CREATED);
 
+<<<<<<< HEAD
         console.log("RESPONSE DATA = ", data.value);
 
+=======
+>>>>>>> karen
         // On sécurise le token avec les options de cookie
         $response->headers->setCookie(
         Cookie::create('BEARER', $jwtToken)

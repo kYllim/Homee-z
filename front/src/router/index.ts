@@ -5,12 +5,16 @@ import DashboardPage from "@/pages/DashboardPage.vue";
 import HomePage from "@/pages/HomePage.vue";
 import NourriturePage from "@/pages/NourriturePage.vue"
 
+import EventPage from "@/pages/EventPage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   { path: "/", name: "Home", component: HomePage },
   { path: "/dashboard", name: "Dashboard", component: DashboardPage },
   { path: "/connexion", name: "Connexion", component: ConnexionPage },
   { path: "/nourriture", name: "Nourriture", component: NourriturePage },
+  { path: "/events", name: "Events", component: EventPage }, 
+
+  
 ];
 
 const router = createRouter({

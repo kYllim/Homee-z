@@ -5,6 +5,27 @@ import { useEventStore } from '@/stores/eventStore'
 import Calendar from '@/components/Calendar.vue'
 import EventForm from '@/components/event/EventForm.vue'
 import type { Event } from '@/models/Events.interface'
+import axios from 'axios'
+
+// Ajouter après `eventStore` et `selectedEvent`
+const user = ref<any>(null)
+
+const fetchUser = async () => {
+  try {
+    const { data } = await axios.get(`http://localhost:8000/api/users/${userId}`)
+    user.value = data
+    console.log('Foyer principal :', data.household?.name)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// Dans le onMounted, charger aussi l'utilisateur
+onMounted(() => {
+  eventStore.fetchEvents()
+  fetchUser()
+})
+
 
 // Pinia store
 const eventStore = useEventStore()
@@ -66,6 +87,12 @@ const handleCancel = () => {
 
 <template>
   <div class="page-container">
+   <div v-if="user">
+  <p>{{ user.firstName }} {{ user.lastName }}</p>
+  <p>Foyer : {{ user.userHouseholds?.[0]?.household?.name || 'Aucun foyer' }}</p>
+</div>
+
+
     <h2>Mon calendrier</h2>
 
     <!-- Formulaire pour ajouter ou éditer -->

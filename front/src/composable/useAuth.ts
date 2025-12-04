@@ -1,5 +1,5 @@
 import { useApi } from '@/composable/fetch';
-const urlBase : string = 'http://127.0.0.1:8001/';
+const urlBase : string = 'http://127.0.0.1:8000/';
 
 export function useAuth() {
     const { data, error, loading, callApi } = useApi();

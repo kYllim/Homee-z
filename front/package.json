@@ -17,10 +17,12 @@
     "@fullcalendar/core": "^6.1.19",
     "@fullcalendar/daygrid": "^6.1.19",
     "@fullcalendar/interaction": "^6.1.19",
+    "@fullcalendar/list": "^6.1.19",
     "@fullcalendar/vue3": "^6.1.19",
     "axios": "^1.13.2",
     "pinia": "^3.0.4",
     "primeicons": "^7.0.0",
+    "semver": "^7.7.3",
     "vue": "^3.5.22",
     "vue-router": "^4.6.3"
   },
