@@ -21,8 +21,8 @@
         <a href="#" class="font-semibold text-lg hover:text-green_pastel">Contact</a>
       </div>
       <div class="flex gap-2 text-sm items-center lg:gap-6">
-        <router-link to="ConnexionPage" class="font-semibold lg:text-lg hover:text-green_pastel">Connexion</router-link>
-        <router-link to="ConnexionPage" class="px-3 py-2 bg-green_pastel rounded-sm text-white font-semibold lg:text-lg lg:px-4 hover:opacity-80">S'inscrire</router-link>
+        <router-link :to="{ name : 'Connection', query: { mode: 'connexion'}}" class="font-semibold lg:text-lg hover:text-green_pastel">Connexion</router-link>
+        <router-link :to="{ name : 'Connection', query: { mode: 'inscription'}}" class="px-3 py-2 bg-green_pastel rounded-sm text-white font-semibold lg:text-lg lg:px-4 hover:opacity-80">S'inscrire</router-link>
       </div>
     </nav>
     <div>

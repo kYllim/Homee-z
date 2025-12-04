@@ -1,13 +1,30 @@
 <script setup lang="ts">
-  import { ref } from "vue";
+  import { ref,watch } from "vue";
   import type { Ref } from "vue";
+  import { useRouter,useRoute } from "vue-router";
   import type { FormConnexion, ErrorsConexion, FormRegister, ErrorRegister } from "../model";
   import NavBarLanding from "@/components/NavBarLanding.vue";
   import ConnexionForm from "@/components/ConnexionForm.vue";
   import InscriptionForm from "@/components/InscriptionForm.vue";
 
+  const props = defineProps({
+    mode: {
+      type: String,
+      default: "connexion",
+    }
+  });
 
-  const FormType: Ref<"connexion" | "inscription"> = ref("connexion");
+  const router = useRouter();
+  const route = useRoute();
+
+  watch(
+    () => route.query.mode,
+    (newMode) => {
+      FormType.value = newMode === "inscription" ? "inscription" : "connexion";
+    }
+  );
+
+  const FormType: Ref<"connexion" | "inscription"> = ref(props.mode === "inscription" ? "inscription" : "connexion");
 
   // Ref pour le form de connexion
   const ConnexionFormRef: FormConnexion = {
@@ -27,6 +44,7 @@
     firstName : ref(''),
     name : ref('')
   };
+
   const RegisterFormError: ErrorRegister = {
     emailRegister : ref(''),
     passwordRegister: ref(""),
@@ -38,7 +56,8 @@
   // Gérér l'affichage des forms 
   const toggleDisplay = () => {
     FormType.value =
-      FormType.value === "connexion" ? "inscription" : "connexion";
+    FormType.value === "connexion" ? "inscription" : "connexion";
+    router.replace({ path: "/connexion", query: { mode: FormType.value } });
   };
 
 </script>
@@ -89,9 +108,9 @@
       <div class="hidden lg:flex flex-col p-4 ml-2 justify-start pl-28">
         <h2 class="font-regular text-5xl">Organize Your Home,</h2>
         <h2 class="font-regular text-5xl text-green_pastel mb-4">Simplify Your Life</h2>
-        <P class="font-regular text-lg text-lighBlue mb-4">
+        <p class="font-regular text-lg text-lighBlue mb-4">
           Join thousands of families who have transformed their household management with ChoreHub. Track tasks, assign  responsibilities, and maintain a harmonious home environment.
-        </P>
+        </p>
         <div class="flex flex-row gap-3">
           <div class="flex flex-col items-center justify-center gap-2">
             <div class="bg-beige-pastel p-2  rounded-md w-fit px-4 py-3">
