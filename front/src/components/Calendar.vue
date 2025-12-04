@@ -1,17 +1,9 @@
-<script setup lang="ts">
-import { ref, watch } from 'vue'
+<script setup>
+import { ref } from 'vue'
 import FullCalendar from '@fullcalendar/vue3'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import interactionPlugin from '@fullcalendar/interaction'
-import type { EventInput } from '@fullcalendar/core'
+import dayGridPlugin from '@fullcalendar/daygrid/index.js'
+import interactionPlugin from '@fullcalendar/interaction/index.js'
 
-// Props : événements et callback dateClick
-const props = defineProps<{
-  events: EventInput[],
-  onDateClick?: (arg: any) => void
-}>()
-
-// Options du calendrier
 const calendarOptions = ref({
   plugins: [dayGridPlugin, interactionPlugin],
   initialView: 'dayGridMonth',
@@ -21,18 +13,14 @@ const calendarOptions = ref({
     right: 'dayGridMonth,dayGridWeek,dayGridDay'
   },
   selectable: true,
-  dateClick: (arg: any) => props.onDateClick?.(arg),
-  events: props.events
-})
-
-// Watch pour mettre à jour les events si props.events change
-watch(
-  () => props.events,
-  (newEvents) => {
-    calendarOptions.value.events = newEvents
+  dateClick: (arg) => {
+    alert('date click! ' + arg.dateStr)
   },
-  { deep: true }
-)
+  events: [
+    { title: 'event 1', date: '2019-04-01' },
+    { title: 'event 2', date: '2019-04-02' }
+  ]
+})
 </script>
 
 <template>

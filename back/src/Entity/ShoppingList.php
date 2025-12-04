@@ -32,11 +32,19 @@ class ShoppingList
     private ?string $status = null;
 
     #[ORM\ManyToOne(inversedBy: 'shoppingLists')]
+<<<<<<< HEAD
     #[ORM\JoinColumn(nullable: false)]
     private ?Household $household = null;
 
     #[ORM\ManyToOne(inversedBy: 'shoppingLists')]
     #[ORM\JoinColumn(nullable: false)]
+=======
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Household $household = null;
+
+    #[ORM\ManyToOne(inversedBy: 'shoppingLists')]
+    #[ORM\JoinColumn(nullable: true)]
+>>>>>>> origin/main
     private ?User $creator = null;
 
     /**

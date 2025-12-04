@@ -1,5 +1,18 @@
+<<<<<<< HEAD
 #controllers:
 #   resource:
 #        path: ../src/Controller/
 #        namespace: App\Controller
 #    type: attribute
+=======
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+<<<<<<< HEAD
+=======
+json_login:
+    path: /api/login
+>>>>>>> origin/main
+>>>>>>> cf469ec1cfdb3649d3088aeaca06f9abfcc6606d
