@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20251123163600 extends AbstractMigration
+final class Version20251206160145 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -51,12 +51,13 @@ final class Version20251123163600 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_72DED3CFBAD26311 ON recipe_tag (tag_id)');
         $this->addSql('CREATE TABLE shopping_item (id SERIAL NOT NULL, shopping_list_id INT NOT NULL, name VARCHAR(255) NOT NULL, quantity INT NOT NULL, unit VARCHAR(255) DEFAULT NULL, status VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_6612795F23245BF9 ON shopping_item (shopping_list_id)');
-        $this->addSql('CREATE TABLE shopping_list (id SERIAL NOT NULL, household_id INT NOT NULL, creator_id INT NOT NULL, title VARCHAR(255) NOT NULL, description TEXT DEFAULT NULL, comment TEXT DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, status VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE shopping_list (id SERIAL NOT NULL, household_id INT DEFAULT NULL, creator_id INT DEFAULT NULL, title VARCHAR(255) NOT NULL, description TEXT DEFAULT NULL, comment TEXT DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, status VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_3DC1A459E79FF843 ON shopping_list (household_id)');
         $this->addSql('CREATE INDEX IDX_3DC1A45961220EA6 ON shopping_list (creator_id)');
         $this->addSql('COMMENT ON COLUMN shopping_list.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE tag (id SERIAL NOT NULL, label VARCHAR(255) NOT NULL, category VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE user_household (id SERIAL NOT NULL, role VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE user_household (id SERIAL NOT NULL, house_hold_id INT NOT NULL, role VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE INDEX IDX_5423A22439C60054 ON user_household (house_hold_id)');
         $this->addSql('CREATE TABLE user_household_user (user_household_id INT NOT NULL, user_id INT NOT NULL, PRIMARY KEY(user_household_id, user_id))');
         $this->addSql('CREATE INDEX IDX_E7499EF167538441 ON user_household_user (user_household_id)');
         $this->addSql('CREATE INDEX IDX_E7499EF1A76ED395 ON user_household_user (user_id)');
@@ -99,6 +100,7 @@ final class Version20251123163600 extends AbstractMigration
         $this->addSql('ALTER TABLE shopping_item ADD CONSTRAINT FK_6612795F23245BF9 FOREIGN KEY (shopping_list_id) REFERENCES shopping_list (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE shopping_list ADD CONSTRAINT FK_3DC1A459E79FF843 FOREIGN KEY (household_id) REFERENCES household (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE shopping_list ADD CONSTRAINT FK_3DC1A45961220EA6 FOREIGN KEY (creator_id) REFERENCES "users" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE user_household ADD CONSTRAINT FK_5423A22439C60054 FOREIGN KEY (house_hold_id) REFERENCES household (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE user_household_user ADD CONSTRAINT FK_E7499EF167538441 FOREIGN KEY (user_household_id) REFERENCES user_household (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE user_household_user ADD CONSTRAINT FK_E7499EF1A76ED395 FOREIGN KEY (user_id) REFERENCES "users" (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE viewer ADD CONSTRAINT FK_35CAC557597D3FE FOREIGN KEY (member_id) REFERENCES "users" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
@@ -126,6 +128,7 @@ final class Version20251123163600 extends AbstractMigration
         $this->addSql('ALTER TABLE shopping_item DROP CONSTRAINT FK_6612795F23245BF9');
         $this->addSql('ALTER TABLE shopping_list DROP CONSTRAINT FK_3DC1A459E79FF843');
         $this->addSql('ALTER TABLE shopping_list DROP CONSTRAINT FK_3DC1A45961220EA6');
+        $this->addSql('ALTER TABLE user_household DROP CONSTRAINT FK_5423A22439C60054');
         $this->addSql('ALTER TABLE user_household_user DROP CONSTRAINT FK_E7499EF167538441');
         $this->addSql('ALTER TABLE user_household_user DROP CONSTRAINT FK_E7499EF1A76ED395');
         $this->addSql('ALTER TABLE viewer DROP CONSTRAINT FK_35CAC557597D3FE');

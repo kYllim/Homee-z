@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use App\Enum\HouseHoldEnum;
 
 
 #[ApiResource]
@@ -18,14 +19,18 @@ class UserHousehold
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $role = null;
+   #[ORM\Column(type: 'string', enumType: HouseHoldEnum::class)]
+    private ?HouseHoldEnum $role = null;
 
     /**
      * @var Collection<int, User>
      */
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'userHouseholds')]
     private Collection $member;
+
+    #[ORM\ManyToOne(inversedBy: 'members')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Household $houseHold = null;
 
     public function __construct()
     {
@@ -42,10 +47,9 @@ class UserHousehold
         return $this->role;
     }
 
-    public function setRole(string $role): static
+    public function setRole(HouseHoldEnum $role): static
     {
         $this->role = $role;
-
         return $this;
     }
 
@@ -69,6 +73,18 @@ class UserHousehold
     public function removeMember(User $member): static
     {
         $this->member->removeElement($member);
+
+        return $this;
+    }
+
+    public function getHouseHold(): ?Household
+    {
+        return $this->houseHold;
+    }
+
+    public function setHouseHold(?Household $houseHold): static
+    {
+        $this->houseHold = $houseHold;
 
         return $this;
     }

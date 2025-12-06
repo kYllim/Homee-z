@@ -4,8 +4,8 @@
   import { useRouter,useRoute } from "vue-router";
   import type { FormConnexion, ErrorsConexion, FormRegister, ErrorRegister } from "../model";
   import NavBarLanding from "@/components/NavBarLanding.vue";
-  import ConnexionForm from "@/components/ConnexionForm.vue";
-  import InscriptionForm from "@/components/InscriptionForm.vue";
+  import ConnexionForm from "@/components/Auth/ConnexionForm.vue";
+  import InscriptionForm from "@/components/Auth/InscriptionForm.vue";
 
   const props = defineProps({
     mode: {

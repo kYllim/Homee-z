@@ -18,8 +18,8 @@ class Household
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
 
+    private ?string $name = null;
     #[ORM\Column(length: 255)]
     private ?string $accessCode = null;
 
@@ -56,6 +56,12 @@ class Household
     #[ORM\OneToMany(targetEntity: BudgetGoal::class, mappedBy: 'household')]
     private Collection $budgetGoals;
 
+    /**
+     * @var Collection<int, UserHouseHold>
+     */
+    #[ORM\OneToMany(targetEntity: UserHouseHold::class, mappedBy: 'houseHold')]
+    private Collection $members;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
@@ -64,6 +70,7 @@ class Household
         $this->recipes = new ArrayCollection();
         $this->budgetGoals = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
+        $this->members = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -251,6 +258,36 @@ class Household
             // set the owning side to null (unless already changed)
             if ($budgetGoal->getHousehold() === $this) {
                 $budgetGoal->setHousehold(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserHouseHold>
+     */
+    public function getMembers(): Collection
+    {
+        return $this->members;
+    }
+
+    public function addMember(UserHouseHold $member): static
+    {
+        if (!$this->members->contains($member)) {
+            $this->members->add($member);
+            $member->setHouseHold($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMember(UserHouseHold $member): static
+    {
+        if ($this->members->removeElement($member)) {
+            // set the owning side to null (unless already changed)
+            if ($member->getHouseHold() === $this) {
+                $member->setHouseHold(null);
             }
         }
 

@@ -6,6 +6,7 @@ import HomePage from "@/pages/HomePage.vue";
 import HouseHoldHandler from "@/pages/JoinHouseHoldPage.vue";
 import NourriturePage from "@/pages/NourriturePage.vue"
 import EventPage from "@/pages/EventPage.vue";
+import {GetCookie} from "../services/index"
 
 const routes: Array<RouteRecordRaw> = [
   { path: "/", name: "Home", component: HomePage },
@@ -20,6 +21,22 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 });
+
+// On check si l'utilisateur est connecté avant de pouvoir l'envoyer vers les pages utilisateurs 
+// router.beforeEach((to,from,next) => {
+//   if(to.name !== "Home" && to.name !== "Connection"){
+//     const token = GetCookie("token");
+//     console.log(token);
+//     if(!token){
+//       next({ name: "Connection", query: { mode: "connexion" } });
+//     } else {
+//       next();
+//     }
+//   }
+//   else{
+//     next();
+//   }
+// })
 
 export default router;
 

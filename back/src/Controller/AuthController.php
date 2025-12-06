@@ -52,7 +52,7 @@ final class AuthController extends AbstractController
             return new JsonResponse(['message' => 'email déja utilisé ou une erreur est survenue !'], Response::HTTP_CONFLICT);
         }
 
-        // Ensuite on va créer un nouvel utilisateur et lui setter les valeurs
+        // Ensuite on va créer un nouvel utilisateur et lui sette les valeurs
         $user = new User();
         $VerificationToken = Uuid::v4();
         $verifyUrl = "http://localhost:8000/api/verifyEmail?token=" . $VerificationToken;

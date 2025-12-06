@@ -102,5 +102,3 @@ const toggleUserMenu = () => {
     </div>
   </div>
 </template>
-
-
