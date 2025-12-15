@@ -85,7 +85,7 @@ class Event
     #[ORM\ManyToOne(inversedBy: 'events')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['event:read', 'event:write'])]
-    private ?User $creator = null;
+    private ?Person $creator = null;
 
     /**
      * Liste des alertes liées à cet événement
@@ -127,8 +127,8 @@ class Event
     public function getHousehold(): ?Household { return $this->household; }
     public function setHousehold(?Household $household): static { $this->household = $household; return $this; }
 
-    public function getCreator(): ?User { return $this->creator; }
-    public function setCreator(?User $creator): static { $this->creator = $creator; return $this; }
+    public function getCreator(): ?Person { return $this->creator; }
+    public function setCreator(?Person $creator): static { $this->creator = $creator; return $this; }
 
     /**
      * @return Collection<int, Alert>

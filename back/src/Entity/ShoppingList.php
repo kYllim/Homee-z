@@ -37,7 +37,7 @@ class ShoppingList
 
     #[ORM\ManyToOne(inversedBy: 'shoppingLists')]
     #[ORM\JoinColumn(nullable: true)]
-    private ?User $creator = null;
+    private ?Person $creator = null;
 
     /**
      * @var Collection<int, ShoppingItem>
@@ -134,12 +134,12 @@ class ShoppingList
         return $this;
     }
 
-    public function getCreator(): ?User
+    public function getCreator(): ?Person
     {
         return $this->creator;
     }
 
-    public function setCreator(?User $creator): static
+    public function setCreator(?Person $creator): static
     {
         $this->creator = $creator;
 

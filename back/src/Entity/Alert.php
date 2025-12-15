@@ -31,7 +31,7 @@ class Alert
 
     #[ORM\ManyToOne(inversedBy: 'alerts')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $member = null;
+    private ?Person $member = null;
 
     #[ORM\ManyToOne(inversedBy: 'alerts')]
     private ?Event $event = null;
@@ -107,12 +107,12 @@ class Alert
         return $this;
     }
 
-    public function getMember(): ?User
+    public function getMember(): ?Person
     {
         return $this->member;
     }
 
-    public function setMember(?User $member): static
+    public function setMember(?Person $member): static
     {
         $this->member = $member;
 

@@ -56,11 +56,12 @@ class Household
     #[ORM\OneToMany(targetEntity: BudgetGoal::class, mappedBy: 'household')]
     private Collection $budgetGoals;
 
+
     /**
-     * @var Collection<int, UserHouseHold>
+     * @var Collection<int, PersonHousehold>
      */
-    #[ORM\OneToMany(targetEntity: UserHouseHold::class, mappedBy: 'houseHold')]
-    private Collection $members;
+    #[ORM\OneToMany(targetEntity: PersonHousehold::class, mappedBy: 'household')]
+    private Collection $memberships;
 
     public function __construct()
     {
@@ -70,7 +71,7 @@ class Household
         $this->recipes = new ArrayCollection();
         $this->budgetGoals = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
-        $this->members = new ArrayCollection();
+        $this->memberships = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -265,29 +266,29 @@ class Household
     }
 
     /**
-     * @return Collection<int, UserHouseHold>
+     * @return Collection<int, PersonHousehold>
      */
-    public function getMembers(): Collection
+    public function getMemberships(): Collection
     {
-        return $this->members;
+        return $this->memberships;
     }
 
-    public function addMember(UserHouseHold $member): static
+    public function addMembership(PersonHousehold $membership): static
     {
-        if (!$this->members->contains($member)) {
-            $this->members->add($member);
-            $member->setHouseHold($this);
+        if (!$this->memberships->contains($membership)) {
+            $this->memberships->add($membership);
+            $membership->setHousehold($this);
         }
 
         return $this;
     }
 
-    public function removeMember(UserHouseHold $member): static
+    public function removeMembership(PersonHousehold $membership): static
     {
-        if ($this->members->removeElement($member)) {
+        if ($this->memberships->removeElement($membership)) {
             // set the owning side to null (unless already changed)
-            if ($member->getHouseHold() === $this) {
-                $member->setHouseHold(null);
+            if ($membership->getHousehold() === $this) {
+                $membership->setHousehold(null);
             }
         }
 

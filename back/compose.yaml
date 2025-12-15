@@ -27,6 +27,14 @@ services:
       # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./docker/db/data:/var/lib/postgresql/data:rw
 ###< doctrine/doctrine-bundle ###
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - 8080:8080  # Port sur lequel vous accéderez à l'interface web d'Adminer
+    depends_on:
+      - database  # Permet de s'assurer que le conteneur de la base de données est opérationnel avant de lancer le conteneur Adminer
+    restart: unless-stopped
 
 ###> mailhog ###
   mailhog:

@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\HouseHoldService;
 use App\Entity\Household;
-use App\Entity\UserHousehold;
+use App\Entity\PersonHousehold;
 use App\Enum\HouseHoldEnum;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,7 +34,7 @@ final class HouseHoldController extends AbstractController
         $user = $this->getUser();
 
         // On initialise les entités
-        $userHouseHold = new UserHousehold();
+        $PersonHousehold = new PersonHousehold();
         $houseHold = new Household();
 
         // On insére les données
@@ -42,11 +42,11 @@ final class HouseHoldController extends AbstractController
         $houseHold->setName($houseHoldName)->setAccessCode($AccesCode);
 
         // On va insérer l'utilisateur en tant que chef du foyer
-        $userHouseHold->setRole(HouseHoldEnum::Admin)->setHouseHold($houseHold)->addMember($user);
+        $PersonHousehold->setRole(HouseHoldEnum::ADMIN)->setHouseHold($houseHold)->setPerson($user);
 
         // On persiste les données
         $this->em->persist($houseHold);
-        $this->em->persist($userHouseHold);
+        $this->em->persist($PersonHousehold);
         $this->em->flush();
 
         return new JsonResponse ([
@@ -70,11 +70,11 @@ final class HouseHoldController extends AbstractController
         }
 
         // On crée l'entité UserHouseHold
-        $userHouseHold = new UserHousehold();
-        $userHouseHold->setRole(HouseHoldEnum::User_Adult)->setHouseHold($houseHold)->addMember($user);
+        $PersonHousehold = new PersonHousehold();
+        $PersonHousehold->setRole(HouseHoldEnum::MEMBER)->setHouseHold($houseHold)->setPerson($user);
 
         // On persiste les données
-        $this->em->persist($userHouseHold);
+        $this->em->persist($PersonHousehold);
         $this->em->flush();
 
         return new JsonResponse ([
@@ -103,27 +103,16 @@ final class HouseHoldController extends AbstractController
         $user = $this->em->getRepository(User::class)->findOneBy(['email' => $userMail]);
 
         // On vérifie que l'utilisateur a les droits pour ajouter un membre au foyer
-        $HouseHolds = $user->getUserHouseholds();
+        $HouseHolds = ($user->getPerson())->getMemberships();
         $HouseHolder = null;
         foreach($HouseHolds as $HouseHold) {
             if($HouseHold->getHouseHold() === $houseHold) {
-                if($HouseHold->getRole() !== HouseHoldEnum::Admin) {
+                if($HouseHold->getRole() !== HouseHoldEnum::ADMIN) {
                     return new JsonResponse(['message' => 'Vous n\'avez pas les droits pour ajouter un membre au foyer !'], 403);
                 }
                 $HouseHolder = $HouseHold->getHouseHold();
             }
         }
-
-        // On check si l'utilisateur à ajouter n'existe pas dans le foyer
-        $members = $HouseHolder->getMembers();
-        foreach($members as $member) {
-            if()
-        }
-
-        // On vérifie que l'utilisateur existe
-        // if(!$userToAdd) {
-        //     return new JsonResponse(['message' => 'L\'utilisateur avec cet email n\'existe pas !'], 404);
-        // }
 
         return new JsonResponse ([
             'message' => 'L\'utilisateur a été ajouté au foyer avec succès !'

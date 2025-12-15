@@ -40,7 +40,7 @@ class Chore
 
     #[ORM\ManyToOne(inversedBy: 'chores')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $creator = null;
+    private ?Person $creator = null;
 
     /**
      * @var Collection<int, Alert>
@@ -142,12 +142,12 @@ class Chore
         return $this;
     }
 
-    public function getCreator(): ?User
+    public function getCreator(): ?Person
     {
         return $this->creator;
     }
 
-    public function setCreator(?User $creator): static
+    public function setCreator(?Person $creator): static
     {
         $this->creator = $creator;
 
