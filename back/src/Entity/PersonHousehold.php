@@ -4,10 +4,19 @@ namespace App\Entity;
 
 use App\Enum\HouseHoldEnum;
 use App\Repository\PersonHouseholdRepository;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PersonHouseholdRepository::class)]
-#[ORM\Table(uniqueConstraints: [new ORM\UniqueConstraint(name: 'uniq_person_household', columns: ['person_id', 'household_id'])])]
+#[ORM\Table(
+    name: 'person_household',
+    uniqueConstraints: [
+        new UniqueConstraint(
+            name: 'uniq_person_household',
+            columns: ['person_id', 'household_id']
+        )
+    ]
+)]
 class PersonHousehold
 {
     #[ORM\Id]

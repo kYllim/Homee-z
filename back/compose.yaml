@@ -15,8 +15,6 @@ services:
           "pg_isready",
           "-d",
           "${POSTGRES_DB:-app}",
-          docker exec -it <container-id> bash
-          "-U",
           "${POSTGRES_USER:-app}",
         ]
       timeout: 5s
