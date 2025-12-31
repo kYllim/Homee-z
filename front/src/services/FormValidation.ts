@@ -1,4 +1,4 @@
-import type { ErrorRegister,ErrorsConexion,FormConnexion,FormRegister } from "../model";
+import type { ErrorRegister,ErrorsConexion,FormConnexion,FormRegister } from "../models";
 import { ref, type Ref } from "vue";
 
 export function isEmailValid(email: string): boolean {

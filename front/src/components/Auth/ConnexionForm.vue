@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import { useRouter } from 'vue-router'
-    import type {FormConnexion,ErrorsConexion} from '../../model/index'
-   import {isEmailValid,isPasswordValid,PasswordMatching,isBlank,resetError,setCookie} from '../../services'
+    import type {FormConnexion,ErrorsConexion} from '@/models/'
+    import {isEmailValid,isPasswordValid,isBlank,resetError,setCookie} from '@/services'
     import { useAuth } from '@/composable/useAuth'
     import Field from '@/components/Input.vue'
 

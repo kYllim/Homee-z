@@ -26,3 +26,24 @@ export interface ErrorRegister {
   firstName: Ref<string>;
   name: Ref<string>;
 }
+
+
+export interface JoinHouseHoldData {
+  [key: string]: Ref<string>;
+  CodeHouseHold : Ref<string>,
+}
+
+export interface JoinHouseHoldDataError { 
+  [key: string]: Ref<string>;
+  CodeHouseHoldError : Ref<string>
+}
+
+export interface CreateHouseHoldData { 
+  [key: string]: Ref<string>;
+  NameHouseHold : Ref<string>,
+}
+
+export interface CreateHouseHoldDataError { 
+  [key: string]: Ref<string>;
+  NameHouseHoldError : Ref<string>
+}

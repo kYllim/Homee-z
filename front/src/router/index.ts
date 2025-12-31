@@ -3,18 +3,21 @@ import type { RouteRecordRaw } from "vue-router";
 import ConnexionPage from "@/pages/ConnexionPage.vue";
 import DashboardPage from "@/pages/DashboardPage.vue";
 import HomePage from "@/pages/HomePage.vue";
-import HouseHoldHandler from "@/pages/JoinHouseHoldPage.vue";
+import HouseHoldPage from "@/pages/HouseHoldPage.vue";
 import NourriturePage from "@/pages/NourriturePage.vue"
 import EventPage from "@/pages/EventPage.vue";
+import JoinHouseHoldPage from "@/pages/JoinHouseHoldPage.vue";
 import {GetCookie} from "../services/index"
+
 
 const routes: Array<RouteRecordRaw> = [
   { path: "/", name: "Home", component: HomePage },
   { path: "/dashboard", name: "Dashboard", component: DashboardPage },
   { path: "/connexion", name: "Connection", component: ConnexionPage, props: route => ({ mode : route.query.mode }) },
-  { path: "/HouseHold", name: "HouseHold", component: HouseHoldHandler },
+  { path: "/HouseHold", name: "HouseHold", component: HouseHoldPage },
   { path: "/nourriture", name: "Nourriture", component: NourriturePage },
   { path: "/events", name: "Events", component: EventPage }, 
+  {path: "/JoinHouseHold", name: "JoinHouseHold", component: JoinHouseHoldPage}
 ];
 
 const router = createRouter({

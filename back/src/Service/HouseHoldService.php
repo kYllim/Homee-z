@@ -5,6 +5,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Household;
 use App\Entity\PersonHousehold;
 use App\Enum\HouseHoldEnum;
+use App\Enum\PersonEnum;
+use App\Entity\Person;
+use App\Entity\User;
+
 class HouseHoldService {
 
     private EntityManagerInterface $em;
@@ -33,7 +37,7 @@ class HouseHoldService {
         if(!$houseHold) {
             return false;
         }
-        return true;
+        return $houseHold;
     }
 
     public function checkHouseHoldAdmin(int $id,string $AccesCode){
@@ -50,10 +54,55 @@ class HouseHoldService {
     }
 
     public function checkPersonInHouseHold(int $personId,int $HouseHoldId){
-        $personHouseHoldToModify = $this->em->getRepository(PersonHousehold::class)->findOneBy(['person' => $personId, 'household' => $HouseHoldId]);
-        if(!$personHouseHoldToModify){
+        $personHouseHold = $this->em->getRepository(PersonHousehold::class)->findOneBy(['person' => $personId, 'household' => $HouseHoldId]);
+        if(!$personHouseHold){
             return false;
         }
         return true;
+    }
+
+    public function addPersonToHousehold(Household $houseHold,string $firstname,
+    string $lastname,string $personRole,?string $email = null){
+
+        // Cas 1 : enfant (pas d'email)
+        if ($email === null) {
+            $childPerson = new Person();
+            $childPerson
+                ->setFirstName($firstname)
+                ->setLastName($lastname)
+                ->setUserType(PersonEnum::Child);
+
+            $personHousehold = new PersonHousehold();
+            $personHousehold
+                ->setHousehold($houseHold)
+                ->setPerson($childPerson)
+                ->setRole(HouseHoldEnum::from($personRole));
+
+            $this->em->persist($childPerson);
+            $this->em->persist($personHousehold);
+            $this->em->flush();
+
+            return $personHousehold;
+        }
+
+        // Cas 2 : utilisateur existant
+        $user = $this->em
+            ->getRepository(User::class)
+            ->findOneBy(['email' => $email]);
+
+        if (!$user) {
+            return false;
+        }
+
+        $personHousehold = new PersonHousehold();
+        $personHousehold
+            ->setHousehold($houseHold)
+            ->setPerson($user->getPerson())
+            ->setRole(HouseHoldEnum::from($personRole));
+
+        $this->em->persist($personHousehold);
+        $this->em->flush();
+
+        return $personHousehold;
     }
 }
