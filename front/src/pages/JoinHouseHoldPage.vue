@@ -2,7 +2,7 @@
     import NavBarConnect from '@/components/Layout/NavBarConnect.vue';
     import JoinHouseHoldForm from '@/components/HouseHold/JoinHouseHoldForm.vue';
     import { type JoinHouseHoldData, type CreateHouseHoldData, type JoinHouseHoldDataError, type CreateHouseHoldDataError } from '@/models/'
-    import { ref,watch, type Ref} from 'vue'
+    import { ref,computed, type Ref} from 'vue'
     import { useRouter,useRoute } from "vue-router";
 
     const props = defineProps({
@@ -14,13 +14,6 @@
 
     const router = useRouter();
     const route = useRoute();
-
-    watch(
-        () => route.query.mode,
-        (newMode) => {
-        FormType.value = newMode === "JoinHouseHold" ? "JoinHouseHold" : "CreateHouseHold";
-        }
-    );
 
     const JoinFormData : JoinHouseHoldData = {
         CodeHouseHold: ref(''),
@@ -38,13 +31,17 @@
         NameHouseHoldError: ref(''),
     };
 
-    const FormType: Ref<"JoinHouseHold" | "CreateHouseHold"> = ref(props.mode === "JoinHouseHold" ? "JoinHouseHold" : "CreateHouseHold");
+    const FormType = computed<"JoinHouseHold" | "CreateHouseHold">(() => {
+        return route.query.mode === "JoinHouseHold"
+        ? "JoinHouseHold"
+        : "CreateHouseHold";
+    });
+
 
     const toggleDisplay = () => {
-        FormType.value =
         FormType.value === "JoinHouseHold" ? "JoinHouseHold" : "CreateHouseHold";
         router.replace({ path: "/JoinHouseHold", query: { mode: FormType.value } });
-    };
+    };  
 
 </script>
 
@@ -52,11 +49,17 @@
     <div class="p-4">
         <NavBarConnect/>
        <div class="mt-4">
-          <JoinHouseHoldForm
-            :HouseHold="JoinFormData"
-            :HouseHoldError="JoinFormDataError"
-            :toggleDisplay="toggleDisplay"
-          />
+            <div v-if="FormType === 'JoinHouseHold'">
+                <h1 class="font-bold text-2xl mb-2">Rejoindre un foyer</h1>
+                <JoinHouseHoldForm
+                    :HouseHold="JoinFormData"
+                    :HouseHoldError="JoinFormDataError"
+                    :toggleDisplay="toggleDisplay"
+                />
+            </div>
+            <div v-else>
+                <h1 class="font-bold text-2xl mb-2">Créer un foyer</h1>
+            </div>
        </div>
     </div>
 </template>

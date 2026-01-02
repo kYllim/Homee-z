@@ -18,5 +18,18 @@ export function useHouseHold() {
         );
     }
 
-    return {data,error,loading,CreateHouseHold};
+    async function JoinHouseHold (ac : string, t : string) {
+        await callApi(
+            urlBase + "api/JoinHouseHold", 
+            {
+                method: "POST",
+                body: {
+                    accessCode : ac,
+                },
+                token: t,
+            }
+        );
+    }
+
+    return {data,error,loading,CreateHouseHold,JoinHouseHold};
 }

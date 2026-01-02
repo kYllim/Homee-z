@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 import type { Ref } from "vue";
+import {  RemoveCookie} from "@/services";
 
 const IsOpen: Ref<boolean> = ref(false);
 
@@ -10,10 +11,18 @@ const isLoggedIn: Ref<boolean> = ref(true);
 
 // Menu utilisateur
 const userMenuOpen = ref(false);
+const router = useRouter();
 
 const toggleUserMenu = () => {
   userMenuOpen.value = !userMenuOpen.value;
 };
+
+const Logout = () => { 
+  RemoveCookie('token');
+  router.push('/Connexion');
+}
+
+
 </script>
 
 <template>
@@ -68,7 +77,7 @@ const toggleUserMenu = () => {
             >
               <RouterLink to="/profil" class="hover:text-green_pastel font-medium">Profil</RouterLink>
               <RouterLink to="/settings" class="hover:text-green_pastel font-medium">Paramètres</RouterLink>
-              <button class="text-left hover:text-red-500 font-medium">
+              <button class="text-left hover:text-red-500 font-medium" @click="Logout">
                 Déconnexion
               </button>
             </div>
@@ -88,7 +97,7 @@ const toggleUserMenu = () => {
           <RouterLink to="/taches" class="font-semibold">Tâches</RouterLink>
           <RouterLink to="/calendrier" class="font-semibold">Calendrier</RouterLink>
           <RouterLink to="/famille" class="font-semibold">Famille</RouterLink>
-          <button class="text-left text-red-500 font-semibold mt-2">Déconnexion</button>
+          <button class="text-left text-red-500 font-semibold mt-2" @click="Logout">Déconnexion</button>
         </template>
 
         <!-- NON CONNECTÉ -->
