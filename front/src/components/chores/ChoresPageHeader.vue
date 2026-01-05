@@ -11,7 +11,7 @@ const emit = defineEmits(['create-chore'])
       </div>
       <button
         @click="$emit('create-chore')"
-        class="bg-[#9CBFA2] hover:bg-green-500 text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center space-x-2 transition-colors w-full sm:w-auto"
+        class="bg-green_pastel hover:bg-green-500 text-white px-6 py-3 rounded-xl font-semibold flex items-center justify-center space-x-2 transition-colors w-full sm:w-auto"
       >
         <i class="fa-solid fa-plus"></i>
         <span>Nouvelle corvée</span>

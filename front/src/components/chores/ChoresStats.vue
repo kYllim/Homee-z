@@ -20,8 +20,8 @@ const stats = computed(() => ({
   <section class="mt-12 grid grid-cols-1 md:grid-cols-4 gap-6">
     <!-- Total -->
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
-      <div class="w-12 h-12 bg-[#9CBFA2] bg-opacity-20 rounded-xl flex items-center justify-center mx-auto mb-3">
-        <i class="fa-solid fa-list-check text-[#9CBFA2] text-xl"></i>
+      <div class="w-12 h-12 bg-green_pastel bg-opacity-20 rounded-xl flex items-center justify-center mx-auto mb-3">
+        <i class="fa-solid fa-list-check text-green_pastel text-xl"></i>
       </div>
       <h3 class="text-2xl font-bold text-[#333333] mb-1">{{ stats.total }}</h3>
       <p class="text-sm text-gray-600">Total corvées</p>

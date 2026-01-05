@@ -6,14 +6,14 @@
       
       <!-- TITRE -->
       <div>
-        <h1 class="text-3xl text-gray-800">Nourriture</h1>
+        <h1 class="text-3xl text-gray-800">Recettes</h1>
         <p class="text-gray-500 text-sm mt-1">Gérez vos recettes et listes de courses</p>
       </div>
 
       <!-- BOUTONS -->
       <div class="flex gap-3">
         <button
-          class="flex items-center gap-2 bg-[#9CBFA2] text-white px-4 py-2 rounded-xl shadow hover:opacity-80 transition"
+          class="flex items-center gap-2 bg-green_pastel text-white px-4 py-2 rounded-xl shadow hover:opacity-80 transition"
         >
           <span>+ Nouvelle recette</span>
         </button>

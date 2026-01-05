@@ -31,7 +31,7 @@ const toggleUserMenu = () => {
       <div class="hidden lg:flex gap-6 items-center">
         <template v-if="isLoggedIn">
           <RouterLink to="/dashboard" class="text-lg hover:text-green_pastel">Tableau de bord</RouterLink>
-          <RouterLink to="/nourriture" class="text-lg hover:text-green_pastel">Nourriture</RouterLink>
+          <RouterLink to="/recettes" class="text-lg hover:text-green_pastel">Recettes</RouterLink>
           <RouterLink to="/taches" class="text-lg hover:text-green_pastel">Tâches</RouterLink>
           <RouterLink to="/calendrier" class="text-lg hover:text-green_pastel">Calendrier</RouterLink>
           <RouterLink to="/famille" class="text-lg hover:text-green_pastel">Famille</RouterLink>
@@ -84,7 +84,7 @@ const toggleUserMenu = () => {
         <!-- CONNECTÉ -->
         <template v-if="isLoggedIn">
           <RouterLink to="/dashboard" class="font-semibold">Tableau de bord</RouterLink>
-          <RouterLink to="/nourriture" class="font-semibold">Nourriture</RouterLink>
+          <RouterLink to="/recettes" class="font-semibold">Recettes</RouterLink>
           <RouterLink to="/taches" class="font-semibold">Tâches</RouterLink>
           <RouterLink to="/calendrier" class="font-semibold">Calendrier</RouterLink>
           <RouterLink to="/famille" class="font-semibold">Famille</RouterLink>

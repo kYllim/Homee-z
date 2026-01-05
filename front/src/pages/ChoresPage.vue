@@ -177,7 +177,7 @@ const handleDeleteChore = async (chore: Chore) => {
       
       <!-- Loading indicator -->
       <div v-if="choreStore.loading" class="text-center py-12">
-        <i class="fa-solid fa-spinner fa-spin text-[#9CBFA2] text-4xl"></i>
+        <i class="fa-solid fa-spinner fa-spin text-green_pastel text-4xl"></i>
         <p class="text-gray-600 mt-4">Chargement des corvées...</p>
       </div>
 

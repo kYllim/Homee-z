@@ -43,7 +43,7 @@
         </div>
         <div class="bg-white shadow-sm rounded-2xl p-6 mt-8">
           <h2 class="text-lg font-semibold text-gray-800 mb-4">Schedule</h2>
-          <Calendar />
+          <Calendar :events="calendarEvents" />
         </div>
       </div>
     </div>

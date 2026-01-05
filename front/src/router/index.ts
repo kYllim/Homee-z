@@ -4,7 +4,7 @@ import ConnexionPage from "@/pages/ConnexionPage.vue";
 import DashboardPage from "@/pages/DashboardPage.vue";
 import HomePage from "@/pages/HomePage.vue";
 import HouseHoldHandler from "@/pages/JoinHouseHoldPage.vue";
-import NourriturePage from "@/pages/NourriturePage.vue"
+import RecipePage from "@/pages/RecipePage.vue"
 import EventPage from "@/pages/EventPage.vue";
 import {GetCookie} from "../services/index"
 
@@ -13,7 +13,7 @@ const routes: Array<RouteRecordRaw> = [
   { path: "/dashboard", name: "Dashboard", component: DashboardPage },
   { path: "/connexion", name: "Connection", component: ConnexionPage, props: route => ({ mode : route.query.mode }) },
   { path: "/HouseHold", name: "HouseHold", component: HouseHoldHandler },
-  { path: "/nourriture", name: "Nourriture", component: NourriturePage },
+  { path: "/recettes", name: "Recettes", component: RecipePage },
   { path: "/events", name: "Events", component: EventPage }, 
 ];
 
