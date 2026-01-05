@@ -33,8 +33,8 @@ export function isBlank<
   for (const key in form) {
     const field = form[key];  
     const err = errors[key];   
-    if (!field || !err) continue;
-    if (field.value.trim() === "") {
+    console.log(field,err)
+    if (field?.value.trim() === "") {
       err.value = "This field is empty !";
       valid = false;
     }

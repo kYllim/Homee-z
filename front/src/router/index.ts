@@ -7,6 +7,7 @@ import HouseHoldPage from "@/pages/HouseHoldPage.vue";
 import NourriturePage from "@/pages/NourriturePage.vue"
 import EventPage from "@/pages/EventPage.vue";
 import JoinHouseHoldPage from "@/pages/JoinHouseHoldPage.vue";
+import AddPersonHouseHoldPage from "@/pages/AddPersonHouseHoldPage.vue";
 import {GetCookie} from "../services/index"
 
 
@@ -17,7 +18,8 @@ const routes: Array<RouteRecordRaw> = [
   { path: "/HouseHold", name: "HouseHold", component: HouseHoldPage },
   { path: "/nourriture", name: "Nourriture", component: NourriturePage },
   { path: "/events", name: "Events", component: EventPage }, 
-  {path: "/JoinHouseHold", name: "JoinHouseHold", component: JoinHouseHoldPage}
+  {path: "/JoinHouseHold", name: "JoinHouseHold", component: JoinHouseHoldPage},
+  {path: "/AddPersonHouseHold", name: "AddPersonHouseHold", component: AddPersonHouseHoldPage}
 ];
 
 const router = createRouter({

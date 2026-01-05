@@ -33,6 +33,12 @@ final class HouseHoldController extends AbstractController
         $user = $this->em->getRepository(User::class)->findOneBy(['email' => $this->getUser()->getUserIdentifier()]);
         $person = $user->getPerson();
 
+        // On vérifie que le nom du foyer n'est pas pris
+        $existingHouseHold = $this->houseHoldService->HouseHoldExist(name : $houseHoldName);
+        if($existingHouseHold) {
+            return new JsonResponse(['message' => 'Un foyer avec ce nom existe déja !'], 404);
+        }
+
         // On initialise les entités
         $PersonHousehold = new PersonHousehold();
         $houseHold = new Household();
@@ -85,7 +91,8 @@ final class HouseHoldController extends AbstractController
         $this->em->flush();
 
         return new JsonResponse ([
-            'message' => 'Vous avez rejoint le foyer avec succès !'
+            'message' => 'Vous avez rejoint le foyer avec succès !',
+            'name' => $houseHold->getName()
         ],200);
     }
 
@@ -94,8 +101,8 @@ final class HouseHoldController extends AbstractController
     {
         $data = json_decode($request->getContent(),true);
 
-        $firstname = $data['name'];
-        $lastname = $data['lastName'];
+        $firstname = $data['name'] ?? null;
+        $lastname = $data['lastName'] ?? null;
         $email = $data['email'] ?? null;
         $personRole = $data['role'];
         $accessCode = $data['accessCode'];

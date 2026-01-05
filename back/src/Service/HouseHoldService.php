@@ -32,12 +32,24 @@ class HouseHoldService {
         return $accessCode;
     }
 
-    public function HouseHoldExist(string $AccesCode){
-        $houseHold = $this->em->getRepository(Household::class)->findOneBy(['accessCode' => $AccesCode]);
-        if(!$houseHold) {
-            return false;
+    public function HouseHoldExist(
+        ?string $accessCode = null,
+        ?string $name = null
+    ): Household|false {
+
+        if ($name !== null) {
+            return $this->em
+                ->getRepository(Household::class)
+                ->findOneBy(['name' => $name]) ?: false;
         }
-        return $houseHold;
+
+        if ($accessCode !== null) {
+            return $this->em
+                ->getRepository(Household::class)
+                ->findOneBy(['accessCode' => $accessCode]) ?: false;
+        }
+
+        return false;
     }
 
     public function checkHouseHoldAdmin(int $id,string $AccesCode){
