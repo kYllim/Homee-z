@@ -50,8 +50,8 @@
 </script>
 
 <template>
-    <div class="min-h-screen flex flex-col">
-        <header class="w-full px-4 mb-6">
+    <div class="flex flex-col relative">
+        <header class="w-full px-4 mb-6 relative z-50">
             <NavBarConnect />
         </header>
 

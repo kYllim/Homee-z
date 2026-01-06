@@ -43,8 +43,8 @@
             agreeError.value = "You must agree to the terms of service and privacy policy";
             return;
         }
-        await registerUser(props.dataRegister.name.value,props.dataRegister.firstName.value,props.dataRegister.emailRegister.value,props.dataRegister.passwordRegister.value);
-        setCookie('token', data.value.token,7);
+        const token = await registerUser(props.dataRegister.name.value,props.dataRegister.firstName.value,props.dataRegister.emailRegister.value,props.dataRegister.passwordRegister.value);
+        setCookie('token', token.token,7);
         router.push('/dashboard');
     }
 </script>

@@ -12,7 +12,7 @@ export function useApi<T = any>() {
   const error = ref<string | null>(null);
   const loading = ref(false);
 
-  const callApi = async (url: string, options: ApiOptions = {}) => {
+  const callApi = async (url: string, options: ApiOptions = {}): Promise<T> => {
     loading.value = true;
     error.value = null;
 
@@ -46,22 +46,20 @@ export function useApi<T = any>() {
         let message = `HTTP error ${response.status}`;
 
         try {
-          if (typeof responseBody === "object") {
-            if (responseBody.message) message = responseBody.message;
-            else if (responseBody.errors && Array.isArray(responseBody.errors)) message = responseBody.errors[0];
-          } else if (responseBody) {
-            message = responseBody;
-          }
-        } catch {
-          // fallback
-        }
+          const json = await response.json();
+          if (json.message) message = json.message;
+        } catch {}
 
         throw new Error(message);
       }
 
-      data.value = responseBody;
+      const json = await response.json();
+      data.value = json;
+
+      return json; // ✅ CLÉ ICI
     } catch (err: any) {
       error.value = err.message ?? "Unexpected error";
+      throw err; // ✅ important aussi
     } finally {
       loading.value = false;
     }

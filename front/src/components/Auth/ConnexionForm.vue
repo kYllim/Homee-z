@@ -29,11 +29,9 @@
             props.errorConnexion.passwordConnexion.value = "Password must be at least 8 characters long and include a number and a special character";
             return;
         }
-        await loginUser(props.dataConnexion.emailConnexion.value,props.dataConnexion.passwordConnexion.value);
-        if (data.value && data.value.token) {
-            setCookie('token', data.value.token, 7);
-            router.push('/dashboard');
-        }
+        const token = await loginUser(props.dataConnexion.emailConnexion.value,props.dataConnexion.passwordConnexion.value);
+        setCookie('token', token.token,7);
+        router.push('/dashboard');
     }
 </script>
 

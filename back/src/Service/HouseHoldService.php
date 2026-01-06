@@ -56,8 +56,8 @@ class HouseHoldService {
         $houseHold = $this->em->getRepository(Household::class)->findOneBy(['accessCode' => $AccesCode]);
         $members = $houseHold->getMemberships();
         foreach ($members as $member) {
-            $id = $member->getPerson()->getId();
-            if( $id=== $id && $member->getRole() !== HouseHoldEnum::ADMIN){
+            $idMember = $member->getPerson()->getId();
+            if( $id === $idMember && $member->getRole() !== HouseHoldEnum::ADMIN){
                 return false;
             }
         }
@@ -73,8 +73,12 @@ class HouseHoldService {
         return true;
     }
 
-    public function addPersonToHousehold(Household $houseHold,string $firstname,
-    string $lastname,string $personRole,?string $email = null){
+    public function addPersonToHousehold(Household $houseHold,string $personRole, ?string $firstname = null,
+    ?string $lastname = null,?string $email = null){
+
+        if($firstname === null && $lastname === null && $email === null){
+            return false;
+        }
 
         // Cas 1 : enfant (pas d'email)
         if ($email === null) {
@@ -103,6 +107,12 @@ class HouseHoldService {
             ->findOneBy(['email' => $email]);
 
         if (!$user) {
+            return false;
+        }
+
+        // On check si l'utilisateur fait déjà partie du foyer
+        $existingMembership = $this->checkPersonInHouseHold($user->getPerson()->getId(), $houseHold->getId());
+        if ($existingMembership) {
             return false;
         }
 

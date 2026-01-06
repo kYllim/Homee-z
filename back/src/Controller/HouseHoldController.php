@@ -12,7 +12,7 @@ use App\Entity\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
-
+use Symfony\Component\Validator\Constraints\Json;
 
 final class HouseHoldController extends AbstractController
 {
@@ -126,13 +126,14 @@ final class HouseHoldController extends AbstractController
         // on créer la person selon les donées reçues
         $addPerson = $this->houseHoldService->addPersonToHousehold(
             $houseHold,
+            $personRole,
             $firstname,
             $lastname,
-            $personRole,
             $email
         );
+
         if(!$addPerson){
-            return new JsonResponse(['message' => 'L\'utilisateur n\'existe pas'], 404);
+            return new JsonResponse(['message' => 'L\'utilisateur n\'existe pas ou fait déja partie du foyer'], 404);
         }
 
         return new JsonResponse ([
@@ -210,6 +211,85 @@ final class HouseHoldController extends AbstractController
 
         return new JsonResponse ([
             'message' => 'Le rôle de l\'utilisateur a été modifié avec succès !'
+        ],200);
+    }
+
+    #[Route('/api/GetHouseHold', name: 'api_GetHouseHold', methods: 'GET')]
+    public function GetHouseHold() : JsonResponse
+    {
+        $user = $this->em->getRepository(User::class)->findOneBy(['email' => $this->getUser()->getUserIdentifier()]);
+        $person = $user->getPerson();
+
+        $PersonHouseHold = $person->getMemberships();
+
+        $houseHolds = [];
+        foreach($PersonHouseHold as $membership){
+            $houseHolds[] = [
+                'id' => $membership->getHouseHold()->getId(),
+                'name' => $membership->getHouseHold()->getName(),
+                'role' => $membership->getRole()->name,
+                'accessCode' => $membership->getHouseHold()->getAccessCode()
+            ];
+        }
+
+        return new JsonResponse ([
+            'houseHolds' => $houseHolds
+        ],200);
+    }
+
+    #[Route('/api/GetHouseHoldMembers', name: 'api_GetHouseHoldMembers', methods: 'POST')]
+    public function GetHouseHoldMembers(Request $request) : JsonResponse
+    {
+        $data = json_decode($request->getContent(),true);
+        $accessCode = $data['accessCode'];
+
+        // On vérifie que le foyer existe
+        $houseHold = $this->houseHoldService->HouseHoldExist($accessCode);
+        if(!$houseHold) {
+            return new JsonResponse(['message' => 'Le code d\'accès est invalide !'], 404);
+        }
+
+        $memberships = $houseHold->getMemberships();
+        $members = [];
+        foreach($memberships as $membership){
+            $person = $membership->getPerson();
+            $members[] = [
+                'id' => $person->getId(),
+                'firstName' => $person->getFirstName(),
+                'lastName' => $person->getLastName(),
+                'role' => $membership->getRole()->name,
+                'email' => $person->getUser() ? $person->getUser()->getEmail() : null
+            ];
+        }
+
+        return new JsonResponse ([
+            'members' => $members
+        ],200);
+    }
+
+    #[Route('/api/CheckIsAdmin', name: 'api_CheckIsAdmin', methods: 'POST')]
+    public function CheckIsAdmin(Request $request) : JsonResponse
+    {
+        $data = json_decode($request->getContent(),true);
+        $accessCode = $data['accessCode'];
+
+        $user = $this->em->getRepository(User::class)->findOneBy(['email' => $this->getUser()->getUserIdentifier()]);
+        $person = $user->getPerson();
+
+        // On vérifie que le foyer existe
+        $houseHold = $this->houseHoldService->HouseHoldExist($accessCode);
+        if(!$houseHold) {
+            return new JsonResponse(['message' => 'Le code d\'accès est invalide !'], 404);
+        }
+
+        // On vérifie que l'utilisateur a les droits
+        $isHouseHoldAdmin = $this->houseHoldService->checkHouseHoldAdmin($person->getId(),$accessCode);
+        if(!$isHouseHoldAdmin){
+            return new JsonResponse(['isAdmin' => false],200);
+        }
+
+        return new JsonResponse ([
+            'isAdmin' => true
         ],200);
     }
 }

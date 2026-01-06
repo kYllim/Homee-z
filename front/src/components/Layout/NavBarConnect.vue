@@ -86,7 +86,7 @@ const Logout = () => {
       </div>
     </nav>
 
-    <!-- Mobile menu -->
+
     <div>
       <div v-if="IsOpen" class="absolute top-12 left-2 bg-white shadow-md rounded-md p-4 flex flex-col gap-3 lg:hidden">
 
@@ -95,8 +95,8 @@ const Logout = () => {
           <RouterLink to="/dashboard" class="font-semibold">Tableau de bord</RouterLink>
           <RouterLink to="/recettes" class="font-semibold">Recettes</RouterLink>
           <RouterLink to="/taches" class="font-semibold">Tâches</RouterLink>
-          <RouterLink to="/events" class="font-semibold">Calendrier</RouterLink>
-          <RouterLink to="/famille" class="font-semibold">Famille</RouterLink>
+          <RouterLink to="/calendrier" class="font-semibold">Calendrier</RouterLink>
+          <RouterLink to="/familly" class="font-semibold">Famille</RouterLink>
           <button class="text-left text-red-500 font-semibold mt-2" @click="Logout">Déconnexion</button>
         </template>
 
