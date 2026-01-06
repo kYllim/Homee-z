@@ -1,4 +1,5 @@
 import type { Ref } from "vue";
+import type { PersonRoleEnum } from "./PersonRoleEnum";
 import type { HouseHoldRoleEnum } from "./HouseHoldRoleEnum";
 
 export interface FormConnexion {
@@ -50,17 +51,32 @@ export interface CreateHouseHoldDataError {
 }
 
 export interface AddPeopleHouseHoldData {
-  [key: string]: Ref<string>;
-  name : Ref<string>;
-  lastName : Ref<string>;
-  email : Ref<string>;
-  role :  Ref<HouseHoldRoleEnum>
+  [key: string]: Ref<string>,
+  name : Ref<string>,
+  lastName : Ref<string>,
+  email : Ref<string>,
+  userType :  Ref<PersonRoleEnum | string>,
+  role : Ref<HouseHoldRoleEnum | string>,
+  HouseHoldName : Ref<string>,
 }
 
 export interface AddPeopleHouseHoldDataError {
-  [key: string]: Ref<string>;
-  name : Ref<string>;
-  lastName : Ref<string>;
-  email : Ref<string>;
-  role :  Ref<string>
+  [key: string]: Ref<string>,
+  name : Ref<string>,
+  lastName : Ref<string>,
+  email : Ref<string>,
+  userType :  Ref<string>,
+  role : Ref<string>,
+  HouseHoldName : Ref<string>;
+}
+
+export interface IOption {
+  label: string;
+  value: string;
+}
+export interface HouseHold {
+  id : number,
+  name : string,
+  role : HouseHoldRoleEnum,
+  accessCode : string,
 }

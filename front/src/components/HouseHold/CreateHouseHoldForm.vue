@@ -6,7 +6,7 @@
     import { useHouseHold } from '@/composable/useHouseHold';
     import { ref } from 'vue';
 
-    const { CreateHouseHold, loading, error, data } = useHouseHold();
+    const { CreateHouseHold, loading, error } = useHouseHold();
 
     interface ICreateHouseHoldForm {
         toggleDisplay : () => void
@@ -25,13 +25,12 @@
             return;
         }
         console.log('Validation passed', props.HouseHold.NameHouseHold.value);
-        await CreateHouseHold(
+        const HouseHoldCreated = await CreateHouseHold(
             props.HouseHold.NameHouseHold.value,
             GetCookie('token')
         );
-        if(data.value){
-            houseHold.value = data.value;
-            console.log(data.value.name);
+        if(HouseHoldCreated){
+            houseHold.value = HouseHoldCreated;
         }
 
     }

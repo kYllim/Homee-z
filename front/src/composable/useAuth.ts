@@ -6,7 +6,7 @@ export function useAuth() {
 
     async function registerUser(n : string, fn : string, em : string, pwd : string) {
         
-        await callApi(
+        return await callApi(
             urlBase + "api/register", 
             {
                 method: "POST",
@@ -21,7 +21,7 @@ export function useAuth() {
     }
 
     async function loginUser(em : string, pwd : string) {
-        await callApi(
+        return await callApi(
             urlBase + "api/login", 
             {
                 method: "POST",

@@ -3,20 +3,24 @@
     import { ref } from 'vue'
     import { useRouter,useRoute } from "vue-router";
     import AddPeopleHouseHoldForm from '@/components/HouseHold/AddPeopleHouseHoldForm.vue';
-    import { type AddPeopleHouseHoldData, type AddPeopleHouseHoldDataError, HouseHoldRoleEnum} from '@/models';
+    import { type AddPeopleHouseHoldData, type AddPeopleHouseHoldDataError, PersonRoleEnum} from '@/models';
 
     const HouseHoldPersonForm : AddPeopleHouseHoldData = {
         name: ref(''),
         email: ref(''),
         lastName: ref(''),
-        role: ref(HouseHoldRoleEnum.MEMBER)
+        role: ref(''),
+        HouseHoldName : ref(''),
+        userType : ref('')
     };
 
     const HouseHoldPersonFormError : AddPeopleHouseHoldDataError = {
         name: ref(''),
         email: ref(''),
         lastName: ref(''),
-        role: ref('')
+        role: ref(''),
+        HouseHoldName : ref(''),
+        userType : ref('')
     };
 
     const props = defineProps({});
@@ -27,11 +31,14 @@
 </script>
 
 <template>
-    <div class="p-4">
-        <NavBarConnect/>
-       <div class="mt-4">
-            <AddPeopleHouseHoldForm :PersonForm="HouseHoldPersonForm" :PersonFormError="HouseHoldPersonFormError" />
-       </div>
+    <div class="flex flex-col relative">
+        <header class="w-full px-4 mb-6 relative z-50">
+            <NavBarConnect />
+        </header>
+
+        <main class="flex-1 w-full flex  lg:justify-center px-4">
+           <AddPeopleHouseHoldForm :PersonForm="HouseHoldPersonForm" :PersonFormError="HouseHoldPersonFormError" />
+        </main>
     </div>
 </template>
 
