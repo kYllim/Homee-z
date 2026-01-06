@@ -66,21 +66,40 @@ export function useHouseHold() {
         );
     }
 
-    async function GetHouseHoldMembers (t : string) {
+    async function GetHouseHoldMembers (t : string, ac : string) {
         return await callApi(
             urlBase + "api/GetHouseHoldMembers",
             {
-                method: "GET",
+                method: "POST",
+                body : {
+                    accessCode : ac,
+                },
                 token: t,
             }
         );
     }
 
-    async function CheckIsAdmin (t : string) {
+    async function CheckIsAdmin (t : string, ac : string) {
         return await callApi(
             urlBase + "api/CheckIsAdmin",
             {
-                method: "GET",
+                method: "POST",
+                body : {
+                    accessCode : ac
+                },
+                token: t,
+            }
+        );
+    }
+
+    async function DeletePeopleHouseHold(t : string, ac : string, id : number) {
+        return await callApi(
+            urlBase + `api/DeletePeopleHouseHold/${id}`,
+            {
+                method: "POST",
+                body : {
+                    accessCode : ac
+                },
                 token: t,
             }
         );
@@ -95,6 +114,7 @@ export function useHouseHold() {
         GetHouseHoldMembers,
         GetHouseHold,
         AddPeopleToHouseHold,
-        CheckIsAdmin
+        CheckIsAdmin,
+        DeletePeopleHouseHold
     };
 }

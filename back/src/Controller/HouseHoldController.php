@@ -237,10 +237,11 @@ final class HouseHoldController extends AbstractController
         ],200);
     }
 
-    #[Route('/api/GetHouseHoldMembers', name: 'api_GetHouseHoldMembers', methods: 'GET')]
+    #[Route('/api/GetHouseHoldMembers', name: 'api_GetHouseHoldMembers', methods: 'POST')]
     public function GetHouseHoldMembers(Request $request) : JsonResponse
     {
-        $accessCode = $request->query->get('accessCode');
+        $data = json_decode($request->getContent(),true);
+        $accessCode = $data['accessCode'];
 
         // On vérifie que le foyer existe
         $houseHold = $this->houseHoldService->HouseHoldExist($accessCode);
@@ -266,10 +267,11 @@ final class HouseHoldController extends AbstractController
         ],200);
     }
 
-    #[Route('/api/CheckIsAdmin', name: 'api_CheckIsAdmin', methods: 'GET')]
+    #[Route('/api/CheckIsAdmin', name: 'api_CheckIsAdmin', methods: 'POST')]
     public function CheckIsAdmin(Request $request) : JsonResponse
     {
-        $accessCode = $request->query->get('accessCode');
+        $data = json_decode($request->getContent(),true);
+        $accessCode = $data['accessCode'];
 
         $user = $this->em->getRepository(User::class)->findOneBy(['email' => $this->getUser()->getUserIdentifier()]);
         $person = $user->getPerson();
