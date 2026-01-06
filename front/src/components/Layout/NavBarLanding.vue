@@ -28,7 +28,7 @@
     <div>
       <div v-if="IsOpen" class="absolute top-12 left-2 bg-white shadow-md rounded-md p-4 flex flex-col gap-3 lg:hidden">
         <router-link to="/" class="font-semibold">Accueil</router-link>
-        <router-link to="/about" class="font-semibold">À propos</router-link>
+        <router-link to="/" class="font-semibold">À propos</router-link>
         <router-link to="/contact" class="font-semibold">Contact</router-link>
       </div>
     </div>

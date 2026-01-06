@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 import type { Ref } from "vue";
+import {  RemoveCookie} from "@/services";
 
 const IsOpen: Ref<boolean> = ref(false);
 
@@ -10,10 +11,18 @@ const isLoggedIn: Ref<boolean> = ref(true);
 
 // Menu utilisateur
 const userMenuOpen = ref(false);
+const router = useRouter();
 
 const toggleUserMenu = () => {
   userMenuOpen.value = !userMenuOpen.value;
 };
+
+const Logout = () => { 
+  RemoveCookie('token');
+  router.push('/Connexion');
+}
+
+
 </script>
 
 <template>
@@ -33,13 +42,13 @@ const toggleUserMenu = () => {
           <RouterLink to="/dashboard" class="text-lg hover:text-green_pastel">Tableau de bord</RouterLink>
           <RouterLink to="/recettes" class="text-lg hover:text-green_pastel">Recettes</RouterLink>
           <RouterLink to="/taches" class="text-lg hover:text-green_pastel">Tâches</RouterLink>
-          <RouterLink to="/calendrier" class="text-lg hover:text-green_pastel">Calendrier</RouterLink>
+          <RouterLink to="/events" class="text-lg hover:text-green_pastel">Calendrier</RouterLink>
           <RouterLink to="/famille" class="text-lg hover:text-green_pastel">Famille</RouterLink>
         </template>
 
         <template v-else>
           <RouterLink to="/" class="text-lg hover:text-green_pastel">Accueil</RouterLink>
-          <RouterLink to="/about" class="text-lg hover:text-green_pastel">À propos</RouterLink>
+          <RouterLink to="/" class="text-lg hover:text-green_pastel">À propos</RouterLink>
           <RouterLink to="/contact" class="text-lg hover:text-green_pastel">Contact</RouterLink>
         </template>
       </div>
@@ -68,7 +77,7 @@ const toggleUserMenu = () => {
             >
               <RouterLink to="/profil" class="hover:text-green_pastel font-medium">Profil</RouterLink>
               <RouterLink to="/settings" class="hover:text-green_pastel font-medium">Paramètres</RouterLink>
-              <button class="text-left hover:text-red-500 font-medium">
+              <button class="text-left hover:text-red-500 font-medium" @click="Logout">
                 Déconnexion
               </button>
             </div>
@@ -86,15 +95,15 @@ const toggleUserMenu = () => {
           <RouterLink to="/dashboard" class="font-semibold">Tableau de bord</RouterLink>
           <RouterLink to="/recettes" class="font-semibold">Recettes</RouterLink>
           <RouterLink to="/taches" class="font-semibold">Tâches</RouterLink>
-          <RouterLink to="/calendrier" class="font-semibold">Calendrier</RouterLink>
+          <RouterLink to="/events" class="font-semibold">Calendrier</RouterLink>
           <RouterLink to="/famille" class="font-semibold">Famille</RouterLink>
-          <button class="text-left text-red-500 font-semibold mt-2">Déconnexion</button>
+          <button class="text-left text-red-500 font-semibold mt-2" @click="Logout">Déconnexion</button>
         </template>
 
         <!-- NON CONNECTÉ -->
         <template v-else>
           <RouterLink to="/" class="font-semibold">Accueil</RouterLink>
-          <RouterLink to="/about" class="font-semibold">À propos</RouterLink>
+          <RouterLink to="/" class="font-semibold">À propos</RouterLink>
           <RouterLink to="/contact" class="font-semibold">Contact</RouterLink>
         </template>
 

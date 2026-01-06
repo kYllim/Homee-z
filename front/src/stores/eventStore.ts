@@ -73,6 +73,9 @@ export const useEventStore = defineStore('eventStore', () => {
       if (currentEvent.value?.id === id) currentEvent.value = null
     } catch (error) {
       console.error('Erreur lors de la suppression', error)
+      // Recharger les événements pour être sûr de l'état réel
+      await fetchEvents()
+      throw error
     }
   }
 

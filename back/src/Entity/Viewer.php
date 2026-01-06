@@ -26,7 +26,7 @@ class Viewer
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'viewers')]
-    private ?User $member = null;
+    private ?Person $member = null;
 
     public function getId(): ?int
     {
@@ -81,12 +81,12 @@ class Viewer
         return $this;
     }
 
-    public function getMember(): ?User
+    public function getMember(): ?Person
     {
         return $this->member;
     }
 
-    public function setMember(?User $member): static
+    public function setMember(?Person $member): static
     {
         $this->member = $member;
 

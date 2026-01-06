@@ -4,6 +4,7 @@ export function GetCookie(Nom : string) : string {
   const Cookies = document.cookie.split(";");
   Cookies.forEach(Cookie => {
     let NameCookie = Cookie.split('=');
+    NameCookie[0] = NameCookie[0]!.trim();
     if(NameCookie[0] == Nom){
       Token = NameCookie[1]!.toString()
     }

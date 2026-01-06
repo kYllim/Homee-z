@@ -2,7 +2,7 @@
   import { onMounted, computed } from 'vue'
   import Calendar from '@/components/Calendar.vue'
   import { useEventStore } from '@/stores/eventStore'
-  import NavBarConnect from "@/components/NavBarConnect.vue";
+  import NavBarConnect from "@/components/Layout/NavBarConnect.vue";
   import ToDoList from "@/components/ToDoList.vue";
 
   // Récupération du store
@@ -46,13 +46,6 @@
           <Calendar :events="calendarEvents" />
         </div>
       </div>
-    </div>
-    <div>
-      <h1>Dashboard</h1>
-      <p>Voici le calendrier :</p>
-
-      <!-- On passe les vrais events du store -->
-      <Calendar :events="calendarEvents" />
     </div>
   </div>
 </template>

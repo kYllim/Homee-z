@@ -1,130 +1,258 @@
 <script setup lang="ts">
-import { onMounted, computed, ref } from 'vue'
+import { onMounted, computed, ref, onUnmounted } from 'vue'
 import type { EventInput } from '@fullcalendar/core'
 import { useEventStore } from '@/stores/eventStore'
 import Calendar from '@/components/Calendar.vue'
-import EventForm from '@/components/event/EventForm.vue'
+import EventModal from '@/components/event/EventModal.vue'
 import type { Event } from '@/models/Events.interface'
-import axios from 'axios'
 
-// Ajouter après `eventStore` et `selectedEvent`
-const user = ref<any>(null)
-
-const fetchUser = async () => {
-  try {
-    const { data } = await axios.get(`http://localhost:8000/api/users/${userId}`)
-    user.value = data
-    console.log('Foyer principal :', data.household?.name)
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-// Dans le onMounted, charger aussi l'utilisateur
-onMounted(() => {
-  eventStore.fetchEvents()
-  fetchUser()
-})
-
-
-// Pinia store
 const eventStore = useEventStore()
 
-// Événement sélectionné pour édition
+const showModal = ref(false)
+const modalMode = ref<'create' | 'edit' | 'delete' | 'view'>('create')
 const selectedEvent = ref<Event | null>(null)
+const selectedDate = ref<string>('')
 
-// Charger les événements au montage
+const statusRefreshTrigger = ref(0)
+
 onMounted(() => {
   eventStore.fetchEvents()
+  const intervalId = setInterval(() => {
+    statusRefreshTrigger.value++
+  }, 30000)
+  onUnmounted(() => {
+    clearInterval(intervalId)
+  })
 })
 
-// Transformer les événements pour FullCalendar
-const calendarEvents = computed<EventInput[]>(() =>
-  eventStore.events.map(e => ({
-    title: e.title,
-    start: e.startAt,
-    end: e.endAt,
-    id: String(e.id) // FullCalendar attend id en string
-  }))
-)
+const getEventColor = (status: string) => {
+  switch (status?.toLowerCase()) {
+    case 'terminé':
+    case 'termine':
+    case 'completed':
+      return '#9CBFA2' // vert doux
+    case 'en cours':
+    case 'in_progress':
+      return '#89AD91' // nuance intermédiaire
+    case 'prévu':
+    case 'prevu':
+    case 'planned':
+      return '#ecf4ef' // fond clair
+    case 'en retard':
+    case 'retard':
+    case 'late':
+      return '#dc3545' // rouge pour alerte
+    case 'annulé':
+    case 'annule':
+    case 'cancelled':
+      return '#4b5563' // gris plus contrasté pour annulé
+    default:
+      return '#9CBFA2'
+  }
+}
 
-// Click sur une date → prépare création
+const calculateStatus = (event: Event) => {
+  if (event.status && event.status.trim() !== '') {
+    return event.status
+  }
+
+  const now = new Date()
+  const startDate = new Date(event.startAt)
+  const endDate = event.endAt ? new Date(event.endAt) : null
+
+  if (startDate > now) return 'prévu'
+  if (endDate && endDate < now) return 'en retard'
+  return 'en cours'
+}
+
+const calendarEvents = computed<EventInput[]>(() => {
+  statusRefreshTrigger.value
+  
+  return eventStore.events.map(e => {
+    const computedStatus = calculateStatus(e)
+    return {
+      title: e.title,
+      start: e.startAt,
+      end: e.endAt,
+      id: String(e.id),
+      backgroundColor: getEventColor(computedStatus),
+      borderColor: getEventColor(computedStatus),
+      extendedProps: {
+        status: computedStatus,
+        description: e.description
+      }
+    }
+  })
+})
+
 const handleDateClick = (arg: any) => {
   selectedEvent.value = null
-  alert('Date cliquée : ' + arg.dateStr)
+  selectedDate.value = arg.dateStr
+  modalMode.value = 'create'
+  showModal.value = true
 }
 
-// Ajouter ou modifier un événement
-const handleSubmit = (eventData: Partial<Event>) => {
-  if (selectedEvent.value?.id) {
-    eventStore.updateEventById(selectedEvent.value.id, eventData)
+const handleModalSave = async (eventData: any) => {
+  if (eventData.id) {
+    await eventStore.updateEventById(eventData.id, eventData)
+    selectedEvent.value = eventStore.events.find(e => e.id === eventData.id) || null
   } else {
-    eventStore.addEvent(eventData)
+    const dataToSave = selectedDate.value && !eventData.start 
+      ? { ...eventData, start: selectedDate.value }
+      : eventData
+    await eventStore.addEvent(dataToSave)
   }
-  selectedEvent.value = null
+  closeModal()
 }
 
-// Sélectionner un événement depuis le calendrier
 const handleEventClick = (arg: any) => {
   const eventId = Number(arg.event.id)
   const e = eventStore.events.find(ev => ev.id === eventId)
-  if (e) selectedEvent.value = e
-}
-
-// Supprimer un événement
-const handleDelete = (id: number) => {
-  if (confirm('Supprimer cet événement ?')) {
-    eventStore.removeEvent(id)
-    if (selectedEvent.value?.id === id) selectedEvent.value = null
+  if (e) {
+    selectedEvent.value = e
+    modalMode.value = 'view'
+    showModal.value = true
   }
 }
 
-// Annuler l'édition
-const handleCancel = () => {
+const handleModalDelete = async () => {
+  if (selectedEvent.value?.id) {
+    await eventStore.removeEvent(selectedEvent.value.id)
+    closeModal()
+  }
+}
+
+const closeModal = () => {
+  showModal.value = false
   selectedEvent.value = null
+  selectedDate.value = ''
 }
 </script>
 
 <template>
   <div class="page-container">
-   <div v-if="user">
-  <p>{{ user.firstName }} {{ user.lastName }}</p>
-  <p>Foyer : {{ user.userHouseholds?.[0]?.household?.name || 'Aucun foyer' }}</p>
-</div>
-
-
     <h2>Mon calendrier</h2>
 
-    <!-- Formulaire pour ajouter ou éditer -->
-    <EventForm 
-      :selectedEvent="selectedEvent" 
-      :onSubmit="handleSubmit" 
-      :onCancel="handleCancel"
-    />
+    
+   
+      <p>Cliquez sur une date pour créer un événement, ou sur un événement existant pour le modifier</p>
 
-    <!-- Calendrier FullCalendar -->
     <Calendar 
       :events="calendarEvents" 
       :onDateClick="handleDateClick" 
       @eventClick="handleEventClick"
     />
 
-    <!-- Bouton supprimer si un événement est sélectionné -->
-    <button v-if="selectedEvent" @click="handleDelete(selectedEvent.id)">
-      Supprimer l'événement
-    </button>
+    <EventModal 
+      v-if="showModal"
+      :mode="modalMode"
+      :eventData="selectedEvent"
+      @close="closeModal"
+      @save="handleModalSave"
+      @delete="handleModalDelete"
+    />
   </div>
 </template>
 
 <style scoped>
 .page-container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 20px;
 }
 
-button {
-  margin-top: 10px;
-  padding: 5px 10px;
+.instructions {
+  background: #ecf4ef;
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border-left: 4px solid #9CBFA2;
+}
+
+.instructions p {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 14px;
+}
+
+/* Styles personnalisés pour FullCalendar */
+:deep(.fc-toolbar.fc-header-toolbar) {
+  margin-bottom: 1.5rem;
+}
+
+:deep(.fc .fc-toolbar-title) {
+  color: #2f4a35;
+  font-weight: 700;
+}
+
+:deep(.fc .fc-button-primary) {
+  background-color: #9CBFA2;
+  border-color: #9CBFA2;
+  font-weight: 600;
+}
+
+:deep(.fc .fc-button-primary:not(:disabled).fc-button-active),
+:deep(.fc .fc-button-primary:not(:disabled):active) {
+  background-color: #89AD91;
+  border-color: #89AD91;
+}
+
+:deep(.fc .fc-button-primary:disabled) {
+  background-color: #c9dccd;
+  border-color: #c9dccd;
+}
+
+:deep(.fc .fc-button-primary:focus) {
+  box-shadow: 0 0 0 3px rgba(156, 191, 162, 0.25);
+}
+
+:deep(.fc-daygrid-day-frame) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  padding: 6px;
+  border-radius: 10px;
+}
+
+:deep(.fc .fc-daygrid-day-number) {
+  float: none !important;
+  font-size: 15px;
+  font-weight: 600;
+  color: #2f4a35;
+  padding: 6px 0;
+}
+
+:deep(.fc .fc-day-today) {
+  background: #ecf4ef !important;
+  border: 1px solid #9CBFA2 !important;
+}
+
+:deep(.fc-event) {
+  border-radius: 10px;
+  border-width: 0;
+  padding: 6px 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+:deep(.fc-event:focus) {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(156, 191, 162, 0.35);
+}
+
+:deep(.fc-daygrid-event) {
+  margin: 3px 0;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:deep(.fc-daygrid-day:hover) {
+  background-color: #f5f8f6;
   cursor: pointer;
 }
 </style>

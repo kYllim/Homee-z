@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-import NavBarConnect from "@/components/NavBarConnect.vue";
+import NavBarConnect from "@/components/Layout/NavBarConnect.vue";
 import ShoppingListBlock from "@/components/ShoppingListBlock.vue";
-import FoodHeader from "@/components/FoodHeader.vue";
+import FoodHeader from "@/components/Layout/FoodHeader.vue";
 </script>

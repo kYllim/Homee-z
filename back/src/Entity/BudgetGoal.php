@@ -35,7 +35,7 @@ class BudgetGoal
 
     #[ORM\ManyToOne(inversedBy: 'budgetGoals')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $creator = null;
+    private ?Person $creator = null;
 
     public function getId(): ?int
     {
@@ -114,12 +114,12 @@ class BudgetGoal
         return $this;
     }
 
-    public function getCreator(): ?User
+    public function getCreator(): ?Person
     {
         return $this->creator;
     }
 
-    public function setCreator(?User $creator): static
+    public function setCreator(?Person $creator): static
     {
         $this->creator = $creator;
 

@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Person;
+use App\Enum\PersonEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Lcobucci\JWT\Validation\Validator;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
@@ -54,12 +56,18 @@ final class AuthController extends AbstractController
 
         // Ensuite on va créer un nouvel utilisateur et lui sette les valeurs
         $user = new User();
+        $person = New Person();
         $VerificationToken = Uuid::v4();
         $verifyUrl = "http://localhost:8000/api/verifyEmail?token=" . $VerificationToken;
 
         // On hash le mot de passe avant de le stocker
         $hashedPassword = $this->passwordHasher->hashPassword($user, $password);
-        $user->setEmail($email)->setFirstName($firstName)->setLastName($lastName)->setPassword($hashedPassword)->setVerificationToken($VerificationToken);
+
+        // on ajoute la person dans user
+        $person->setFirstName($firstName)->setLastName($lastName)->setUserType(PersonEnum::Adult);
+
+        $user->setEmail($email)->setFirstName($firstName)->setLastName($lastName)->setPassword($hashedPassword)->setVerificationToken($VerificationToken)->setPerson($person);
+
 
         // On valide l'utilisateur avec les contraintes de l'entité User
         $errors = $this->validator->validate($user);

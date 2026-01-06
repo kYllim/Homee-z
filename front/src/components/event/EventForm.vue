@@ -71,14 +71,41 @@ const submit = () => {
 
 <template>
   <div class="event-form">
-    <input v-model="title" placeholder="Titre de l'événement" />
-    <input v-model="description" placeholder="Description" />
-    <input v-model="startAt" type="datetime-local" />
-    <input v-model="endAt" type="datetime-local" />
-    <input v-model="type" placeholder="Type" />
+    <div class="form-group">
+      <label>Titre *</label>
+      <input v-model="title" placeholder="Nom de l'événement" required />
+    </div>
+    
+    <div class="form-group">
+      <label>Description</label>
+      <textarea v-model="description" placeholder="Détails de l'événement" rows="3"></textarea>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label>Début *</label>
+        <input v-model="startAt" type="datetime-local" required />
+      </div>
+      
+      <div class="form-group">
+        <label>Fin</label>
+        <input v-model="endAt" type="datetime-local" />
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label>Type</label>
+      <input v-model="type" placeholder="Ex: réunion, anniversaire..." />
+    </div>
 
-    <button @click="submit">{{ props.selectedEvent ? 'Modifier' : 'Ajouter' }}</button>
-    <button v-if="props.selectedEvent" @click="props.onCancel">Annuler</button>
+    <div class="form-actions">
+      <button class="btn-primary" @click="submit">
+        {{ props.selectedEvent ? '✏️ Modifier l\'événement' : '➕ Créer l\'événement' }}
+      </button>
+      <button v-if="props.selectedEvent" class="btn-secondary" @click="props.onCancel">
+        ❌ Annuler
+      </button>
+    </div>
   </div>
 </template>
 
@@ -86,16 +113,78 @@ const submit = () => {
 .event-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 15px;
 }
-.event-form input {
-  padding: 5px;
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #2c3e50;
   font-size: 14px;
 }
-.event-form button {
-  width: 150px;
-  padding: 5px;
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.event-form input,
+.event-form textarea {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.event-form input:focus,
+.event-form textarea:focus {
+  outline: none;
+  border-color: #3788d8;
+  box-shadow: 0 0 0 3px rgba(55, 136, 216, 0.1);
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-primary {
+  background: #3788d8;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 5px;
   cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background: #2c6bb3;
+}
+
+.btn-secondary {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #5a6268;
 }
 </style>

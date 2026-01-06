@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import { useRouter } from 'vue-router'
-    import type {FormConnexion,ErrorsConexion} from '../../model/index'
-   import {isEmailValid,isPasswordValid,PasswordMatching,isBlank,resetError,setCookie} from '../../services'
+    import type {FormConnexion,ErrorsConexion} from '@/models/'
+    import {isEmailValid,isPasswordValid,isBlank,resetError,setCookie} from '@/services'
     import { useAuth } from '@/composable/useAuth'
     import Field from '@/components/Input.vue'
 
@@ -30,8 +30,10 @@
             return;
         }
         await loginUser(props.dataConnexion.emailConnexion.value,props.dataConnexion.passwordConnexion.value);
-        setCookie('token', data.value.token,7);
-        router.push('/dashboard');
+        if (data.value && data.value.token) {
+            setCookie('token', data.value.token, 7);
+            router.push('/dashboard');
+        }
     }
 </script>
 
@@ -52,7 +54,7 @@
                     <input type="checkbox" class="border-solid border-red-500"/>
                     <p class="font-semibold text-sm">Remember me</p>
                 </label>
-                <router-link to="/about" class="font-semibold text-sm text-green_pastel">Forgot Password ?</router-link>
+                <router-link to="/" class="font-semibold text-sm text-green_pastel">Forgot Password ?</router-link>
             </div>
             <button type="submit" class="px-3 py-2 bg-green_pastel rounded-sm text-white font-semibold lg:text-lg lg:px-4 hover:opacity-80 my-2" :disabled="loading">Sign in</button>
             <p class="text-sm text-center">Don't have an account ?</p>

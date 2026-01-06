@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use App\Enum\EventStatusEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -25,8 +26,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new GetCollection(),  // Récupérer tous les événements
         new Get(),            // Récupérer un événement spécifique
         new Post(processor: EventProcessor::class), // Création avec logique du EventProcessor
-        new Patch(security: "object.getCreator() == user"), // Modification réservée au créateur
-        new Delete(security: "object.getCreator() == user"), // Suppression réservée au créateur
+        new Patch(processor: EventProcessor::class), // Modification avec vérification dans le Processor
+        new Delete(processor: EventProcessor::class), // Suppression avec vérification dans le Processor
     ]
 )]
 #[ORM\HasLifecycleCallbacks]
@@ -85,7 +86,7 @@ class Event
     #[ORM\ManyToOne(inversedBy: 'events')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['event:read', 'event:write'])]
-    private ?User $creator = null;
+    private ?Person $creator = null;
 
     /**
      * Liste des alertes liées à cet événement
@@ -122,13 +123,23 @@ class Event
     public function setType(string $type): static { $this->type = $type; return $this; }
 
     public function getStatus(): ?string { return $this->status; }
-    public function setStatus(string $status): static { $this->status = $status; return $this; }
+    public function setStatus(string $status): static 
+    { 
+        // Valider que le statut fait partie des valeurs acceptées
+        if (!in_array($status, EventStatusEnum::values())) {
+            throw new \InvalidArgumentException(
+                "Statut invalide: '{$status}'. Valeurs acceptées: " . implode(', ', EventStatusEnum::values())
+            );
+        }
+        $this->status = $status; 
+        return $this; 
+    }
 
     public function getHousehold(): ?Household { return $this->household; }
     public function setHousehold(?Household $household): static { $this->household = $household; return $this; }
 
-    public function getCreator(): ?User { return $this->creator; }
-    public function setCreator(?User $creator): static { $this->creator = $creator; return $this; }
+    public function getCreator(): ?Person { return $this->creator; }
+    public function setCreator(?Person $creator): static { $this->creator = $creator; return $this; }
 
     /**
      * @return Collection<int, Alert>

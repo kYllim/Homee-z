@@ -2,8 +2,8 @@
   import { ref,watch } from "vue";
   import type { Ref } from "vue";
   import { useRouter,useRoute } from "vue-router";
-  import type { FormConnexion, ErrorsConexion, FormRegister, ErrorRegister } from "../model";
-  import NavBarLanding from "@/components/NavBarLanding.vue";
+  import type { FormConnexion, ErrorsConexion, FormRegister, ErrorRegister } from "@/models/";
+  import NavBarLanding from "@/components/Layout/NavBarLanding.vue";
   import ConnexionForm from "@/components/Auth/ConnexionForm.vue";
   import InscriptionForm from "@/components/Auth/InscriptionForm.vue";
 
@@ -41,12 +41,12 @@
     emailRegister: ref(""),
     passwordRegister: ref(""),
     passwordComfirmation : ref(""),
-    firstName : ref(''),
-    name : ref('')
+    firstName : ref(""),
+    name : ref("")
   };
 
   const RegisterFormError: ErrorRegister = {
-    emailRegister : ref(''),
+    emailRegister : ref(""),
     passwordRegister: ref(""),
     passwordComfirmation: ref(""),
     name: ref(""),

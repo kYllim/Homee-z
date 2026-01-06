@@ -1,22 +1,78 @@
 <script setup lang="ts">
-    import NavBarConnect from '@/components/NavBarConnect.vue';
+    import NavBarConnect from '@/components/Layout/NavBarConnect.vue';
+    import JoinHouseHoldForm from '@/components/HouseHold/JoinHouseHoldForm.vue';
+    import CreateHouseHoldForm from '@/components/HouseHold/CreateHouseHoldForm.vue';
+    import { type JoinHouseHoldData, type CreateHouseHoldData, type JoinHouseHoldDataError, type CreateHouseHoldDataError } from '@/models/'
+    import { ref,computed, type Ref} from 'vue'
+    import { useRouter,useRoute } from "vue-router";
+
+    const props = defineProps({
+        mode: {
+            type: String,
+            default: "CreateHouseHold",
+        }
+    });
+
+    const router = useRouter();
+    const route = useRoute();
+
+    const JoinFormData : JoinHouseHoldData = {
+        CodeHouseHold: ref(''),
+    };
+
+    const JoinFormDataError : JoinHouseHoldDataError = {
+        CodeHouseHold: ref(''),
+    };
+
+    const CreateFormData : CreateHouseHoldData = {
+        NameHouseHold: ref(''),
+    };
+
+    const CreateFormDataError : CreateHouseHoldDataError = {
+        NameHouseHold: ref(''),
+    };
+
+    const FormType = computed<"JoinHouseHold" | "CreateHouseHold">(() => {
+        return route.query.mode === "JoinHouseHold"
+        ? "JoinHouseHold"
+        : "CreateHouseHold";
+    });
+
+
+    const toggleDisplay = () => {
+        if(FormType.value === "CreateHouseHold") {
+            router.replace({ path: "/JoinHouseHold", query: { mode: "JoinHouseHold" } });
+        } else {
+            router.replace({ path: "/JoinHouseHold", query: { mode: "CreateHouseHold" } });
+        }
+    };  
+
 </script>
 
 <template>
-    <div class="p-4">
-        <NavBarConnect/>
-       <div class="mt-4">
-            <h1 class="font-bold text-2xl mb-2">Foyer</h1>
-            <p class="font-regular text-sm">souhaitez-vous...</p>
-            <div class="flex flex-col gap-2 p-4">
-                <router-link to="#" class="px-3 py-2 bg-transparent border-solid border-2 border-green_pastel rounded-md text-green_pastel font-semibold lg:text-lg lg:px-4 hover:bg-green_pastel hover:text-white my-2 text-center">Rejoindre</router-link>
-                <p>Ou</p>
-                <router-link to="#" class="px-3 py-2 bg-green_pastel rounded-md text-white font-semibold lg:text-lg lg:px-4 hover:opacity-80 my-2 text-center">Créer</router-link>
+    <div class="min-h-screen flex flex-col">
+        <header class="w-full px-4 mb-6">
+            <NavBarConnect />
+        </header>
+
+        <main class="flex-1 w-full flex  lg:justify-center px-4">
+            <div class="w-full max-w-md sm:max-w-lg md:max-w-2xl">
+                <div v-if="FormType === 'JoinHouseHold'" class="px-2">
+                    <JoinHouseHoldForm
+                        :HouseHold="JoinFormData"
+                        :HouseHoldError="JoinFormDataError"
+                        :toggleDisplay="toggleDisplay"
+                    />
+                </div>
+                <div v-else class="px-2">
+                    <CreateHouseHoldForm
+                        :HouseHold="CreateFormData"
+                        :HouseHoldError="CreateFormDataError"
+                        :toggleDisplay="toggleDisplay"
+                    />
+                </div>
             </div>
-       </div>
+        </main>
     </div>
 </template>
 
-
-
-// Dire à Dane pour la navbar ajuster le style et enlever la vérif de connection
