@@ -42,13 +42,13 @@ const Logout = () => {
           <RouterLink to="/dashboard" class="text-lg hover:text-green_pastel">Tableau de bord</RouterLink>
           <RouterLink to="/nourriture" class="text-lg hover:text-green_pastel">Nourriture</RouterLink>
           <RouterLink to="/taches" class="text-lg hover:text-green_pastel">Tâches</RouterLink>
-          <RouterLink to="/calendrier" class="text-lg hover:text-green_pastel">Calendrier</RouterLink>
+          <RouterLink to="/events" class="text-lg hover:text-green_pastel">Calendrier</RouterLink>
           <RouterLink to="/famille" class="text-lg hover:text-green_pastel">Famille</RouterLink>
         </template>
 
         <template v-else>
           <RouterLink to="/" class="text-lg hover:text-green_pastel">Accueil</RouterLink>
-          <RouterLink to="/about" class="text-lg hover:text-green_pastel">À propos</RouterLink>
+          <RouterLink to="/" class="text-lg hover:text-green_pastel">À propos</RouterLink>
           <RouterLink to="/contact" class="text-lg hover:text-green_pastel">Contact</RouterLink>
         </template>
       </div>
@@ -95,7 +95,7 @@ const Logout = () => {
           <RouterLink to="/dashboard" class="font-semibold">Tableau de bord</RouterLink>
           <RouterLink to="/nourriture" class="font-semibold">Nourriture</RouterLink>
           <RouterLink to="/taches" class="font-semibold">Tâches</RouterLink>
-          <RouterLink to="/calendrier" class="font-semibold">Calendrier</RouterLink>
+          <RouterLink to="/events" class="font-semibold">Calendrier</RouterLink>
           <RouterLink to="/famille" class="font-semibold">Famille</RouterLink>
           <button class="text-left text-red-500 font-semibold mt-2" @click="Logout">Déconnexion</button>
         </template>
@@ -103,7 +103,7 @@ const Logout = () => {
         <!-- NON CONNECTÉ -->
         <template v-else>
           <RouterLink to="/" class="font-semibold">Accueil</RouterLink>
-          <RouterLink to="/about" class="font-semibold">À propos</RouterLink>
+          <RouterLink to="/" class="font-semibold">À propos</RouterLink>
           <RouterLink to="/contact" class="font-semibold">Contact</RouterLink>
         </template>
 

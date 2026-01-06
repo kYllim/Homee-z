@@ -32,22 +32,34 @@ export function useApi<T = any>() {
 
       const response = await fetch(url, fetchOptions);
 
+      let responseBody: any;
+      const contentType = response.headers.get("content-type");
+
+      // Lire le corps une seule fois
+      if (contentType && contentType.includes("application/json")) {
+        responseBody = await response.json();
+      } else {
+        responseBody = await response.text();
+      }
+
       if (!response.ok) {
         let message = `HTTP error ${response.status}`;
 
         try {
-          const json = await response.json();
-          if (json.message) message = json.message;
-          else if (json.errors && Array.isArray(json.errors)) message = json.errors[0];
+          if (typeof responseBody === "object") {
+            if (responseBody.message) message = responseBody.message;
+            else if (responseBody.errors && Array.isArray(responseBody.errors)) message = responseBody.errors[0];
+          } else if (responseBody) {
+            message = responseBody;
+          }
         } catch {
-          const text = await response.text();
-          if (text) message = text;
+          // fallback
         }
 
         throw new Error(message);
       }
 
-      data.value = await response.json();
+      data.value = responseBody;
     } catch (err: any) {
       error.value = err.message ?? "Unexpected error";
     } finally {
