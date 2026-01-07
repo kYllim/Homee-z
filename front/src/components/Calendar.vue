@@ -29,7 +29,6 @@ const calendarOptions = ref({
   dateClick: (arg: any) => props.onDateClick?.(arg),
   events: props.events,
   eventClick: (arg: any) => {
-    // Émettre l'événement au parent au lieu d'afficher un modal
     emit('eventClick', arg)
   },
   eventClassNames: (arg: any) => {
@@ -70,6 +69,7 @@ const calendarOptions = ref({
 })
 
 const calendarRef = ref<any>(null)
+let resizeHandler: (() => void) | null = null
 
 const applyResponsiveOptions = () => {
   const isMobile = window.matchMedia('(max-width: 640px)').matches
@@ -96,17 +96,28 @@ const applyResponsiveOptions = () => {
 
 onMounted(() => {
   applyResponsiveOptions()
-  const handler = () => applyResponsiveOptions()
-  window.addEventListener('resize', handler)
-  onUnmounted(() => window.removeEventListener('resize', handler))
+  resizeHandler = () => applyResponsiveOptions()
+  window.addEventListener('resize', resizeHandler)
 })
 
-// Watch pour mettre à jour les events si props.events change
+onUnmounted(() => {
+  if (resizeHandler) {
+    window.removeEventListener('resize', resizeHandler)
+  }
+})
+
 watch(
   () => props.events,
   (newEvents) => {
-    calendarOptions.value.events = newEvents
-  }
+    if (calendarOptions.value) {
+      calendarOptions.value.events = newEvents
+      const api = calendarRef.value?.getApi?.()
+      if (api) {
+        api.refetchEvents()
+      }
+    }
+  },
+  { deep: true }
 )
 </script>
 
