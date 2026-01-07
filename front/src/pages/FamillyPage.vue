@@ -19,7 +19,6 @@
                 <FamillyList/>
             </div>
         </main>
-        
     </div>
 </template>
 

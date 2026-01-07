@@ -76,12 +76,12 @@ class EventProcessor implements ProcessorInterface
         if (in_array($operation->getName(), ['patch', 'delete', 'put'])) {
             $creator = $data->getCreator();
             $currentPerson = $user->getPerson();
-            
+
             // Logs de débogage
             error_log("Operation: " . $operation->getName());
             error_log("Creator ID: " . ($creator ? $creator->getId() : 'null'));
             error_log("Current Person ID: " . ($currentPerson ? $currentPerson->getId() : 'null'));
-            
+
             if (!$creator || !$currentPerson || $creator->getId() !== $currentPerson->getId()) {
                 throw new \Symfony\Component\Security\Core\Exception\AccessDeniedException(
                     "Vous n'avez pas le droit de modifier ou supprimer cet événement."
@@ -94,7 +94,7 @@ class EventProcessor implements ProcessorInterface
             error_log("DELETE OPERATION - Calling removeProcessor");
             return $this->removeProcessor->process($data, $operation, $uriVariables, $context);
         }
-        
+
         return $this->persistProcessor->process($data, $operation, $uriVariables, $context);
     }
 }

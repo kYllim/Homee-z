@@ -1,5 +1,5 @@
 <script setup>
-import NavBarLanding from '@/components/NavBarLanding.vue'
+import NavBarLanding from '@/components/Layout/NavBarLanding.vue'
 import HeroSection from '@/components/landing/HeroSection.vue'
 import TaglineSection from '@/components/landing/TaglineSection.vue'
 import FeaturesSection from '@/components/landing/FeaturesSection.vue'

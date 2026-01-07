@@ -1,5 +1,6 @@
 import type { Chore } from '../models/Chore.interface'
 import { TYPE_MAPPING, STATUS_MAPPING, STATUS_REVERSE_MAPPING } from '../models/Chore.interface'
+import { GetCookie } from './cookie'
 
 const API_URL = 'http://localhost:8000/api/events'
 
@@ -7,7 +8,7 @@ const API_URL = 'http://localhost:8000/api/events'
  * Récupérer le token d'authentification
  */
 function getAuthToken(): string | null {
-  return localStorage.getItem('auth_token')
+  return GetCookie('token')
 }
 
 /**

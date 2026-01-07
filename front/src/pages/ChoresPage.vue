@@ -9,7 +9,7 @@ import ChoresGrid from '@/components/chores/ChoresGrid.vue'
 import ChoresStats from '@/components/chores/ChoresStats.vue'
 import ChoreFormModal from '@/components/chores/ChoreFormModal.vue'
 import type { Chore } from '@/models/Chore.interface'
-import NavBarConnect from '@/components/NavBarConnect.vue'
+import NavBarConnect from '@/components/Layout/NavBarConnect.vue'
 
 // Store Pinia
 const choreStore = useChoreStore()

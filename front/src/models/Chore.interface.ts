@@ -29,14 +29,14 @@ export const TYPE_MAPPING: Record<string, { key: string; label: string; icon: st
 
 // Mapping des statuts Event → Chore
 export const STATUS_MAPPING: Record<string, string> = {
-  'à faire': 'todo',
+  'prévu': 'todo',
   'en cours': 'in-progress',
   'terminé': 'done',
   'en retard': 'overdue'
 }
 
 export const STATUS_REVERSE_MAPPING: Record<string, string> = {
-  'todo': 'à faire',
+  'todo': 'prévu',
   'in-progress': 'en cours',
   'done': 'terminé',
   'overdue': 'en retard'

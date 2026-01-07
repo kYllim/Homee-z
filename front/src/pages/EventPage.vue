@@ -4,6 +4,7 @@ import type { EventInput } from '@fullcalendar/core'
 import { useEventStore } from '@/stores/eventStore'
 import Calendar from '@/components/Calendar.vue'
 import EventModal from '@/components/event/EventModal.vue'
+import NavBarConnect from '@/components/Layout/NavBarConnect.vue'
 import type { Event } from '@/models/Events.interface'
 
 const eventStore = useEventStore()
@@ -100,7 +101,8 @@ const handleModalSave = async (eventData: any) => {
     const dataToSave = selectedDate.value && !eventData.start 
       ? { ...eventData, start: selectedDate.value }
       : eventData
-    await eventStore.addEvent(dataToSave)
+    console.log(dataToSave)
+    // await eventStore.addEvent(dataToSave)
   }
   closeModal()
 }
@@ -131,12 +133,11 @@ const closeModal = () => {
 
 <template>
   <div class="page-container">
+    <header class="w-full px-4 mb-6 relative z-50">
+      <NavBarConnect />
+    </header>
+
     <h2>Mon calendrier</h2>
-
-    
-   
-      <p>Cliquez sur une date pour créer un événement, ou sur un événement existant pour le modifier</p>
-
     <Calendar 
       :events="calendarEvents" 
       :onDateClick="handleDateClick" 

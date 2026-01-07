@@ -41,9 +41,9 @@ const Logout = () => {
         <template v-if="isLoggedIn">
           <RouterLink to="/dashboard" class="text-lg hover:text-green_pastel">Tableau de bord</RouterLink>
           <RouterLink to="/recettes" class="text-lg hover:text-green_pastel">Recettes</RouterLink>
-          <RouterLink to="/taches" class="text-lg hover:text-green_pastel">Tâches</RouterLink>
+          <RouterLink to="/chores" class="text-lg hover:text-green_pastel">Tâches</RouterLink>
           <RouterLink to="/events" class="text-lg hover:text-green_pastel">Calendrier</RouterLink>
-          <RouterLink to="/famille" class="text-lg hover:text-green_pastel">Famille</RouterLink>
+          <RouterLink to="/familly" class="text-lg hover:text-green_pastel">Famille</RouterLink>
         </template>
 
         <template v-else>
@@ -94,8 +94,8 @@ const Logout = () => {
         <template v-if="isLoggedIn">
           <RouterLink to="/dashboard" class="font-semibold">Tableau de bord</RouterLink>
           <RouterLink to="/recettes" class="font-semibold">Recettes</RouterLink>
-          <RouterLink to="/taches" class="font-semibold">Tâches</RouterLink>
-          <RouterLink to="/calendrier" class="font-semibold">Calendrier</RouterLink>
+          <RouterLink to="/chores" class="font-semibold">Tâches</RouterLink>
+          <RouterLink to="/events" class="font-semibold">Calendrier</RouterLink>
           <RouterLink to="/familly" class="font-semibold">Famille</RouterLink>
           <button class="text-left text-red-500 font-semibold mt-2" @click="Logout">Déconnexion</button>
         </template>

@@ -32,34 +32,33 @@ export function useApi<T = any>() {
 
       const response = await fetch(url, fetchOptions);
 
-      let responseBody: any;
-      const contentType = response.headers.get("content-type");
+      // parse the response body exactly once and reuse it
+      const contentType = response.headers.get("content-type") || "";
+      let responseBody: any = null;
 
-      // Lire le corps une seule fois
-      if (contentType && contentType.includes("application/json")) {
-        responseBody = await response.json();
+      if (contentType.includes("application/json")) {
+        try {
+          responseBody = await response.json();
+        } catch (e) {
+          responseBody = null;
+        }
       } else {
         responseBody = await response.text();
       }
 
       if (!response.ok) {
         let message = `HTTP error ${response.status}`;
-
-        try {
-          const json = await response.json();
-          if (json.message) message = json.message;
-        } catch {}
-
+        if (responseBody && typeof responseBody === 'object' && responseBody.message) {
+          message = String(responseBody.message);
+        }
         throw new Error(message);
       }
 
-      const json = await response.json();
-      data.value = json;
-
-      return json; // ✅ CLÉ ICI
+      data.value = responseBody;
+      return responseBody;
     } catch (err: any) {
       error.value = err.message ?? "Unexpected error";
-      throw err; // ✅ important aussi
+      throw err; 
     } finally {
       loading.value = false;
     }
