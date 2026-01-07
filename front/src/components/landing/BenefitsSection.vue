@@ -52,7 +52,7 @@ const benefits = ref([
           />
         </div>
         <div class="flex justify-center mt-6 md:mt-0 order-first md:order-last">
-          <div class="w-full h-[250px] sm:h-[300px] bg-linear-to-br from-green_pastel to-lighBlue rounded-2xl md:rounded-3xl shadow-xl flex items-center justify-center">
+          <div class="w-full h-64 md:h-[500px] bg-linear-to-br from-green_pastel to-lighBlue rounded-2xl md:rounded-3xl shadow-xl flex items-center justify-center">
             <i class="fa-solid fa-home text-white text-6xl md:text-9xl opacity-30"></i>
           </div>
         </div>

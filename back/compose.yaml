@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-elias}
       POSTGRES_USER: ${POSTGRES_USER:-elias}
     ports:
-      - "5432:5432"
+      - "5433:5432"
     healthcheck:
       test: [
           "CMD",
@@ -29,7 +29,7 @@ services:
     image: adminer
     container_name: adminer
     ports:
-      - 8080:8080  # Port sur lequel vous accéderez à l'interface web d'Adminer
+      - 18080:8080  # Port sur lequel vous accéderez à l'interface web d'Adminer
     depends_on:
       - database  # Permet de s'assurer que le conteneur de la base de données est opérationnel avant de lancer le conteneur Adminer
     restart: unless-stopped

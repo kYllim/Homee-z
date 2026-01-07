@@ -1,6 +1,6 @@
 import './assets/main.css'
 import './assets/fullcalendar-tailwind.css'
-import clickOutside from '@/directives/ClickOutside';
+import clickOutside from '@/directives/clickOutside';
 
 
 import { createPinia } from 'pinia'

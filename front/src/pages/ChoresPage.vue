@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useChoreStore } from '@/stores/choreStore'
 import axios from 'axios'
-import ChoresHeader from '@/components/chores/ChoresHeader.vue'
+//import ChoresHeader from '@/components/chores/ChoresHeader.vue'
 import ChoresPageHeader from '@/components/chores/ChoresPageHeader.vue'
 import ChoresFilters from '@/components/chores/ChoresFilters.vue'
 import ChoresGrid from '@/components/chores/ChoresGrid.vue'

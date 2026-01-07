@@ -82,7 +82,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue"
-import axios from "axios"
+import api from "@/services/api"
 
 const emit = defineEmits(["close", "created"])
 
@@ -99,10 +99,11 @@ const addArticle = () => {
 const create = async () => {
   if (!title.value.trim()) return alert("Nom requis")
 
-  await axios.post("http://127.0.0.1:8001/api/shopping-lists", {
+  await api.post("/shopping-lists", {
     title: title.value,
     items: articles.value
   })
+
 
   emit("created")  // ← Recharge dans ta page
   emit("close")    // ← Ferme le popup
