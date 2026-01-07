@@ -94,17 +94,21 @@ const handleDateClick = (arg: any) => {
 }
 
 const handleModalSave = async (eventData: any) => {
-  if (eventData.id) {
-    await eventStore.updateEventById(eventData.id, eventData)
-    selectedEvent.value = eventStore.events.find(e => e.id === eventData.id) || null
-  } else {
-    const dataToSave = selectedDate.value && !eventData.start 
-      ? { ...eventData, start: selectedDate.value }
-      : eventData
-    console.log(dataToSave)
-    // await eventStore.addEvent(dataToSave)
+  try {
+    if (eventData.id) {
+      await eventStore.updateEventById(eventData.id, eventData)
+      selectedEvent.value = eventStore.events.find(e => e.id === eventData.id) || null
+    } else {
+      const dataToSave = selectedDate.value && !eventData.startAt 
+        ? { ...eventData, startAt: selectedDate.value }
+        : eventData
+      console.log('Saving event:', dataToSave)
+      await eventStore.addEvent(dataToSave)
+    }
+    closeModal()
+  } catch (error) {
+    console.error('Erreur lors de la sauvegarde:', error)
   }
-  closeModal()
 }
 
 const handleEventClick = (arg: any) => {

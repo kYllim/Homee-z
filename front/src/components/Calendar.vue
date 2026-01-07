@@ -29,19 +29,62 @@ const calendarOptions = ref({
   dateClick: (arg: any) => props.onDateClick?.(arg),
   events: props.events,
   eventClick: (arg: any) => {
-    // Émettre l'événement au parent au lieu d'afficher un modal
     emit('eventClick', arg)
   },
   eventClassNames: ['bg-primary', 'text-white', 'rounded-md', 'px-1', 'py-0.5', 'border-0'],
   dayCellClassNames: ['cursor-pointer', 'hover:bg-gray-50', 'rounded-lg', 'border-0']
 })
 
-// Watch pour mettre à jour les events si props.events change
+const calendarRef = ref<any>(null)
+let resizeHandler: (() => void) | null = null
+
+const applyResponsiveOptions = () => {
+  const isMobile = window.matchMedia('(max-width: 640px)').matches
+  const api = calendarRef.value?.getApi?.()
+  
+  if (isMobile) {
+    api?.changeView('listWeek')
+    calendarOptions.value.headerToolbar = {
+      left: 'prev,next',
+      center: 'title',
+      right: 'listWeek'
+    }
+    ;(calendarOptions.value as any).aspectRatio = 0.9
+  } else {
+    api?.changeView('dayGridMonth')
+    calendarOptions.value.headerToolbar = {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,dayGridWeek,dayGridDay,listWeek'
+    }
+    ;(calendarOptions.value as any).aspectRatio = 1.35
+  }
+}
+
+onMounted(() => {
+  applyResponsiveOptions()
+  resizeHandler = () => applyResponsiveOptions()
+  window.addEventListener('resize', resizeHandler)
+})
+
+onUnmounted(() => {
+  if (resizeHandler) {
+    window.removeEventListener('resize', resizeHandler)
+  }
+})
+
 watch(
   () => props.events,
   (newEvents) => {
-    calendarOptions.value.events = newEvents
-  }
+    if (calendarOptions.value) {
+      calendarOptions.value.events = newEvents
+      const api = calendarRef.value?.getApi?.()
+      if (api) {
+        api.refetchEvents()
+      }
+    }
+  },
+  { deep: true }
 )
 </script>
 

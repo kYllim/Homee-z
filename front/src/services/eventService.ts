@@ -17,11 +17,8 @@ export async function getEvents(): Promise<Event[]> {
   const res = await axios.get(API_URL, {
     headers: getAuthHeaders()
   })
-    console.log('Réponse GET /api/events', res.data) // <- ici
+    const members = res.data['hydra:member'] ?? res.data['member'] ?? [] 
 
-    const members = res.data['hydra:member'] ?? res.data['member'] ?? [] // fallback
-
-  console.log('res.data', res.data)
   return members.map((e: any) => ({
     id: e.id,
     title: e.title,
@@ -40,7 +37,7 @@ export async function getEventById(id: number): Promise<Event> {
   const res = await axios.get(`${API_URL}/${id}`, {
     headers: getAuthHeaders()
   })
-  console.log('res.data', res.data)
+
   const e = res.data
   return {
     id: e.id,
@@ -57,11 +54,13 @@ export async function getEventById(id: number): Promise<Event> {
 }
 
 export async function createEvent(eventData: Partial<Event>): Promise<Event> {
-  const cleanData = normalizeDates(eventData)
-  const res = await axios.post(API_URL, cleanData, {
+  const cleanData = normalizeDates({
+    ...eventData,
+    status: eventData.status ?? computeStatusFromDates(eventData.startAt, eventData.endAt)
+  })
+  const res = await api.post(API_URL, cleanData, {
     headers: getAuthHeaders('application/ld+json')
   })
-    console.log('res.data', res.data)
 
   const e = res.data
   return {
@@ -115,5 +114,4 @@ export async function deleteEvent(id: number): Promise<void> {
   const res = await axios.delete(`${API_URL}/${id}`, {
     headers: getAuthHeaders()
   })
-  console.log('res.data', res.data)   
 }
