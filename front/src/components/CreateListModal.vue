@@ -83,12 +83,13 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import axios from "axios"
+import { SHOPPING_API_BASE } from "../services/api"
 
 const emit = defineEmits(["close", "created"])
 
 const title = ref("")
 const articleInput = ref("")
-const articles = ref([])
+const articles = ref<string[]>([])
 
 const addArticle = () => {
   if (!articleInput.value.trim()) return
@@ -99,7 +100,7 @@ const addArticle = () => {
 const create = async () => {
   if (!title.value.trim()) return alert("Nom requis")
 
-  await axios.post("http://127.0.0.1:8001/api/shopping-lists", {
+  await axios.post(`${SHOPPING_API_BASE}/api/shopping-lists`, {
     title: title.value,
     items: articles.value
   })

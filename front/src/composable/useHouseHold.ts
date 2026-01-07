@@ -1,6 +1,8 @@
 import { useApi } from '@/composable/fetch';
 import type { HouseHoldRoleEnum } from '@/models';
-const urlBase : string = 'http://127.0.0.1:8000/';
+import { API_BASE } from '../services/api';
+
+const urlBase : string = `${API_BASE.replace(/\/$/, '')}/`;
 
 export function useHouseHold() {
     const { data, error, loading, callApi } = useApi();

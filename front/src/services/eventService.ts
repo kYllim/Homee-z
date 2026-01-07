@@ -1,8 +1,9 @@
 import axios from 'axios'
 import type { Event } from '../models/Events.interface'
 import { GetCookie } from './index'
+import { API_BASE } from './api'
 
-const API_URL = 'http://localhost:8000/api/events'
+const API_URL = `${API_BASE}/api/events`
 
 const getAuthHeaders = (contentType: string = 'application/json') => {
   const token = GetCookie('token')

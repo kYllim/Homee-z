@@ -1,8 +1,9 @@
 import type { Chore } from '../models/Chore.interface'
 import { TYPE_MAPPING, STATUS_MAPPING, STATUS_REVERSE_MAPPING } from '../models/Chore.interface'
 import { GetCookie } from './cookie'
+import { API_BASE } from './api'
 
-const API_URL = 'http://localhost:8000/api/events'
+const API_URL = `${API_BASE}/api/events`
 
 /**
  * Récupérer le token d'authentification

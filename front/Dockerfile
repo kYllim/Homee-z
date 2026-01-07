@@ -1,18 +1,28 @@
-# Étape 1 : builder
-FROM node:18-alpine AS builde
+FROM node:18-alpine AS builder
+
 WORKDIR /app
 
 RUN apk update && apk upgrade
 
+
 COPY package*.json ./
-RUN npm install
+RUN npm ci
+
 
 COPY . .
+
+
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
+
 RUN npm run build
 
-# Étape 2 : servir le build
 FROM nginx:alpine
+
 COPY --from=builder /app/dist /usr/share/nginx/html
+
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 

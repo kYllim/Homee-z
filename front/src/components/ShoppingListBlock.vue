@@ -72,6 +72,7 @@
 <script setup>
 import { ref, onMounted } from "vue"
 import axios from "axios"
+import { SHOPPING_API_BASE } from "../services/api"
 import { useRouter } from "vue-router"
 import CreateListModal from "./CreateListModal.vue"
 
@@ -84,7 +85,7 @@ const closeModal = () => showModal.value = false
 
 const loadLists = async () => {
   try {
-    const res = await axios.get("http://127.0.0.1:8001/api/shopping-lists",{})
+    const res = await axios.get(`${SHOPPING_API_BASE}/api/shopping-lists`,{})
     shoppingLists.value = res.data
   } catch (error) {
     console.error("Erreur chargement :", error)

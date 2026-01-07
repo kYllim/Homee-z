@@ -22,18 +22,23 @@ Icon
 /.env*
 !/.env.dist
 !/.env.example
-/.env.local.php 
+/.env.local.php
 
-
+# Backend environment files
+/back/.env*
+!back/.env.dist
+!back/.env.example
 
 # Symfony secrets and local caches/logs
 /config/secrets/
 /var/
 /**/var/
+/back/var/
 
 # Composer dependencies (don't commit vendors)
 /vendor/
 /**/vendor/
+/back/vendor/
 
 # PHPUnit / test artifacts
 /phpunit.xml
@@ -70,18 +75,35 @@ yarn-error.log
 /.sass-cache/
 
 # -------------------------
+# JWT Authentication Keys (IMPORTANT!)
+# -------------------------
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+/back/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
+
+# -------------------------
+# Production / Deployment
+# -------------------------
+# Production environment file (contains secrets!)
+/deploy/.env
+
+# SSL Certificates (Let's Encrypt)
+/certbot/conf/*
+/certbot/www/*
+!certbot/conf/.gitkeep
+!certbot/www/.gitkeep
+
+# Docker volumes data (if present locally)
+/postgres_data/
+/symfony_var/
+
+# -------------------------
 # Project root extras that are safe to ignore
 # -------------------------
 composer-setup.php
 composer.sig
-/.DS_Store
-
-# Keep any local/backups or OS-specific files out
 *~
-
-###> lexik/jwt-authentication-bundle ###
-/config/jwt/*.pem
-###< lexik/jwt-authentication-bundle ###
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/

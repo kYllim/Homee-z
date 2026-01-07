@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useChoreStore } from '@/stores/choreStore'
 import axios from 'axios'
+import { API_BASE } from '../services/api'
 import ChoresHeader from '@/components/chores/ChoresHeader.vue'
 import ChoresPageHeader from '@/components/chores/ChoresPageHeader.vue'
 import ChoresFilters from '@/components/chores/ChoresFilters.vue'
@@ -35,7 +36,7 @@ const currentFilters = ref({
  */
 const fetchUser = async () => {
   try {
-    const { data } = await axios.get(`http://localhost:8000/api/users/${userId}`)
+    const { data } = await axios.get(`${API_BASE}/api/users/${userId}`)
     user.value = data
     choreStore.setCurrentUserId(data.id)
     console.log('Utilisateur chargé:', data)

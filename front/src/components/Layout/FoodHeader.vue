@@ -57,12 +57,13 @@
 <script setup>
 import { ref, onMounted } from "vue"
 import axios from "axios"
+import { SHOPPING_API_BASE } from "../../services/api"
 // Listes de courses
 const shoppingListsCount = ref(0)
 
 const loadLists = async () => {
   try {
-    const res = await axios.get("http://127.0.0.1:8000/shopping-lists")
+    const res = await axios.get(`${SHOPPING_API_BASE}/shopping-lists`)
     shoppingListsCount.value = res.data.length
   } catch (e) {
     console.error("Erreur chargement listes", e)
