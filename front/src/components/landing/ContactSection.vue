@@ -51,7 +51,7 @@ const submitContactForm = () => {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
         <div class="space-y-6 md:space-y-8">
           <div v-for="info in contactInfo" :key="info.id" class="flex items-start space-x-3 md:space-x-4">
-            <div class="w-10 h-10 md:w-12 md:h-12 bg-green_pastel bg-opacity-10 rounded-lg flex items-center justify-center shrink-0">
+            <div class="w-10 h-10 md:w-12 md:h-12 bg-[#FAFAFA] bg-opacity-10 rounded-lg flex items-center justify-center shrink-0">
               <i :class="info.icon" class="text-green_pastel text-lg md:text-xl"></i>
             </div>
             <div>
