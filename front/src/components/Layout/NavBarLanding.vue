@@ -12,7 +12,7 @@
       <div class="flex gap-2 items-center">
         <i class="pi pi-times text-xl lg:hidden" @click="IsOpen=false" v-if="IsOpen"></i>
         <i class="pi pi-bars text-xl lg:hidden" @click="IsOpen=true" v-else></i>
-        <h1 class="font-bold text-lg lg:text-4xl">homeez</h1>
+        <a href="/" class="font-bold text-lg lg:text-4xl">homeez</a>
       </div>
       <div class="hidden lg:flex gap-6 items-center">
         <a href="#" class="font-semibold text-lg hover:text-green_pastel">Fonctionnalités</a>

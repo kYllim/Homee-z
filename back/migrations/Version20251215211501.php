@@ -7,9 +7,6 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20251215211501 extends AbstractMigration
 {
     public function getDescription(): string
@@ -19,8 +16,7 @@ final class Version20251215211501 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP SEQUENCE user_household_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE IF EXISTS user_household_id_seq CASCADE');
         $this->addSql('CREATE TABLE person (id SERIAL NOT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, type VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN person.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE person_household (id SERIAL NOT NULL, person_id INT NOT NULL, household_id INT NOT NULL, role VARCHAR(255) NOT NULL, joined_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
@@ -29,11 +25,11 @@ final class Version20251215211501 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN person_household.joined_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('ALTER TABLE person_household ADD CONSTRAINT FK_ECEACC6A217BBB47 FOREIGN KEY (person_id) REFERENCES person (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE person_household ADD CONSTRAINT FK_ECEACC6AE79FF843 FOREIGN KEY (household_id) REFERENCES household (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE user_household DROP CONSTRAINT fk_5423a22439c60054');
-        $this->addSql('ALTER TABLE user_household_user DROP CONSTRAINT fk_e7499ef167538441');
-        $this->addSql('ALTER TABLE user_household_user DROP CONSTRAINT fk_e7499ef1a76ed395');
-        $this->addSql('DROP TABLE user_household');
-        $this->addSql('DROP TABLE user_household_user');
+        $this->addSql('ALTER TABLE IF EXISTS user_household DROP CONSTRAINT IF EXISTS fk_5423a22439c60054');
+        $this->addSql('ALTER TABLE IF EXISTS user_household_user DROP CONSTRAINT IF EXISTS fk_e7499ef167538441');
+        $this->addSql('ALTER TABLE IF EXISTS user_household_user DROP CONSTRAINT IF EXISTS fk_e7499ef1a76ed395');
+        $this->addSql('DROP TABLE IF EXISTS user_household');
+        $this->addSql('DROP TABLE IF EXISTS user_household_user');
         $this->addSql('ALTER TABLE alert DROP CONSTRAINT FK_17FD46C17597D3FE');
         $this->addSql('ALTER TABLE alert ADD CONSTRAINT FK_17FD46C17597D3FE FOREIGN KEY (member_id) REFERENCES person (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE budget_goal DROP CONSTRAINT FK_8618E97E61220EA6');
@@ -55,7 +51,6 @@ final class Version20251215211501 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE alert DROP CONSTRAINT FK_17FD46C17597D3FE');
         $this->addSql('ALTER TABLE budget_goal DROP CONSTRAINT FK_8618E97E61220EA6');

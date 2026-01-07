@@ -7,15 +7,8 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-<<<<<<< HEAD:back/migrations/Version20251206164455.php
 
-final class Version20251123175635 extends AbstractMigration
-=======
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20251217164429 extends AbstractMigration
->>>>>>> events:back/migrations/Version20251217164429.php
 {
     public function getDescription(): string
     {

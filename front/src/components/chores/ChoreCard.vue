@@ -16,15 +16,27 @@ const statusConfig = {
 }
 
 const typeConfig = {
-  cleaning: { bg: 'bg-[#9CBFA2]', icon: 'fa-broom' },
-  cooking: { bg: 'bg-blue-100', icon: 'fa-utensils', iconColor: 'text-blue-600' },
-  laundry: { bg: 'bg-green-100', icon: 'fa-check', iconColor: 'text-green-600' },
-  shopping: { bg: 'bg-red-100', icon: 'fa-shopping-cart', iconColor: 'text-red-600' },
-  garden: { bg: 'bg-purple-100', icon: 'fa-seedling', iconColor: 'text-purple-600' }
+  cleaning: { bg: 'bg-[#9CBFA2]', icon: 'fa-broom', bgColor: '#ecf2ec' },
+  cooking: { bg: 'bg-blue-100', icon: 'fa-utensils', iconColor: 'text-blue-600', bgColor: '#d9ebf9' },
+  laundry: { bg: 'bg-green-100', icon: 'fa-check', iconColor: 'text-green-600', bgColor: '#dbfbe7' },
+  shopping: { bg: 'bg-red-100', icon: 'fa-shopping-cart', iconColor: 'text-red-600', bgColor: '#fee2e2' },
+  garden: { bg: 'bg-purple-100', icon: 'fa-seedling', iconColor: 'text-purple-600', bgColor: '#f2e9ff' }
 }
 
 const getTypeConfig = (type) => typeConfig[type] || typeConfig.cleaning
 const getStatusConfig = (status) => statusConfig[status] || statusConfig.todo
+const getBgColor = (type) => getTypeConfig(type).bgColor || '#ecf2ec'
+
+// Formater la date pour n'afficher que la date sans l'heure
+const formatDate = (dateString) => {
+  if (!dateString) return ''
+  const date = new Date(dateString)
+  return date.toLocaleDateString('fr-FR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+}
 </script>
 
 <template>
@@ -32,14 +44,11 @@ const getStatusConfig = (status) => statusConfig[status] || statusConfig.todo
     <!-- Header -->
     <div class="flex items-start justify-between mb-4">
       <div class="flex items-center space-x-3">
-        <div 
-          :class="[
-            'w-10 h-10 rounded-xl flex items-center justify-center',
-            getTypeConfig(chore.type).bg,
-            getTypeConfig(chore.type).iconColor ? '' : 'bg-opacity-20'
-          ]"
+        <div
+          class="w-10 h-10 rounded-xl flex items-center justify-center"
+          :style="{ backgroundColor: getBgColor(chore.type) }"
         >
-          <i 
+          <i
             :class="[
               'fa-solid',
               getTypeConfig(chore.type).icon,
@@ -70,19 +79,19 @@ const getStatusConfig = (status) => statusConfig[status] || statusConfig.todo
     <div class="space-y-2 mb-4">
       <div class="flex items-center justify-between text-xs">
         <span class="text-gray-500">Début :</span>
-        <span class="font-medium">{{ chore.startDate }}</span>
+        <span class="font-medium">{{ formatDate(chore.startDate) }}</span>
       </div>
       <div class="flex items-center justify-between text-xs">
         <span class="text-gray-500">Fin :</span>
-        <span 
+        <span
           :class="[
             'font-medium',
-            chore.status === 'overdue' ? 'text-red-600' : 
+            chore.status === 'overdue' ? 'text-red-600' :
             chore.status === 'in-progress' ? 'text-orange-600' :
             chore.status === 'done' ? 'text-green-600' : ''
           ]"
         >
-          {{ chore.endDate }}
+          {{ formatDate(chore.endDate) }}
         </span>
       </div>
     </div>
