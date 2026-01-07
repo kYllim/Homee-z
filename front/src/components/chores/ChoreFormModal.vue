@@ -158,7 +158,15 @@ const handleClose = () => {
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 20px;
+  padding: 1rem;
+}
+
+@media (max-width: 639px) {
+  .modal-overlay {
+    padding: 0.5rem;
+    align-items: flex-start;
+    padding-top: 2rem;
+  }
 }
 
 .modal-content {
@@ -175,20 +183,41 @@ const handleClose = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem;
+  padding: 1rem;
   border-bottom: 1px solid #e5e7eb;
 }
 
+@media (min-width: 640px) {
+  .modal-header {
+    padding: 1.5rem;
+  }
+}
+
 .modal-body {
-  padding: 1.5rem;
+  padding: 1rem;
+}
+
+@media (min-width: 640px) {
+  .modal-body {
+    padding: 1.5rem;
+  }
 }
 
 .modal-footer {
   display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  padding: 1.5rem;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
   border-top: 1px solid #e5e7eb;
+}
+
+@media (min-width: 640px) {
+  .modal-footer {
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding: 1.5rem;
+  }
 }
 
 .form-group {
@@ -197,8 +226,14 @@ const handleClose = () => {
 
 .form-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .form-row {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .form-label {
@@ -234,6 +269,13 @@ const handleClose = () => {
   border: none;
   cursor: pointer;
   transition: all 0.2s;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .btn-primary {
+    width: auto;
+  }
 }
 
 .btn-primary:hover {
@@ -249,6 +291,13 @@ const handleClose = () => {
   border: 1px solid #d1d5db;
   cursor: pointer;
   transition: all 0.2s;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .btn-secondary {
+    width: auto;
+  }
 }
 
 .btn-secondary:hover {

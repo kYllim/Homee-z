@@ -55,38 +55,38 @@
             <span class="bg-brown_pastel px-5 py-4 flex items-center justify-center w-fit rounded-xl shadow-sm">
                 <i class="pi pi-user-plus text-green_pastel text-2xl"></i>
             </span>
-            <h1 class="font-bold text-lg">Create Account</h1>
-            <p class="text-sm">Join us to organize your hou sehold tasks</p>
+            <h1 class="font-bold text-lg">Créer un compte</h1>
+            <p class="text-sm">Rejoignez-nous pour organiser vos tâches ménagères</p>
         </div>
         <form class="flex flex-col gap-2" @submit.prevent="submitForm">
-            <Field title="First Name" name="firstName" type="text" placeholder="Enter your first name" v-model="props.dataRegister.firstName.value" :errorMessage="props.errorRegister.firstName.value"/>
-            <Field title="Name" name="name" type="text" placeholder="Enter your name" v-model="props.dataRegister.name.value" :errorMessage="props.errorRegister.name.value"/>
-            <Field title="Email Address" name="email" type="email" placeholder="Enter your email" v-model="props.dataRegister.emailRegister.value" icon="pi-at" :errorMessage="props.errorRegister.emailRegister.value"/>
-            <Field title="Password" name="password" type="password" placeholder="Enter your password" v-model="props.dataRegister.passwordRegister.value" icon="pi-lock" :errorMessage="props.errorRegister.passwordRegister.value"/>
-            <Field title="Confirm Password" name="passwordConfirmation" type="password" placeholder="Confirm your password" v-model="props.dataRegister.passwordComfirmation.value" icon="pi-lock" :errorMessage="props.errorRegister.passwordComfirmation.value"/>
+            <Field title="Prénom" name="firstName" type="text" placeholder="Entrez votre prénom" v-model="props.dataRegister.firstName.value" :errorMessage="props.errorRegister.firstName.value"/>
+            <Field title="Nom" name="name" type="text" placeholder="Entrez votre nom" v-model="props.dataRegister.name.value" :errorMessage="props.errorRegister.name.value"/>
+            <Field title="Adresse e-mail" name="email" type="email" placeholder="Entrez votre e-mail" v-model="props.dataRegister.emailRegister.value" icon="pi-at" :errorMessage="props.errorRegister.emailRegister.value"/>
+            <Field title="Mot de passe" name="password" type="password" placeholder="Entrez votre mot de passe" v-model="props.dataRegister.passwordRegister.value" icon="pi-lock" :errorMessage="props.errorRegister.passwordRegister.value"/>
+            <Field title="Confirmer le mot de passe" name="passwordConfirmation" type="password" placeholder="Confirmez votre mot de passe" v-model="props.dataRegister.passwordComfirmation.value" icon="pi-lock" :errorMessage="props.errorRegister.passwordComfirmation.value"/>
             <div class="flex flex-col justify-items-start bg-beige-pastel rounded-md p-4 my-2 shadow-sm gap-2">
-                <p class="text-sm font-medium text-lighBlue">password must contain :</p> 
+                <p class="text-sm font-medium text-lighBlue">Le mot de passe doit contenir :</p>
                 <p class="flex flex-row flex-wrap items-center align-center text-xs gap-2 font-medium text-lighBlue">
                     <i class="pi pi-check-circle text-green-400 text-sm" style="font-size: 2rem"></i>
-                    at least 8 characters
+                    Au moins 8 caractères
                 </p>
                 <p class="flex flex-row flex-wrap items-center align-center text-xs gap-2 font-medium text-lighBlue">
                     <i class="pi pi-check-circle text-green-400 text-sm" style="font-size: 2rem"></i>
-                    One uppercase and lowercase letter
+                    Une lettre majuscule et minuscule
                 </p>
                 <p class="flex flex-row flex-wrap items-center align-center gap-2 text-xs font-medium text-lighBlue">
                     <i class="pi pi-check-circle text-green-400 text-sm" style="font-size: 2rem"></i>
-                    One number
-                </p>               
+                    Un chiffre
+                </p>
             </div>
             <label class="flex align-baseline gap-2">
                 <input type="checkbox" class="border-solid border-red-500"  v-model="agreeToTerms"/>
-                <p class="font-semibold text-sm">I agree to the Terms of Service and Privacy Policy</p>
+                <p class="font-semibold text-sm">J'accepte les Conditions d'utilisation et la Politique de confidentialité</p>
             </label>
             <span v-if="agreeError" class="text-red-500 text-sm mt-1">{{ agreeError }}</span>
-            <button type="submit" class="px-3 py-2 bg-green_pastel rounded-sm text-white font-semibold lg:text-lg lg:px-4 hover:opacity-80 my-2" :disabled="loading">Create Account</button>
-            <p class="text-sm text-center">Already have an account ?</p>
-            <p class="font-semibold text-md text-green_pastel text-center cursor-pointer" @click="toggleDisplay">Sign in</p>
+            <button type="submit" class="px-3 py-2 bg-green_pastel rounded-sm text-white font-semibold lg:text-lg lg:px-4 hover:opacity-80 my-2" :disabled="loading">Créer un compte</button>
+            <p class="text-sm text-center">Vous avez déjà un compte ?</p>
+            <p class="font-semibold text-md text-green_pastel text-center cursor-pointer" @click="toggleDisplay">Se connecter</p>
         </form>
         <span v-if="error" class="text-red-500 text-sm mt-1 flex items-center justify-center text-center">{{ error }}</span>
         <i v-if="loading" class="pi pi-spin pi-spinner text-center" style="font-size: 2rem"></i>

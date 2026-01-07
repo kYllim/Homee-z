@@ -81,12 +81,13 @@
           <!-- Reminders -->
           <div class="bg-white shadow-sm rounded-2xl p-6">
             <div class="flex justify-between items-center mb-4">
-              <h2 class="text-lg font-semibold text-gray-800">Reminders</h2>
+              <h2 class="text-lg font-semibold text-gray-800">Rappels</h2>
+              <p>(À venir)</p>
             </div>
           </div>
         </div>
         <div class="bg-white shadow-sm rounded-2xl p-6 mt-8">
-          <h2 class="text-lg font-semibold text-gray-800 mb-4">Schedule</h2>
+          <h2 class="text-lg font-semibold text-gray-800 mb-4">Planning</h2>
           <Calendar :events="calendarEvents" />
         </div>
       </div>
