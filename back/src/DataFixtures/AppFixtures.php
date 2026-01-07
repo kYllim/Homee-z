@@ -10,6 +10,7 @@ use App\Entity\Chore;
 use App\Entity\PersonHousehold;
 use App\Enum\PersonEnum;
 use App\Enum\HouseHoldEnum;
+use App\Enum\EventStatusEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -80,30 +81,65 @@ class AppFixtures extends Fixture
 
         // Créer des événements
         $now = new \DateTime('now');
-        $eventTitles = [
-            'Réunion de famille',
-            'Nettoyage de la maison',
-            'Dîner en famille',
-            'Shopping groceries',
-            'Anniversaire de Alice',
-            'Maintenance de la voiture',
-            'Pique-nique au parc'
+        $events = [
+            [
+                'title' => 'Réunion de famille',
+                'days' => 5,
+                'status' => EventStatusEnum::PREVU->value,
+                'hours' => 2
+            ],
+            [
+                'title' => 'Nettoyage de la maison',
+                'days' => -2,
+                'status' => EventStatusEnum::TERMINE->value,
+                'hours' => 3
+            ],
+            [
+                'title' => 'Dîner en famille',
+                'days' => 2,
+                'status' => EventStatusEnum::EN_COURS->value,
+                'hours' => 2
+            ],
+            [
+                'title' => 'Shopping groceries',
+                'days' => -5,
+                'status' => EventStatusEnum::EN_RETARD->value,
+                'hours' => 1
+            ],
+            [
+                'title' => 'Anniversaire de Alice',
+                'days' => 10,
+                'status' => EventStatusEnum::PREVU->value,
+                'hours' => 4
+            ],
+            [
+                'title' => 'Maintenance de la voiture',
+                'days' => 3,
+                'status' => EventStatusEnum::PREVU->value,
+                'hours' => 2
+            ],
+            [
+                'title' => 'Pique-nique au parc',
+                'days' => -10,
+                'status' => EventStatusEnum::ANNULE->value,
+                'hours' => 3
+            ]
         ];
 
-        foreach ($eventTitles as $index => $title) {
+        foreach ($events as $index => $eventData) {
             $event = new Event();
-            $event->setTitle($title);
-            $event->setDescription('Description de ' . $title);
+            $event->setTitle($eventData['title']);
+            $event->setDescription('Description de ' . $eventData['title']);
             $event->setCreator($persons[$index % count($persons)]);
             $event->setHousehold($household);
             $event->setType('event');
-            $event->setStatus('planned');
+            $event->setStatus($eventData['status']);
             
-            // Répartir les événements sur les prochains 30 jours
+            // Définir les dates en fonction des jours spécifiés
             $startDate = clone $now;
-            $startDate->modify('+' . ($index * 4) . ' days');
+            $startDate->modify($eventData['days'] . ' days');
             $endDate = clone $startDate;
-            $endDate->modify('+2 hours');
+            $endDate->modify('+' . $eventData['hours'] . ' hours');
             
             $event->setStartAt($startDate);
             $event->setEndAt($endDate);
@@ -149,7 +185,7 @@ class AppFixtures extends Fixture
         echo "✓ Fixtures créées avec succès!\n";
         echo "  - 1 foyer\n";
         echo "  - " . count($users) . " utilisateurs\n";
-        echo "  - " . count($eventTitles) . " événements\n";
+        echo "  - " . count($events) . " événements\n";
         echo "  - " . count($choreTitles) . " corvées\n";
         echo "\nIdentifiants de connexion:\n";
         foreach ($userData as $data) {

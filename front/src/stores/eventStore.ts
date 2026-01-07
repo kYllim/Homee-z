@@ -42,8 +42,17 @@ export const useEventStore = defineStore('eventStore', () => {
   try {
     await createEvent(eventData)
     await fetchEvents() // <-- récupère toute la liste à jour
-  } catch (error) {
-    console.error('Erreur lors de la création', error)
+  } catch (error: any) {
+    // Affiche des détails utiles si c'est une erreur Axios
+    if (error?.response) {
+      console.error('Erreur lors de la création (HTTP)', {
+        status: error.response.status,
+        data: error.response.data
+      })
+    } else {
+      console.error('Erreur lors de la création', error)
+    }
+    throw error
   }
   }
 
