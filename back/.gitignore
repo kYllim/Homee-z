@@ -1,0 +1,91 @@
+# -------------------------
+# OS / Editor files
+# -------------------------
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon
+
+# IDEs
+/.idea/
+/.vscode/
+*.sublime-workspace
+*.sublime-project
+*.iml
+*.swp
+
+# -------------------------
+# Symfony / PHP
+# -------------------------
+# Environment files (do NOT commit secrets)
+# Ignore all env variants that may contain secrets but keep example/dist files
+/.env*
+!/.env.dist
+!/.env.example
+/.env.local.php 
+
+
+
+# Symfony secrets and local caches/logs
+/config/secrets/
+/var/
+/**/var/
+
+# Composer dependencies (don't commit vendors)
+/vendor/
+/**/vendor/
+
+# PHPUnit / test artifacts
+/phpunit.xml
+/.phpunit.cache/
+
+# -------------------------
+# Frontend / Node
+# -------------------------
+# Node modules and package manager logs
+/node_modules/
+/front/node_modules/
+npm-debug.log
+pnpm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Webpack / Encore / build output
+/public/build/
+/back/public/build/
+/front/dist/
+/public/assets/
+/assets/vendor/
+
+# Misc build artifacts
+/build/
+/dist/
+
+# -------------------------
+# Logs, caches, coverage
+# -------------------------
+*.log
+/coverage/
+/.cache/
+/.sass-cache/
+
+# -------------------------
+# Project root extras that are safe to ignore
+# -------------------------
+composer-setup.php
+composer.sig
+/.DS_Store
+
+# Keep any local/backups or OS-specific files out
+*~
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
