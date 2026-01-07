@@ -52,10 +52,10 @@ function mapChoreToEvent(chore: Partial<Chore>): any {
   const typeLabel = Object.entries(TYPE_MAPPING).find(
     ([, config]) => config.key === chore.type
   )?.[0] || 'menage'
-  
+
   // Reverse mapping du status
   const statusLabel = chore.status ? STATUS_REVERSE_MAPPING[chore.status] : 'prévu'
-  
+
   // Convertir date (YYYY-MM-DD) en datetime (YYYY-MM-DDTHH:MM:SS)
   const formatDateTime = (date?: string) => {
     if (!date) return undefined
@@ -64,7 +64,7 @@ function mapChoreToEvent(chore: Partial<Chore>): any {
     // Sinon ajouter l'heure par défaut (midi)
     return `${date}T12:00:00`
   }
-  
+
   return {
     title: chore.title,
     description: chore.description,
@@ -75,6 +75,9 @@ function mapChoreToEvent(chore: Partial<Chore>): any {
   }
 }
 
+/**
+ * Récupérer toutes les corvées
+ */
 export async function getChores(currentUserId?: number): Promise<Chore[]> {
   const response = await fetch(API_URL, {
     method: 'GET',
@@ -118,7 +121,7 @@ export async function getChoreById(id: number, currentUserId?: number): Promise<
  */
 export async function createChore(choreData: Partial<Chore>): Promise<Chore> {
   const eventData = mapChoreToEvent(choreData)
-  console.log('Données envoyées au backend:', eventData)
+  console.log('📤 Données envoyées au backend:', eventData)
   console.log(getAuthToken());
   
   const response = await fetch(API_URL, {
@@ -134,12 +137,12 @@ export async function createChore(choreData: Partial<Chore>): Promise<Chore> {
   
   if (!response.ok) {
     const error = await response.json()
-    console.error('Erreur backend:', error)
+    console.error('❌ Erreur backend:', error)
     throw new Error(error.message || `HTTP error ${response.status}`)
   }
   
   const data = await response.json()
-  console.log('Réponse backend:', data)
+  console.log('✅ Réponse backend:', data)
   return mapEventToChore(data)
 }
 

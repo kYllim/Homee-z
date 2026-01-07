@@ -1,23 +1,28 @@
 <template>
   <div class="min-h-screen bg-gray-50">
     <NavBarConnect />
-
     <FoodHeader />
 
-    <!-- Grille à 2 colonnes -->
     <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 p-8">
 
-      <!-- Colonne principale (recettes) -->
+      <!-- Colonne recettes -->
       <div class="lg:col-span-2">
         <h1 class="text-3xl font-bold mb-6">Mes recettes</h1>
 
-        <!-- ICI futur composant recettes -->
-        <div class="bg-white rounded-2xl p-6 h-96 flex items-center justify-center text-gray-400">
-          EN ATTENTE… (recettes)
+        <RecipesGrid
+          v-if="recipes.length"
+          :recipes="recipes"
+        />
+
+        <div
+          v-else
+          class="bg-white rounded-2xl p-10 text-center text-gray-400"
+        >
+          Aucune recette pour le moment 🍽️
         </div>
       </div>
 
-      <!-- Colonne droite : composant Listes de courses -->
+      <!-- Colonne droite -->
       <div>
         <ShoppingListBlock />
       </div>
@@ -27,7 +32,18 @@
 </template>
 
 <script setup>
-import NavBarConnect from "@/components/Layout/NavBarConnect.vue";
-import ShoppingListBlock from "@/components/ShoppingListBlock.vue";
-import FoodHeader from "@/components/Layout/FoodHeader.vue";
+import { ref, onMounted } from 'vue'
+import api from '@/services/api'
+
+import NavBarConnect from "@/components/Layout/NavBarConnect.vue"
+import ShoppingListBlock from "@/components/ShoppingListBlock.vue"
+import FoodHeader from "@/components/Layout/FoodHeader.vue"
+import RecipesGrid from "@/components/recipes/RecipesGrid.vue"
+
+const recipes = ref([])
+
+onMounted(async () => {
+  const res = await api.get('/recipes')
+  recipes.value = res.data
+})
 </script>

@@ -44,7 +44,7 @@ const footerLinks = reactive({
               v-for="social in socialLinks"
               :key="social.name"
               :href="social.url"
-              class="w-9 h-9 md:w-10 md:h-10 bg-[#474747] bg-opacity-10 rounded-lg flex items-center justify-center hover:bg-green_pastel transition"
+              class="w-9 h-9 md:w-10 md:h-10 bg-white bg-opacity-10 rounded-lg flex items-center justify-center hover:bg-green_pastel transition"
             >
               <i :class="social.icon" class="text-white text-sm"></i>
             </a>
@@ -86,7 +86,7 @@ const footerLinks = reactive({
       </div>
 
       <div class="border-t border-gray-700 pt-6 md:pt-8 text-center">
-        <p class="text-gray-400 text-sm md:text-base">&copy; 2025 homeez. Tous droits réservés.</p>
+        <p class="text-gray-400 text-sm md:text-base">&copy; 2024 homeez. Tous droits réservés.</p>
       </div>
     </div>
   </footer>

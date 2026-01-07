@@ -15,7 +15,7 @@ import AppFooter from '@/components/landing/AppFooter.vue'
   <div class="bg-[#FAFAFA] font-['Inter'] text-[#333333]">
     <NavBarLanding />
     
-    <main class="">
+    <main class="pt-20">
       <HeroSection />
       
       <TaglineSection />

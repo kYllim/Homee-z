@@ -14,9 +14,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Household;
 use App\Entity\User;
 
+
 #[Route('/api/shopping-lists')]
 class ShoppingListController extends AbstractController
 {
+
     #[Route('', name: 'shopping_list_index', methods: ['GET'])]
     public function index(ShoppingListRepository $repo): JsonResponse
     {
@@ -29,7 +31,11 @@ class ShoppingListController extends AbstractController
                 'description' => $list->getDescription(),
                 'status' => $list->getStatus(),
                 'createdAt' => $list->getCreatedAt()?->format('Y-m-d H:i:s'),
-                'itemsCount' => count($list->getShoppingItems())
+                'items' => array_map(fn($item) => [
+                    'id' => $item->getId(),
+                    'name' => $item->getName(),
+                    'status' => $item->getStatus(),
+                ], $list->getShoppingItems()->toArray())
             ];
         }, $lists);
 
@@ -59,7 +65,36 @@ class ShoppingListController extends AbstractController
             }
         }
         $em->persist($list);
+        
+        // ✅ AJOUT DES ITEMS
+        foreach ($data['items'] ?? [] as $itemData) {
+            $item = new ShoppingItem();
+
+            if (is_string($itemData)) {
+                $item->setName($itemData);
+                $item->setQuantity(1);
+                $item->setStatus('to_buy');
+            } else {
+                $item->setName($itemData['name'] ?? 'Article');
+                $item->setQuantity($itemData['quantity'] ?? 1);
+                $item->setUnit($itemData['unit'] ?? null);
+                $item->setStatus($itemData['status'] ?? 'to_buy');
+            }
+
+            $item->setShoppingList($list);
+            $em->persist($item);
+        }
+
         $em->flush();
+
+        return $this->json(
+            [
+                'id' => $list->getId(),
+                'title' => $list->getTitle(),
+                'itemsCount' => count($list->getShoppingItems())
+            ],
+            201
+        );
 
         return $this->json(['message' => 'Liste créée avec succès', 'id' => $list->getId()], 201);
     }

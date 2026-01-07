@@ -2,10 +2,9 @@
 @import 'primeicons/primeicons.css';
 @import "tailwindcss" important;
 
-/* Petite base globale : applique la font et les couleurs via Tailwind */
+
 @layer base {
 	html, body, #app {
-		/* Apply base styles directly to avoid PostCSS @apply issues in some setups */
 		background-color: #FAFAFA; /* bgLight */
 		color: #333333; /* textDark */
 		font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif;

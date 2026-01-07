@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted } from 'vue'
+import { ref,watch } from 'vue'
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
@@ -31,40 +31,7 @@ const calendarOptions = ref({
   eventClick: (arg: any) => {
     emit('eventClick', arg)
   },
-  eventClassNames: (arg: any) => {
-    const status = (arg.event.extendedProps?.status || '').toLowerCase()
-    const base = ['rounded-md', 'px-1', 'py-0.5', 'border-0', 'text-xs']
-    switch (status) {
-      case 'terminé':
-      case 'termine':
-      case 'completed':
-        return [...base, 'bg-green-600', 'text-white']
-      case 'en cours':
-      case 'in_progress':
-        return [...base, 'text-white']
-      case 'prévu':
-      case 'prevu':
-      case 'planned':
-        return [...base, 'bg-white', 'text-gray-900', 'border', 'border-gray-300']
-      case 'en retard':
-      case 'retard':
-      case 'late':
-        return [...base, 'bg-red-600', 'text-white']
-      case 'annulé':
-      case 'annule':
-      case 'cancelled':
-        return [...base, 'bg-gray-500', 'text-white']
-      default:
-        return [...base, 'bg-white', 'text-gray-900', 'border', 'border-gray-300']
-    }
-  },
-  eventDidMount: (arg: any) => {
-    const status = (arg.event.extendedProps?.status || '').toLowerCase()
-    if (status === 'en cours' || status === 'in_progress') {
-      arg.el.style.backgroundColor = '#9CBFA2'
-      arg.el.style.borderColor = '#9CBFA2'
-    }
-  },
+  eventClassNames: ['bg-primary', 'text-white', 'rounded-md', 'px-1', 'py-0.5', 'border-0'],
   dayCellClassNames: ['cursor-pointer', 'hover:bg-gray-50', 'rounded-lg', 'border-0']
 })
 
@@ -123,7 +90,7 @@ watch(
 
 <template>
   <div class="calendar-component">
-    <FullCalendar ref="calendarRef" :options="calendarOptions" />
+    <FullCalendar :options="calendarOptions" />
   </div>
 </template>
 
@@ -131,31 +98,6 @@ watch(
 .calendar-component {
   max-width: 100%;
   margin: 0 auto;
-}
-
-@media (max-width: 640px) {
-  .calendar-component {
-    padding: 0 8px;
-  }
-}
-
-:deep(.fc-button-primary) {
-  background-color: transparent !important;
-  border-color: #9CBFA2 !important;
-  color: #9CBFA2 !important;
-}
-
-:deep(.fc-button-primary:not(:disabled).fc-button-active),
-:deep(.fc-button-primary:not(:disabled):active) {
-  background-color: rgba(156, 191, 162, 0.1) !important;
-  border-color: #9CBFA2 !important;
-  color: #9CBFA2 !important;
-}
-
-:deep(.fc-button-primary:hover:not(:disabled)) {
-  background-color: rgba(156, 191, 162, 0.1) !important;
-  border-color: #9CBFA2 !important;
-  color: #9CBFA2 !important;
 }
 
 /* Styles du modal */

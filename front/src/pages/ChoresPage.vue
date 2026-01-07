@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useChoreStore } from '@/stores/choreStore'
 import axios from 'axios'
-import ChoresHeader from '@/components/chores/ChoresHeader.vue'
+//import ChoresHeader from '@/components/chores/ChoresHeader.vue'
 import ChoresPageHeader from '@/components/chores/ChoresPageHeader.vue'
 import ChoresFilters from '@/components/chores/ChoresFilters.vue'
 import ChoresGrid from '@/components/chores/ChoresGrid.vue'
@@ -61,24 +61,15 @@ const handleCreateChore = () => {
   isModalOpen.value = true
 }
 
-/**
- * Gérer les changements de filtres
- */
 const handleFilterChange = (filters: any) => {
   currentFilters.value = filters
 }
 
-/**
- * Voir les détails d'une corvée (ouvre le modal en mode édition)
- */
 const handleViewDetails = (chore: Chore) => {
   editingChore.value = chore
   isModalOpen.value = true
 }
 
-/**
- * Soumettre le formulaire (création ou modification)
- */
 const handleSubmitChore = async (choreData: Partial<Chore>) => {
   try {
     if (editingChore.value) {
@@ -106,9 +97,6 @@ const handleCloseModal = () => {
   editingChore.value = null
 }
 
-/**
- * Mettre à jour le statut d'une corvée
- */
 const handleUpdateStatus = async (chore: Chore) => {
   // Cycle de statuts: todo → in-progress → done
   const statusCycle: Record<string, string> = {
@@ -127,9 +115,6 @@ const handleUpdateStatus = async (chore: Chore) => {
   }
 }
 
-/**
- * Supprimer une corvée
- */
 const handleDeleteChore = async (chore: Chore) => {
   if (!confirm(`Êtes-vous sûr de vouloir supprimer la corvée "${chore.title}" ?`)) {
     return
