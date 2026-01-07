@@ -88,6 +88,12 @@ class Event
     #[Groups(['event:read', 'event:write'])]
     private ?Person $creator = null;
 
+    // La personne à qui la tâche est assignée
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['event:read', 'event:write'])]
+    private ?Person $assignedTo = null;
+
     /**
      * Liste des alertes liées à cet événement
      * @var Collection<int, Alert>
@@ -140,6 +146,9 @@ class Event
 
     public function getCreator(): ?Person { return $this->creator; }
     public function setCreator(?Person $creator): static { $this->creator = $creator; return $this; }
+
+    public function getAssignedTo(): ?Person { return $this->assignedTo; }
+    public function setAssignedTo(?Person $assignedTo): static { $this->assignedTo = $assignedTo; return $this; }
 
     /**
      * @return Collection<int, Alert>

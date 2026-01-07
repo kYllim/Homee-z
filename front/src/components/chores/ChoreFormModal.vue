@@ -122,8 +122,8 @@ const handleClose = () => {
         <div class="form-group">
           <label class="form-label">Type de corvée *</label>
           <select v-model="type" class="form-input">
-            <option 
-              v-for="[key, config] in Object.entries(TYPE_MAPPING)" 
+            <option
+              v-for="[key, config] in Object.entries(TYPE_MAPPING)"
               :key="key"
               :value="config.key"
             >

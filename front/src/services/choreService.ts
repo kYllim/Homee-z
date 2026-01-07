@@ -20,7 +20,7 @@ function mapEventToChore(e: any, currentUserId?: number): Chore {
   const typeConfig = TYPE_MAPPING[typeKey] ?? { key: 'cleaning', label: 'Ménage', icon: 'fa-broom' }
   
   // Récupérer le status mapping avec fallback
-  const statusKey = e.status?.toLowerCase() || 'à faire'
+  const statusKey = e.status?.toLowerCase() || 'prévu'
   const status = STATUS_MAPPING[statusKey] ?? 'todo'
   
   return {
@@ -52,10 +52,10 @@ function mapChoreToEvent(chore: Partial<Chore>): any {
   const typeLabel = Object.entries(TYPE_MAPPING).find(
     ([, config]) => config.key === chore.type
   )?.[0] || 'menage'
-  
+
   // Reverse mapping du status
-  const statusLabel = chore.status ? STATUS_REVERSE_MAPPING[chore.status] : 'à faire'
-  
+  const statusLabel = chore.status ? STATUS_REVERSE_MAPPING[chore.status] : 'prévu'
+
   // Convertir date (YYYY-MM-DD) en datetime (YYYY-MM-DDTHH:MM:SS)
   const formatDateTime = (date?: string) => {
     if (!date) return undefined
@@ -64,7 +64,7 @@ function mapChoreToEvent(chore: Partial<Chore>): any {
     // Sinon ajouter l'heure par défaut (midi)
     return `${date}T12:00:00`
   }
-  
+
   return {
     title: chore.title,
     description: chore.description,

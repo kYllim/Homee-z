@@ -10,7 +10,7 @@
 
         <button
           @click="showModal = true"
-          class="h-10 w-10 flex items-center justify-center bg-[#9CBFA2] text-white rounded-full shadow hover:scale-105"
+          class="h-10 w-10 flex items-center justify-center bg-green_pastel text-white rounded-full shadow hover:scale-105"
         >
           +
         </button>

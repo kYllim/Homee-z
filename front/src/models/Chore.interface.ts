@@ -32,12 +32,14 @@ export const STATUS_MAPPING: Record<string, string> = {
   'prévu': 'todo',
   'en cours': 'in-progress',
   'terminé': 'done',
-  'en retard': 'overdue'
+  'en retard': 'overdue',
+  'annulé': 'cancelled'
 }
 
 export const STATUS_REVERSE_MAPPING: Record<string, string> = {
   'todo': 'prévu',
   'in-progress': 'en cours',
   'done': 'terminé',
-  'overdue': 'en retard'
+  'overdue': 'en retard',
+  'cancelled': 'annulé'
 }
