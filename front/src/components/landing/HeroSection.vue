@@ -9,12 +9,12 @@
           Organisez vos tâches ménagères, partagez vos listes de courses et gérez votre emploi du temps familial en un seul endroit.
         </p>
         <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3 sm:gap-4 pt-4">
-          <button class="w-full sm:w-auto px-6 md:px-8 py-3 md:py-3.5 bg-green_pastel text-white rounded-xl hover:bg-opacity-90 transition font-medium text-base md:text-lg whitespace-nowrap">
+          <a href="/connexion"><button class="w-full sm:w-auto px-6 md:px-8 py-3 md:py-3.5 bg-green_pastel text-white rounded-xl hover:bg-opacity-90 transition font-medium text-base md:text-lg whitespace-nowrap">
             Commencer gratuitement
-          </button>
-          <button class="w-full sm:w-auto px-6 md:px-8 py-3 md:py-3.5 border-2 border-green_pastel text-green_pastel rounded-xl hover:bg-green_pastel hover:text-white transition font-medium text-base md:text-lg whitespace-nowrap">
+          </button></a>
+          <a href="/connexion"><button class="w-full sm:w-auto px-6 md:px-8 py-3 md:py-3.5 border-2 border-green_pastel text-green_pastel rounded-xl hover:bg-green_pastel hover:text-white transition font-medium text-base md:text-lg whitespace-nowrap">
             En savoir plus
-          </button>
+          </button></a>
         </div>
       </div>
       <div class="flex justify-center mt-6 md:mt-0">
