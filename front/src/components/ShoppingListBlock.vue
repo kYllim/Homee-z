@@ -8,7 +8,7 @@
 
       <button 
         @click="openModal"
-        class="h-10 w-10 flex items-center justify-center bg-[#9CBFA2] text-white rounded-full shadow hover:scale-105 transition"
+        class="h-10 w-10 flex items-center justify-center bg-green_pastel text-white rounded-full shadow hover:scale-105 transition"
       >
         +
       </button>

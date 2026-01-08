@@ -1,23 +1,45 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { RouterLink, useRouter } from "vue-router";
 import type { Ref } from "vue";
-import {  RemoveCookie} from "@/services";
+import { RemoveCookie } from "@/services";
+import { useAuth } from "@/composable/useAuth";
 
 const IsOpen: Ref<boolean> = ref(false);
 
-// 🔐 À remplacer par ton vrai état d’authentification (localStorage, Pinia…)
+// 🔐 À remplacer par ton vrai état d'authentification (localStorage, Pinia…)
 const isLoggedIn: Ref<boolean> = ref(true);
 
 // Menu utilisateur
 const userMenuOpen = ref(false);
 const router = useRouter();
+const { getUserFromToken } = useAuth();
+
+// Récupérer les infos de l'utilisateur depuis le token
+const currentUser = computed(() => getUserFromToken());
+const userName = computed(() => {
+  if (!currentUser.value) return 'Moi';
+  return currentUser.value.fullName || currentUser.value.firstName || currentUser.value.email || 'Moi';
+});
+
+// Récupérer les initiales en minuscules
+const userInitials = computed(() => {
+  if (!currentUser.value) return 'u';
+  const firstName = currentUser.value.firstName || '';
+  const lastName = currentUser.value.lastName || '';
+  if (firstName && lastName) {
+    return (firstName.charAt(0) + lastName.charAt(0)).toLowerCase();
+  }
+  if (firstName) return firstName.charAt(0).toLowerCase();
+  if (currentUser.value.email) return currentUser.value.email.charAt(0).toLowerCase();
+  return 'u';
+});
 
 const toggleUserMenu = () => {
   userMenuOpen.value = !userMenuOpen.value;
 };
 
-const Logout = () => { 
+const Logout = () => {
   RemoveCookie('token');
   router.push('/Connexion');
 }
@@ -33,7 +55,7 @@ const Logout = () => {
         <i class="pi pi-times text-xl lg:hidden" @click="IsOpen=false" v-if="IsOpen"></i>
         <i class="pi pi-bars text-xl lg:hidden" @click="IsOpen=true" v-else></i>
 
-        <h1 class="text-lg lg:text-2xl">homeez</h1>
+        <h1 class="text-lg lg:text-2xl">Homeez</h1>
       </div>
 
       <!-- Center (desktop only) -->
@@ -54,8 +76,8 @@ const Logout = () => {
       </div>
 
       <!-- Right -->
-      <div class="flex gap-2 text-sm items-center lg:gap-6">
-        <!-- 🔓 NON CONNECTÉ -->
+      <div class="flex gap-2 text-sm items-center lg:gap-6 min-w-[120px] lg:min-w-[150px]">
+        <!-- NON CONNECTÉ -->
         <template v-if="!isLoggedIn">
           <RouterLink to="/ConnexionPage" class="font-semibold lg:text-lg hover:text-green_pastel">Connexion</RouterLink>
           <RouterLink to="/InscriptionPage" class="px-3 py-2 bg-green_pastel rounded-sm text-white font-semibold lg:text-lg lg:px-4 hover:opacity-80">
@@ -63,17 +85,19 @@ const Logout = () => {
           </RouterLink>
         </template>
 
-        <!-- 🔐 CONNECTÉ -->
+        <!-- CONNECTÉ -->
         <template v-else>
-          <div class="relative">
-            <button @click="toggleUserMenu" class="flex items-center gap-2 lg:text-lg hover:text-green_pastel">
-              <i class="pi pi-user text-xl"></i>
-              Moi
+          <div class="relative w-full flex justify-end">
+            <button @click="toggleUserMenu" class="flex flex-col items-center gap-1 hover:opacity-80 min-w-[80px] lg:min-w-[100px]">
+              <div class="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-gray-200 flex items-center justify-center font-semibold text-gray-700 text-sm lg:text-base">
+                {{ userInitials }}
+              </div>
+              <span class="text-xs lg:text-sm truncate max-w-[100px] lg:max-w-[120px]">{{ userName }}</span>
             </button>
 
             <div
               v-if="userMenuOpen"
-              class="absolute right-0 top-10 bg-white shadow-md rounded-md p-3 flex flex-col gap-2 w-40 z-50"
+              class="absolute right-0 top-16 lg:top-20 bg-white shadow-md rounded-md p-3 flex flex-col gap-2 w-40 z-50"
             >
               <RouterLink to="/profil" class="hover:text-green_pastel font-medium">Profil</RouterLink>
               <RouterLink to="/settings" class="hover:text-green_pastel font-medium">Paramètres</RouterLink>
