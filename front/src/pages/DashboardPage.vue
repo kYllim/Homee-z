@@ -38,6 +38,7 @@
           <div class="bg-white shadow-sm rounded-2xl p-6">
             <div class="flex justify-between items-center mb-4">
               <h2 class="text-lg font-semibold text-gray-800">Reminders</h2>
+              <p>À venir</p>
             </div>
           </div>
         </div>
