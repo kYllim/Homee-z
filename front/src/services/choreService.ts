@@ -59,9 +59,7 @@ function mapChoreToEvent(chore: Partial<Chore>): any {
   // Convertir date (YYYY-MM-DD) en datetime (YYYY-MM-DDTHH:MM:SS)
   const formatDateTime = (date?: string) => {
     if (!date) return undefined
-    // Si déjà au format datetime, retourner tel quel
     if (date.includes('T')) return date
-    // Sinon ajouter l'heure par défaut (midi)
     return `${date}T12:00:00`
   }
   
