@@ -11,6 +11,7 @@ import JoinHouseHoldPage from "@/pages/JoinHouseHoldPage.vue";
 import AddPersonHouseHoldPage from "@/pages/AddPersonHouseHoldPage.vue";
 import FamillyPage from "@/pages/FamillyPage.vue";
 import ChoresPage from "@/pages/ChoresPage.vue"
+import ShoppingListPage from "@/pages/ShoppingListPage.vue"
 import {GetCookie} from "../services/index"
 
 
@@ -24,7 +25,8 @@ const routes: Array<RouteRecordRaw> = [
   {path: "/JoinHouseHold", name: "JoinHouseHold", component: JoinHouseHoldPage},
   {path: "/AddPersonHouseHold", name: "AddPersonHouseHold", component: AddPersonHouseHoldPage},
   {path: "/Familly", name: "Familly", component: FamillyPage},
-  {path: "/chores", name: "Chores", component : ChoresPage}
+  {path: "/chores", name: "Chores", component : ChoresPage},
+  {path: "/shopping-lists/:id", name: "shopping-list", component: ShoppingListPage}
 
 ];
 

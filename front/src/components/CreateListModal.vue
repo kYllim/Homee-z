@@ -15,7 +15,7 @@
 
       <!-- Title -->
       <div class="flex items-center gap-3 mb-6">
-        <div class="h-12 w-12 bg-green_pastel rounded-full flex items-center justify-center text-white text-2xl">
+        <div class="h-12 w-12 bg-[#9CBFA2] rounded-full flex items-center justify-center text-white text-2xl">
           🛒
         </div>
         <h2 class="text-2xl font-extrabold text-gray-800">Nouvelle Liste de Course</h2>
@@ -28,7 +28,7 @@
           v-model="title"
           type="text"
           placeholder="Ma liste de course..."
-          class="w-full mt-1 mb-5 p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green_pastel text-black"
+          class="w-full mt-1 mb-5 p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#9CBFA2] text-black"
         />
 
         <label class="font-medium text-gray-600">Articles</label>
@@ -44,7 +44,7 @@
           <button
             type="button"
             @click="addArticle"
-            class="bg-green_pastel text-white h-12 w-12 flex justify-center items-center rounded-xl text-2xl"
+            class="bg-[#9CBFA2] text-white h-12 w-12 flex justify-center items-center rounded-xl text-2xl"
           >
             +
           </button>
@@ -70,7 +70,7 @@
 
           <button
             type="submit"
-            class="w-40 py-3 rounded-xl bg-green_pastel text-white font-semibold"
+            class="w-40 py-3 rounded-xl bg-[#9CBFA2] text-white font-semibold"
           >
             Créer la liste
           </button>
@@ -82,7 +82,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue"
-import axios from "axios"
+import api from "@/services/api"
 
 const emit = defineEmits(["close", "created"])
 
@@ -99,10 +99,11 @@ const addArticle = () => {
 const create = async () => {
   if (!title.value.trim()) return alert("Nom requis")
 
-  await axios.post("http://127.0.0.1:8001/api/shopping-lists", {
+  await api.post("/shopping-lists", {
     title: title.value,
     items: articles.value
   })
+
 
   emit("created")  // ← Recharge dans ta page
   emit("close")    // ← Ferme le popup
