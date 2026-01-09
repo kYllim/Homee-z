@@ -20,10 +20,10 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class EventProcessorTest extends TestCase
 {
     private EventProcessor $processor;
-    private ProcessorInterface $persistProcessor;
-    private ProcessorInterface $removeProcessor;
-    private Security $security;
-    private UserHouseholdRepository $householdRepository;
+    private ProcessorInterface&\PHPUnit\Framework\MockObject\MockObject $persistProcessor;
+    private ProcessorInterface&\PHPUnit\Framework\MockObject\MockObject $removeProcessor;
+    private Security&\PHPUnit\Framework\MockObject\MockObject $security;
+    private UserHouseholdRepository&\PHPUnit\Framework\MockObject\MockObject $householdRepository;
 
     protected function setUp(): void
     {
@@ -207,7 +207,6 @@ class EventProcessorTest extends TestCase
         // Utiliser reflection pour définir l'ID
         $reflection = new \ReflectionClass($person);
         $property = $reflection->getProperty('id');
-        $property->setAccessible(true);
         $property->setValue($person, $id);
         
         $user->setPerson($person);

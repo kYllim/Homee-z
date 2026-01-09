@@ -16,10 +16,10 @@ use PHPUnit\Framework\TestCase;
 class HouseHoldServiceTest extends TestCase
 {
     private HouseHoldService $service;
-    private EntityManagerInterface $entityManager;
-    private EntityRepository $householdRepository;
-    private EntityRepository $personHouseholdRepository;
-    private EntityRepository $userRepository;
+    private EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject $entityManager;
+    private EntityRepository|\PHPUnit\Framework\MockObject\MockObject $householdRepository;
+    private EntityRepository|\PHPUnit\Framework\MockObject\MockObject $personHouseholdRepository;
+    private EntityRepository|\PHPUnit\Framework\MockObject\MockObject $userRepository;
 
     protected function setUp(): void
     {
@@ -329,13 +329,11 @@ class HouseHoldServiceTest extends TestCase
         // Mock réflexion pour définir l'ID
         $reflection = new \ReflectionClass($household);
         $idProperty = $reflection->getProperty('id');
-        $idProperty->setAccessible(true);
         $idProperty->setValue($household, 1);
 
         $person = new Person();
         $reflection = new \ReflectionClass($person);
         $idProperty = $reflection->getProperty('id');
-        $idProperty->setAccessible(true);
         $idProperty->setValue($person, 1);
 
         $user = $this->createMock(User::class);
@@ -375,13 +373,11 @@ class HouseHoldServiceTest extends TestCase
 
         $reflection = new \ReflectionClass($household);
         $idProperty = $reflection->getProperty('id');
-        $idProperty->setAccessible(true);
         $idProperty->setValue($household, 1);
 
         $person = new Person();
         $reflection = new \ReflectionClass($person);
         $idProperty = $reflection->getProperty('id');
-        $idProperty->setAccessible(true);
         $idProperty->setValue($person, 2);
 
         $user = $this->createMock(User::class);
