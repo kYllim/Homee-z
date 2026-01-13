@@ -21,13 +21,13 @@ export async function performLogin(
   await waitForPageLoad(page);
 
   // Remplir le formulaire de connexion
-  const emailInput = page.getByPlaceholder(/Enter your email/i);
+  const emailInput = page.getByPlaceholder(/entrez votre email|enter your email/i);
   if (await emailInput.isVisible()) {
     await emailInput.fill(email);
     await page.waitForTimeout(100);
   }
 
-  const passwordInput = page.getByPlaceholder(/Enter your password/i);
+  const passwordInput = page.getByPlaceholder(/entrez votre mot de passe|enter your password/i);
   if (await passwordInput.isVisible()) {
     await passwordInput.fill(password);
     await page.waitForTimeout(100);
