@@ -36,3 +36,9 @@ coverage
 
 # Vitest
 __screenshots__/
+# Playwright
+/tests/e2e/**/*.mp4
+/tests/e2e/**/*.png
+playwright-report/
+.playwright/
+test-results/

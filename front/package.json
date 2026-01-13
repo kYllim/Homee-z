@@ -13,7 +13,11 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
     "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:headed": "playwright test --headed"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.19",
@@ -29,6 +33,7 @@
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.57.0",
     "@tailwindcss/postcss": "^4.1.16",
     "@tsconfig/node22": "^22.0.2",
     "@types/node": "^22.18.11",
@@ -37,6 +42,7 @@
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.8.1",
     "autoprefixer": "^10.4.21",
+    "dotenv": "^17.2.3",
     "happy-dom": "^20.0.11",
     "npm-run-all2": "^8.0.4",
     "postcss": "^8.5.6",

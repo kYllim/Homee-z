@@ -48,6 +48,27 @@ export async function getEventById(id: number): Promise<Event> {
   }
 }
 
+const normalizeDates = (data: any) => {
+  const normalized = { ...data }
+  if (normalized.startAt) {
+    normalized.startAt = normalized.startAt.split('+')[0].split('Z')[0]
+  }
+  if (normalized.endAt) {
+    normalized.endAt = normalized.endAt.split('+')[0].split('Z')[0]
+  }
+  return normalized
+}
+
+const computeStatusFromDates = (startAt?: string, endAt?: string): string | undefined => {
+  if (!startAt) return 'prévu'
+  const now = new Date()
+  const startDate = new Date(startAt)
+  const endDate = endAt ? new Date(endAt) : undefined
+  if (startDate > now) return 'prévu'
+  if (endDate && endDate < now) return 'en retard'
+  return 'en cours'
+}
+
 export async function createEvent(eventData: Partial<Event>): Promise<Event> {
   const cleanData = normalizeDates({
     ...eventData,
@@ -70,27 +91,6 @@ export async function createEvent(eventData: Partial<Event>): Promise<Event> {
     householdId: e.household?.id ?? 0,
     creatorId: e.creator?.id ?? 0
   }
-}
-
-const normalizeDates = (data: any) => {
-  const normalized = { ...data }
-  if (normalized.startAt) {
-    normalized.startAt = normalized.startAt.split('+')[0].split('Z')[0]
-  }
-  if (normalized.endAt) {
-    normalized.endAt = normalized.endAt.split('+')[0].split('Z')[0]
-  }
-  return normalized
-}
-
-const computeStatusFromDates = (startAt?: string, endAt?: string): string | undefined => {
-  if (!startAt) return 'prévu'
-  const now = new Date()
-  const startDate = new Date(startAt)
-  const endDate = endAt ? new Date(endAt) : undefined
-  if (startDate > now) return 'prévu'
-  if (endDate && endDate < now) return 'en retard'
-  return 'en cours'
 }
 
 export async function updateEvent(id: number, eventData: Partial<Event>): Promise<Event> {
