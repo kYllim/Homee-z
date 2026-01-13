@@ -12,16 +12,20 @@ import AddPersonHouseHoldPage from "@/pages/AddPersonHouseHoldPage.vue";
 import FamillyPage from "@/pages/FamillyPage.vue";
 import ChoresPage from "@/pages/ChoresPage.vue"
 import ShoppingListPage from "@/pages/ShoppingListPage.vue"
+import ProfilePage from "@/pages/ProfilePage.vue"
+import SettingsPage from "@/pages/SettingsPage.vue"
 import {GetCookie} from "../services/index"
 
 
 const routes: Array<RouteRecordRaw> = [
   { path: "/", name: "Home", component: HomePage },
-  { path: "/dashboard", name: "Dashboard", component: DashboardPage },
+  { path: "/dashboard", name: "Dashboard", component: DashboardPage, meta: { requiresAuth: true } },
   { path: "/connexion", name: "Connection", component: ConnexionPage, props: route => ({ mode : route.query.mode }) },
   { path: "/HouseHold", name: "HouseHold", component: HouseHoldHandler },
   { path: "/recettes", name: "Recettes", component: RecipePage },
-  { path: "/events", name: "Events", component: EventPage }, 
+  { path: "/events", name: "Events", component: EventPage, meta: { requiresAuth: true } },
+  { path: "/profil", name: "Profile", component: ProfilePage, meta: { requiresAuth: true } },
+  { path: "/settings", name: "Settings", component: SettingsPage, meta: { requiresAuth: true } },
   {path: "/JoinHouseHold", name: "JoinHouseHold", component: JoinHouseHoldPage},
   {path: "/AddPersonHouseHold", name: "AddPersonHouseHold", component: AddPersonHouseHoldPage},
   {path: "/Familly", name: "Familly", component: FamillyPage},
@@ -35,21 +39,16 @@ const router = createRouter({
   routes,
 });
 
-// On check si l'utilisateur est connecté avant de pouvoir l'envoyer vers les pages utilisateurs 
-// router.beforeEach((to,from,next) => {
-//   if(to.name !== "Home" && to.name !== "Connection"){
-//     const token = GetCookie("token");
-//     console.log(token);
-//     if(!token){
-//       next({ name: "Connection", query: { mode: "connexion" } });
-//     } else {
-//       next();
-//     }
-//   }
-//   else{
-//     next();
-//   }
-// })
+// Guard: protège les routes marquées requiresAuth (ex: /events)
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta?.requiresAuth)) {
+    const token = GetCookie('token')
+    if (!token) {
+      return next({ name: 'Connection', query: { mode: 'connexion' } })
+    }
+  }
+  next()
+})
 
 export default router;
 

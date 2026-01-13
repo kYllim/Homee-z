@@ -1,0 +1,67 @@
+# Workflow GitHub Actions pour les tests E2E
+
+name: E2E Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        working-directory: ./front
+        run: npm ci
+      
+      - name: Install Playwright browsers
+        working-directory: ./front
+        run: npx playwright install --with-deps
+      
+      - name: Run E2E tests
+        working-directory: ./front
+        run: npm run test:e2e
+        env:
+          CI: true
+      
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: front/playwright-report/
+          retention-days: 30
+      
+      - name: Comment PR with test results
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const reportPath = './front/playwright-report/index.html';
+            
+            const comment = `## E2E Test Results
+            
+            ✅ Tests completed! 
+            📊 [View detailed report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            
+            See the uploaded Playwright Report artifact for full details.`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
