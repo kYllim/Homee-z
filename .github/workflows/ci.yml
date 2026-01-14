@@ -74,7 +74,7 @@ jobs:
           npm install
 
 
-      - name: Build app
+      - name: Build app (no type check)
         run: |
           cd front
           npm run build-only
