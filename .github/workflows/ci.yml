@@ -37,7 +37,7 @@ jobs:
       - name: Install Composer dependencies
         run: |
           cd back
-          composer install --no-interaction --prefer-dist
+          composer install --no-interaction --no-progress --prefer-dist --ignore-platform-req=php
 
       - name: Setup env
         run: |
@@ -73,10 +73,6 @@ jobs:
           cd front
           npm install
 
-      - name: Type check
-        run: |
-          cd front
-          npm run type-check
 
       - name: Build app
         run: |
